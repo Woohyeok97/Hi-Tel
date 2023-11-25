@@ -1,1 +1,26 @@
+@import './font/font.scss';
+
+
 $defaultFont : 'DungGeunMo', sans-serif;
+$bgColor : #00007f;
+$fontColor : #ccc;
+$fontColor-hover : #eaeaea;
+$fontColorSub : gray;
+$fontColorSub-hover : darkgray;
+$defaultBorder : 3px solid #ccc;
+$grayBorder : 3px solid gray;
+$darkBule : #040461;
+
+// font-size
+$font1 : calc(20px + 2px);
+$font2 : calc(24px + 2px);
+$font3 : calc(28px + 2px);
+$font4 : calc(32px + 2px);
+$font5 : calc(40px + 2px);
+
+.shadow {
+    border-top: 3px solid rgba(0, 0, 255, 1);
+    border-bottom: 5px solid #000000;
+    border-right: 5px solid #000000;
+    border-left: 3px solid rgba(0, 0, 255, 1);
+}
