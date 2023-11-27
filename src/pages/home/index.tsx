@@ -25,6 +25,20 @@ const TEMP : PostType[] = [
         content : '하이요',
         createdAt : '2023년 11월 25일', 
     },
+    { 
+        id : '4',
+        uid : '131',
+        email : 'ㄴㅇㅁㅇㄴ',
+        content : '하이요',
+        createdAt : '2023년 11월 25일', 
+    },
+    { 
+        id : '5',
+        uid : '321',
+        email : 'ㄴㅇㅁㅇㄴ',
+        content : '하이요',
+        createdAt : '2023년 11월 25일', 
+    },
 ]
 
 export default function HomePage() {

@@ -21,10 +21,23 @@ a {
     color: inherit;
     text-decoration: none;
 }
+textarea {
+    font-family: $defaultFont;
+    font-size: $font1;
+    border: none;
+    resize: none;
+    outline: none;
+}
+input {
+    font-family: $defaultFont;
+    font-size: $font1;
+    outline: none;
+    border: none;
+}
 
 // page
 .page {
-    padding-bottom: 40px;
+    padding-bottom: 80px;
 
     &__header {
         text-align: center;
