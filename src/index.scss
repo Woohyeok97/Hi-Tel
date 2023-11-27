@@ -14,3 +14,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+h1 {
+    margin: 0;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+// page
+.page {
+    padding-bottom: 40px;
+
+    &__header {
+        text-align: center;
+        padding: 20px;
+        margin-bottom: 40px;
+        @extend .shadow;
+
+        h1 {
+            font-size: $font4;
+        }
+    }
+    &__title {
+        font-size: $font3;
+        margin-bottom: 40px;
+    }
+}
