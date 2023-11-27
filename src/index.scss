@@ -27,12 +27,22 @@ textarea {
     border: none;
     resize: none;
     outline: none;
+    box-sizing: border-box;
 }
 input {
     font-family: $defaultFont;
     font-size: $font1;
     outline: none;
     border: none;
+    box-sizing: border-box;
+}
+// common
+.delete {
+    color: $fontWarning;
+        cursor: pointer;
+        &:hover {
+            color: $fontWarning-hover;
+        }
 }
 
 // page
@@ -107,23 +117,60 @@ input {
 }
 
 //post 
-.post {
-    
-    &__header {
-        display: flex;
-        gap: 20px;
-        padding-bottom: 20px;
-        cursor: pointer;
-    }
+.post  {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+
     &__flex {
         display: flex;
         align-items: center;
         gap: 10px;
     }
-    &__userImg {
-        width: 50px;
+    &__user-img {
+        min-width: 50px;
         height: 50px;
         border-radius: 50%;
         background-color: $fontColor;
     }
+    &__box {
+        flex-grow: 1;
+    }
+    &__header {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    &__name {
+        font-weight: 600;
+    }
+    &__createdAt {
+        color: $fontColorSub;
+    }
+    &__content {
+        cursor: pointer;
+    }
+    &__text {
+        margin-bottom: 40px;
+    }
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 20px;
+    }
+    &__delete {
+        color: $fontWarning;
+        cursor: pointer;
+
+        &:hover {
+            color: $fontWarning-hover;
+        }
+    }
+}
+
+// comment 
+.comment {
+    padding-top: 40px;
+    border-top: $defaultBorder;
 }

@@ -20,7 +20,7 @@ export default function Router() {
             <Route path="/post/:id" element={ <PostPage/> }/>
             <Route path="/post/new" element={ <NewPostPage/> }/>
             <Route path="/post/edit/:id" element={ <EditPostPage/> }/>
-            <Route path="/porfile/:id" element={ <ProfilePage/> }/>
+            <Route path="/profile/:id" element={ <ProfilePage/> }/>
             <Route path="/profile/edit" element={ <EditProfilePage/> }/>
             <Route path="/search" element={ <SearchPage/> }/>
             <Route path="/notification" element={ <NotificationPage/> }/>

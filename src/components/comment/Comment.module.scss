@@ -1,0 +1,67 @@
+@import './_utils.scss';
+@import './index.scss';
+
+
+// 코멘트 폼 스타일
+.commentForm {
+    margin-bottom: 40px;
+
+    &__textarea {
+        color: $fontColor;
+        background-color: $darkBule;
+        width: 100%;
+        padding: 10px;
+    }
+    &__flexReverse {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    &__inputBtn {
+        font-size: $font2;
+        color: $fontColor;
+        background-color: $bgColor;
+        padding: 10px 0;
+        cursor: pointer;
+
+        &:hover {
+            color: $fontColor-hover;
+        }
+    }
+}
+
+// 코멘트아이템 스타일
+.commentItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+
+    &__flex {
+        display: flex;
+        gap: 20px;
+    }
+    &__userImg {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: $fontColor;
+    }
+    &__header {
+        display: flex;
+        gap: 10px;
+        font-size: $font1;
+        margin-bottom: 10px;
+    }
+    &__name {
+        font-weight: 600;
+    }
+    &__createdAt {
+        color: $fontColorSub;
+    }
+    &__content {
+
+    }
+    &__delete {
+        @extend .delete;
+    }
+}
+
