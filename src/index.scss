@@ -174,3 +174,76 @@ input {
     padding-top: 40px;
     border-top: $defaultBorder;
 }
+
+// profile
+.profile {
+
+    &__flex {
+        display: flex;
+        gap: 20px;
+    }
+    &__flex-between {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+    }
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+    }
+    &__user-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: $fontColor;
+    }
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 3px;
+        align-items: center;
+        font-size: $font2;
+        cursor: pointer;
+    }
+    &__info-no {
+        color: $fontColorSub;
+    }
+    &__user {
+        margin-bottom: 40px;
+    }
+    &__name {
+        font-size: $font2;
+    }
+    &__email {
+        color: $fontColorSub;
+    }
+    &__edit {
+        text-decoration:underline;
+        cursor: pointer;
+
+        &:hover {
+            color: $fontColor-hover;
+        }
+    }
+    &__tabs {
+        font-size: $font2;
+        border-top: $defaultBorder;
+        margin: 20px 0;
+    }
+    &__tab {
+        padding: 20px 0;
+        color: $fontColorSub;
+        cursor: pointer;
+        &:hover {
+            color: $fontColorSub-hover;
+        }
+    }
+    &__tab--active {
+        color: $fontColor;
+        &:hover {
+            color: $fontColor-hover;
+        }
+    }
+}

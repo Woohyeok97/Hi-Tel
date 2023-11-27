@@ -12,7 +12,7 @@ export default function Navbar() {
                 <div className={ styles.navbar__menu } onClick={()=>{ navigate('/') }}>
                     초기화면(A)
                 </div>
-                <div className={ styles.navbar__menu } onClick={() => { navigate('/') }}>
+                <div className={ styles.navbar__menu } onClick={() => { navigate(`/profile/${1}`) }}>
                     마이페이지(B)
                 </div>
                 <div className={ styles.navbar__menu } onClick={() => navigate('/search') }>
