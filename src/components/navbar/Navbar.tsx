@@ -18,9 +18,12 @@ export default function Navbar() {
                 <div className={ styles.navbar__menu } onClick={() => navigate('/search') }>
                     검색(C)
                 </div>
-                <div className={ styles.navbar__menu } onClick={() => navigate('/users/login') }>접속(D)</div>
-
-                <div className={ styles.navbar__menu }>설정(E)</div>
+                <div className={ styles.navbar__menu } onClick={() => navigate('/users/login') }>
+                    접속(D)
+                </div>
+                <div className={ styles.navbar__menu } onClick={() => navigate('/post/new') }>
+                    글쓰기(E)
+                </div>
             </div>
 
             {/* 명령어 인풋 */}

@@ -74,6 +74,9 @@ input {
     &__textarea {
         color: $fontColor;
         background-color: $darkBule;
+        width: 100%;
+        min-height: 360px;
+        padding: 10px;
     }
     &__submit {
         display: flex;
@@ -81,6 +84,7 @@ input {
         margin-bottom: 20px;
     }
     &__input-btn {
+        font-size: $font2;
         color: $fontColor;
         background-color: $bgColor;
         padding: 10px;
@@ -99,5 +103,27 @@ input {
     }
     &__error {
         color: $fontWarning;
+    }
+}
+
+//post 
+.post {
+    
+    &__header {
+        display: flex;
+        gap: 20px;
+        padding-bottom: 20px;
+        cursor: pointer;
+    }
+    &__flex {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    &__userImg {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: $fontColor;
     }
 }
