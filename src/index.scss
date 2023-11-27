@@ -54,3 +54,50 @@ input {
         margin-bottom: 40px;
     }
 }
+
+// form
+.form {
+    &__block {
+        margin-bottom: 20px;
+    }
+    &__flex {
+        display: flex;
+        gap: 10px;
+    }
+    &__input {
+        color: $fontColor;
+        background-color: $darkBule;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    &__textarea {
+        color: $fontColor;
+        background-color: $darkBule;
+    }
+    &__submit {
+        display: flex;
+        flex-direction: row-reverse;
+        margin-bottom: 20px;
+    }
+    &__input-btn {
+        color: $fontColor;
+        background-color: $bgColor;
+        padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+            color: $fontColor-hover;
+        }
+    }
+    &__link {
+        color: $fontColorSub;
+        font-size: $font1;
+        &:hover {
+            color: $fontColorSub-hover;
+        }
+    }
+    &__error {
+        color: $fontWarning;
+    }
+}
