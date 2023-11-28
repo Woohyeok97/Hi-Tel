@@ -44,6 +44,11 @@ input {
             color: $fontWarning-hover;
         }
 }
+.hashTag {
+    color: #4e80e3;
+    font-weight: 600;
+    padding: 10px;
+}
 
 // page
 .page {
@@ -87,6 +92,16 @@ input {
         width: 100%;
         min-height: 360px;
         padding: 10px;
+    }
+    &__hashTag-area {
+        padding: 10px 0;
+        background-color: $darkBule;
+    }
+    &__hashTag {
+        @extend .hashTag;
+        &:hover {
+            color: $fontWarning-hover;
+        }
     }
     &__submit {
         display: flex;
