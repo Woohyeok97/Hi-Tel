@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider, User, createUserWithEmailAndPassword, getAuth, signInWithPopup } from "firebase/auth";
 import { app, db } from "firebaseApp";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 
 export default function SignupPage() {
@@ -11,6 +11,16 @@ export default function SignupPage() {
     const [ passwordConfirm, setPasswordConfirm ] = useState<string>('')
     const [ errorMessage, setErrerMessage ] = useState<string>('')
     const navigate = useNavigate()
+
+    // 기존프로필 확인 함수
+    const checkPrevProfile = async (uid : string) => {
+        const profileRef = collection(db, 'profiles')
+        const profileQuery = query(profileRef, where('uid', '==', uid))
+        const result = await getDocs(profileQuery)
+
+        // 기존 profile 콜렉션에 로그인하는 유저 프로필이 있는지 확인 
+        return !result?.empty
+    }
 
     // 프로필 생성 함수
     const createProfile = async (user : User) => {
@@ -51,6 +61,36 @@ export default function SignupPage() {
             console.log(err?.code)
         }
     }
+
+    // 소셜 로그인
+    const handleSocialLogin = async (e : any) => {
+        const { id } = e?.target;
+
+        try {
+            const auth = getAuth(app)
+            let provider;
+
+            if(id === 'github') {
+                provider = new GithubAuthProvider()
+            }
+            if(id === 'google') {
+                provider = new GoogleAuthProvider()
+            } 
+
+            const result = await signInWithPopup(auth, provider as GithubAuthProvider | GoogleAuthProvider)
+            const prevProfile = await checkPrevProfile(result?.user?.uid)
+
+            if(!prevProfile) {
+                await createProfile(result.user)
+            }
+            
+            navigate('/')
+            console.log('가입을 환영합니다.')
+        } catch(err : any) {
+            console.log(err?.code)
+        }
+    }
+
 
     // 폼 핸들러
     const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -152,10 +192,11 @@ export default function SignupPage() {
                     disabled={!!errorMessage}/>
                 </div>
 
+                {/* 소셜 로그인 */}
                 <div className="form__block">
                     <div className="form__flex">
-                        <div>깃허브 접속</div>
-                        <div>구글 접속</div>
+                        <div id="github" onClick={ handleSocialLogin }>깃허브 접속</div>
+                        <div id="google" onClick={ handleSocialLogin }>구글 접속</div>
                     </div>
                 </div>
             </form>
