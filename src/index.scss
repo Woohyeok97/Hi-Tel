@@ -174,10 +174,15 @@ input {
         justify-content: space-between;
         padding-top: 20px;
     }
+    &__like {
+        cursor: pointer;
+        &:hover {
+            color: $fontColor-hover;
+        }
+    }
     &__delete {
         color: $fontWarning;
         cursor: pointer;
-
         &:hover {
             color: $fontWarning-hover;
         }

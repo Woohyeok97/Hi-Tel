@@ -5,4 +5,6 @@ export interface PostType {
     email : string,
     content : string,
     createdAt : string,
+    likes? : string[],
+    likeCount? : number,
 }

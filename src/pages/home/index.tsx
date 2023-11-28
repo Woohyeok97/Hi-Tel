@@ -1,40 +1,35 @@
+import { useEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "firebaseApp";
 // components
 import PostItem from "components/post/PostItem";
-// 데이터   타입
+// 데이터 타입
 import { PostType } from "interface";
 
-const TEMP : PostType[] = [
-    { 
-        id : '1',
-        uid : '11',
-        email : 'guk@naver.com',
-        content : '자, 그러니 혹시라도 갑자기 이집트가 땡긴다 싶으신 분들은 함께 하시죠! 2024년의 시작을 이집트에서 맞이하시는 건 꽤 즐거운 경험이 될 겁니다.',
-        createdAt : '2023년 11월 25일', 
-    },
-    { 
-        id : '2',
-        uid : '21',
-        email : 'asdw@naver.com',
-        content : '아무쪼록 많은 분들이 함께 하셔서 2024년 가장 앞자락을 저와 함께 이집트에서 시작하실 수 있었으면 좋겠습니다. 궁금한 점 있으시면 제게 DM 주세요. 이집트에서 만나요! 흐흐-',
-        createdAt : '2023년 11월 25일', 
-    },
-    { 
-        id : '3',
-        uid : '31',
-        email : 'ddwdw@gamil.com',
-        content : '경향신문과 함께 하는 <이집트 문명 탐사>의 1차 일정 (2024년 1월 2일(화) - 1월 14일(일) 10박 13일)에 자리가 조금 생긴 것 같습니다',
-        createdAt : '2023년 11월 25일', 
-    },
-    { 
-        id : '4',
-        uid : '131',
-        email : 'asd3d3@naver.com',
-        content : '팔레스타인은 가깝지만 엄연히 이집트와는 다른 나라이고, 제가 지난 3주 동안 이집트에 머물면서 살펴본 바에 따르면, 이집트에는 아무런 문제가 없습니다.',
-        createdAt : '2023년 11월 25일', 
-    },
-]
 
 export default function HomePage() {
+    const [ postList, setPostList ] = useState<PostType[]>([])
+
+    // 게시물리스트 요청 함수
+    const fetchPostList = async () => {
+        try {
+            const postsRef = collection(db, 'posts')
+            const postsQuery = query(postsRef, orderBy('createdAt', 'desc'))
+
+            // 실시간 리스너 부착을 위해 onSnapshot으로 가져오기
+            onSnapshot(postsQuery, (snapshot) => {
+                const result = snapshot?.docs?.map((item) => ({ ...item.data(), id : item?.id }))
+                setPostList(result as PostType[])
+            })
+        } catch(err : any) {
+            console.log(err?.code)
+        }
+    }
+
+    useEffect(() => {
+        fetchPostList()
+    }, [])
+    
 
     return (
         <div className="page">
@@ -44,7 +39,7 @@ export default function HomePage() {
             <div>
                 <div className="page__title">[ 게 / 시 / 물 / 광 / 장 ]</div>
                 <div>
-                { TEMP?.map((item) => <PostItem key={item?.id} post={ item }/>) }
+                { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
                 </div>
             </div>
         </div>
