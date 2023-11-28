@@ -1,4 +1,4 @@
-import styles from './postItem.module.scss'
+import styles from './PostItem.module.scss'
 import { Link } from "react-router-dom"
 // 데이터 타입
 import { PostType } from "interface"
