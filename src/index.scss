@@ -180,6 +180,14 @@ input {
             color: $fontColor-hover;
         }
     }
+    &__like--active {
+        font-weight: 600;
+        color: green;
+        cursor: pointer;
+        &:hover {
+            color: rgb(20, 190, 20);
+        }
+    }
     &__delete {
         color: $fontWarning;
         cursor: pointer;
