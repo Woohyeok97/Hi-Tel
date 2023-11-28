@@ -29,6 +29,7 @@
     "components/*" : ["components/*"],
     "context/*" : ["context/*"],
     "interface/*" : ["interface/*"],
+    "firebaseApp/*" : ["firebaseApp/*"],
     "font/*" : ["font/*"],
   }
 }
