@@ -26,6 +26,8 @@ export default function HomePage() {
         }
     }
 
+    // 로그아웃하면 fetchPostList()가 안되는 에러발견..
+    // user랑 상관없는데 왜..?
     useEffect(() => {
         fetchPostList()
     }, [])

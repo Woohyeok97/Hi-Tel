@@ -54,7 +54,7 @@ export default function PostItem({ post } : PostItemProps) {
                 <div className={ styles.postItem__footer }>
                     <div className={ styles.postItem__flex }>
                         <div>추천 : { post?.likeCount || 0 }</div>
-                        <div>덧글 : 0</div>
+                        <div>덧글 : { post?.comments?.length || 0 }</div>
                     </div>
 
                     {/* 게시글 유틸박스 */}

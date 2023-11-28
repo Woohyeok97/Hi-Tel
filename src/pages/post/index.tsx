@@ -114,7 +114,7 @@ export default function PostPage() {
                                 onClick={ handleLikePost }>
                                 추천 : { post?.likeCount || 0 }
                             </div>
-                            <div>덧글 : 0</div>
+                            <div>덧글 : { post?.comments?.length || 0 }</div>
                         </div>
 
                         { post?.uid === user?.uid && // 게시글과 로그인정보가 일치할때만 렌더링
@@ -128,9 +128,8 @@ export default function PostPage() {
 
             <div className="comment">
                 <div>
-                    <CommentItem/>
-                    <CommentItem/>
-                    <CommentItem/>
+                { post?.comments?.map((item) =>
+                    <CommentItem key={item?.uid + item?.createdAt} comment={ item } post={ post }/>) }
                 </div>
                 <CommentForm post={ post }/>
             </div> 
