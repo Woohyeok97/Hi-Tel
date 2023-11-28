@@ -12,22 +12,32 @@ import LoginPage from "pages/users/login";
 import SignupPage from "pages/users/signup";
 
 
-export default function Router() {
+interface RouterProps {
+    isAuthentication : boolean,
+}
+
+export default function Router({ isAuthentication } : RouterProps) {
 
     return (
         <Routes>
             <Route path="/" element={ <HomePage/> }/>
             <Route path="/post/:id" element={ <PostPage/> }/>
-            <Route path="/post/new" element={ <NewPostPage/> }/>
-            <Route path="/post/edit/:id" element={ <EditPostPage/> }/>
             <Route path="/profile/:id" element={ <ProfilePage/> }/>
-            <Route path="/profile/edit" element={ <EditProfilePage/> }/>
             <Route path="/search" element={ <SearchPage/> }/>
-            <Route path="/notification" element={ <NotificationPage/> }/>
 
-            <Route path="/users/login" element={ <LoginPage/> }/>
-            <Route path="/users/signup" element={ <SignupPage/> }/>
-
+            {/* 로그인 상태일때 */}
+            { isAuthentication ? <> 
+                <Route path="/post/new" element={ <NewPostPage/> }/>
+                <Route path="/post/edit/:id" element={ <EditPostPage/> }/>
+                <Route path="/profile/edit" element={ <EditProfilePage/> }/>
+                <Route path="/notification" element={ <NotificationPage/> }/>
+            </> : <>
+            {/* 미로그인 상태일때 */}
+                <Route path="/users/login" element={ <LoginPage/> }/>
+                <Route path="/users/signup" element={ <SignupPage/> }/>
+            </> }
+            
+            {/* 이상한경로 처리 */}
             <Route path="*" element={ <Navigate replace to={'/'}/> }/>
         </Routes>
     )
