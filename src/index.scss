@@ -83,8 +83,7 @@ input {
         color: $fontColor;
         background-color: $darkBule;
         width: 100%;
-        padding: 10px;
-        margin-top: 10px;
+        padding: 15px;
     }
     &__textarea {
         color: $fontColor;
@@ -273,5 +272,32 @@ input {
         &:hover {
             color: $fontColor-hover;
         }
+    }
+}
+
+// search
+.search {
+
+    &__tabs {
+        font-size: $font2;
+        border-top: $defaultBorder;
+        margin: 20px 0;
+    }
+    &__tab {
+        padding: 20px 0;
+        color: $fontColorSub;
+        cursor: pointer;
+        &:hover {
+            color: $fontColorSub-hover;
+        }
+    }
+    &__tab--active {
+        color: $fontColor;
+        &:hover {
+            color: $fontColor-hover;
+        }
+    }
+    &__list {
+
     }
 }
