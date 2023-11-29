@@ -50,7 +50,9 @@ export default function LoginPage() {
 
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form__block">
-                    <label htmlFor="email">아이디</label>
+                    <div className="form__block">
+                        <label htmlFor="email">아이디</label>
+                    </div>
                     <input 
                         type="email" 
                         name="email"
@@ -61,7 +63,9 @@ export default function LoginPage() {
                 </div>
 
                 <div className="form__block">
-                    <label htmlFor="password">비밀번호</label>
+                    <div className="form__block">
+                        <label htmlFor="password">비밀번호</label>
+                    </div>
                     <input 
                         type="password" 
                         name="password" 

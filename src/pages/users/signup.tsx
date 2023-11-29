@@ -145,7 +145,9 @@ export default function SignupPage() {
 
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form__block">
-                    <label htmlFor="email">아이디</label>
+                    <div className="form__block">
+                        <label htmlFor="email">아이디</label>
+                    </div>
                     <input 
                         type="email" 
                         name="email"
@@ -156,7 +158,9 @@ export default function SignupPage() {
                 </div>
 
                 <div className="form__block">
-                    <label htmlFor="password">비밀번호</label>
+                    <div className="form__block">
+                        <label htmlFor="password">비밀번호</label>
+                    </div>
                     <input 
                         type="password" 
                         name="password" 
@@ -167,7 +171,9 @@ export default function SignupPage() {
                 </div>
 
                 <div className="form__block">
-                    <label htmlFor="passwordConfirm">비밀번호 확인</label>
+                    <div className="form__block">
+                        <label htmlFor="passwordConfirm">비밀번호 확인</label>
+                    </div>
                     <input 
                         type="password" 
                         name="passwordConfirm" 
