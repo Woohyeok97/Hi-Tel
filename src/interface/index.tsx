@@ -20,7 +20,7 @@ export interface CommentType {
 }
 // 프로필 타입
 export interface ProfileType {
-    id : string,
+    uid : string,
     displayName : string | null,
     email : string,
     photoUrl : string,
