@@ -18,6 +18,14 @@ export interface CommentType {
     content : string
     createdAt : string,
 }
+// 프로필 타입
+export interface ProfileType {
+    id : string,
+    displayName : string | null,
+    email : string,
+    photoUrl : string,
+    createdAt : string,
+}
 // 팔로잉 & 팔로워 타입
 export interface FollowType {
     uid : string,

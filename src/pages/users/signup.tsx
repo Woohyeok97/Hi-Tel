@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GithubAuthProvider, GoogleAuthProvider, User, createUserWithEmailAndPassword, getAuth, signInWithPopup } from "firebase/auth";
 import { app, db } from "firebaseApp";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 
 
 export default function SignupPage() {
@@ -24,9 +24,8 @@ export default function SignupPage() {
 
     // 프로필 생성 함수
     const createProfile = async (user : User) => {
-        const profileRef = collection(db, 'profiles')
+        const profileRef = doc(db, 'profiles', user?.uid)
         const insertData = {
-            uid : user?.uid,
             displayName : user?.displayName,
             email : user?.email,
             photoURL : user?.photoURL,
@@ -36,7 +35,7 @@ export default function SignupPage() {
                 second : '2-digit'
             })
         }
-        await addDoc(profileRef, insertData)
+        await setDoc(profileRef, insertData)
     }
 
     // submit핸들러

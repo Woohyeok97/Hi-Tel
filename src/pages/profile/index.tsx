@@ -1,11 +1,13 @@
-import { useContext } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import AuthContext from "context/AuthContext";
 import { Link, useParams } from "react-router-dom";
 // 컴포넌트
 import PostItem from "components/post/PostItem";
 import FollowBtn from "components/followBtn/FollowBtn";
 // 데이터 타입
-import { PostType } from "interface";
+import { PostType, ProfileType } from "interface";
+import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "firebaseApp";
 
 
 const TEMP : PostType[] = [
@@ -40,8 +42,33 @@ const TEMP : PostType[] = [
 ]
 
 export default function ProfilePage() {
-    const { user } = useContext(AuthContext)
     const { id } = useParams()
+    const { user } = useContext(AuthContext)
+
+    const [ profile, setProfile ] = useState<ProfileType | null>(null)
+    const [ postList, setPostList ] = useState<PostType[]>([])
+
+    // 프로필 요청 함수
+    const fetchProfile = useCallback(async () => {
+        if(id) {
+            try {
+                const profileRef = collection(db, 'profiles')
+                const profileQuery = query(profileRef, where('uid', '==', id))
+                onSnapshot(profileQuery, (snapshot) => {
+                     
+                })
+            } catch(err : any) {
+                console.log(err?.code)
+            }
+        }
+    }, [id])
+
+    // 프로필 가져오기
+    useEffect(() => {
+        if(id) fetchProfile()
+    }, [fetchProfile, id])
+
+    console.log(profile)
 
     return (
         <div className="page">
