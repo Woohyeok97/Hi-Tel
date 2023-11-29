@@ -16,7 +16,6 @@ interface UserInfoType {
     follower : string[],
 }
 
-
 export default function ProfilePage() {
     const { id } = useParams()
     const { user } = useContext(AuthContext)
@@ -39,15 +38,8 @@ export default function ProfilePage() {
     }, [id])
 
     // 유저정보 요청 함수(한번에 상태 업데이트)
-    const fetchUserInfo = useCallback(() => {
+    const fetchUserInfo = useCallback(async () => {
         if(profile?.uid) {
-
-            let fetchData : UserInfoType = {
-                postList : [],
-                likePostList : [],
-                following : [],
-                follower : [],
-            }
 
             try {
                 // 각각의 정보를 onSnapshot으로 가져온뒤, fetchData에 저장
@@ -58,21 +50,25 @@ export default function ProfilePage() {
                 const followingRef = doc(db, 'following', profile?.uid)
 
                 onSnapshot(postsQuery, (snapshot) => {
+                    // fetchData.postList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
                     const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    fetchData.postList = result
+                    setUserInfo((prev) => ({ ...prev, postList : result } as UserInfoType))
                 })
                 onSnapshot(likesQuery, (snapshot) => {
-                    fetchData.likePostList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
+                    // fetchData.likePostList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
+                    const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
+                    setUserInfo((prev) => ({ ...prev, likePostList : result } as UserInfoType))
                 })
                 onSnapshot(followerRef, (doc) => {
-                    fetchData.following = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
+                    // fetchData.follower = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
+                    const result = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
+                    setUserInfo((prev) => ({ ...prev, follower : result } as UserInfoType))
                 })
                 onSnapshot(followingRef, (doc) => {
-                    fetchData.follower = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
+                    // fetchData.following = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
+                    const result = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
+                    setUserInfo((prev) => ({ ...prev, following : result } as UserInfoType))
                 })
-
-                // userInfo state한번에 변경
-                setUserInfo(fetchData)
 
             } catch(err : any) {
                 console.log(err?.code)
@@ -91,7 +87,8 @@ export default function ProfilePage() {
         if(profile?.uid)  fetchUserInfo()
     }, [fetchUserInfo, profile?.uid])
 
-    // console.log(userInfo)
+    // console.log('렌더링') // 리팩전 -> 전부 3번
+    console.log('렌더링') // 각각 userInfo 업데이트 -> 4번
     
     return (
         <>{ userInfo && 
@@ -105,13 +102,13 @@ export default function ProfilePage() {
                     <div className="profile__user-img"></div>
                     <div className="profile__flex-between">
                         <div className={`profile__info`}>
-                            <div>{ userInfo?.postList?.length }</div>게시물
+                            <div>{ userInfo?.postList?.length || 0 }</div>게시물
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
-                            <div>0</div>팔로워
+                            <div>{ userInfo?.follower?.length || 0 }</div>팔로워
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
-                            <div>0</div>팔로윙
+                            <div>{ userInfo?.following?.length || 0 }</div>팔로윙
                         </div>
                     </div>
                 </div>
