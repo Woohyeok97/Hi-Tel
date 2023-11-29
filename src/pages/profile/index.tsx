@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "context/AuthContext";
+import { Link, useParams } from "react-router-dom";
 // 컴포넌트
 import PostItem from "components/post/PostItem";
+import FollowBtn from "components/followBtn/FollowBtn";
 // 데이터 타입
 import { PostType } from "interface";
+
 
 const TEMP : PostType[] = [
     { 
@@ -36,6 +40,8 @@ const TEMP : PostType[] = [
 ]
 
 export default function ProfilePage() {
+    const { user } = useContext(AuthContext)
+    const { id } = useParams()
 
     return (
         <div className="page">
@@ -65,10 +71,13 @@ export default function ProfilePage() {
                             <div className="profile__name">이름미정</div>
                             <div className="profile__email">qordngur@naver.com</div>
                         </div>
-
+                        
+                        { id && user?.uid !== id ? 
+                        <FollowBtn targetUid={ id }/> 
+                        : 
                         <div className="profile__edit">
-                            <Link to="/profile/edit">회원정보 편집</Link>
-                        </div>
+                            <Link to="/profile/edit">회원정보 편집</Link> 
+                        </div> }
                     </div>
                 </div>
             </div>

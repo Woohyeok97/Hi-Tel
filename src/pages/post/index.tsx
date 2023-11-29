@@ -96,7 +96,7 @@ export default function PostPage() {
                 <div className="post__user-img"></div>
 
                 <div className="post__box">
-                    <Link to={`/profile/${1}`}>
+                    <Link to={`/profile/${post?.uid}`}>
                     <div className="post__header">
                         <div className="post__name">{ post?.displayName || post?.email }</div>
                         <div className="post__createdAt">{ post?.createdAt }</div>
