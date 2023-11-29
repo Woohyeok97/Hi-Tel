@@ -22,7 +22,7 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
 
             onSnapshot(followingRef, (doc) => {
                 const result = doc?.data()?.users?.map((item : FollowType) => item?.uid)
-                setFollowingList(result)
+                setFollowingList(result || [])
             })
         }
     }, [user?.uid])
