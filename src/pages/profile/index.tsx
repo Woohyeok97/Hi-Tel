@@ -88,18 +88,21 @@ export default function ProfilePage() {
     }, [fetchUserInfo, profile?.uid])
 
     // console.log('렌더링') // 리팩전 -> 전부 3번
-    console.log('렌더링') // 각각 userInfo 업데이트 -> 4번
+    // console.log('렌더링') // 각각 userInfo 업데이트 -> 4번
+    // 가끔씩 팔로우/언팔로우 버튼을 누르면 팔로잉/팔로워 둘다 올라가던데 왜그러지..
+    console.log(profile, userInfo)
     
     return (
         <>{ userInfo && 
         <div className="page">
             <div className="page__header">
+                <button onClick={()=>{ console.log(profile?.uid) }}>click</button>
                 <h1>회원정보</h1>
             </div>
 
             <div className="profile">
                 <div className="profile__header">
-                    <div className="profile__user-img"></div>
+                    <img src={profile?.photoUrl} className="profile__user-img"/>
                     <div className="profile__flex-between">
                         <div className={`profile__info`}>
                             <div>{ userInfo?.postList?.length || 0 }</div>게시물
