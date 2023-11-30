@@ -29,17 +29,14 @@ export default function NotificationPage() {
     useEffect(() => {
         if(user?.uid) fetchNotifications()
     }, [fetchNotifications, user?.uid])
-
-    console.log(notifications)
     
     return (
         <div className="page">
             <div className="page__header">
                 <h1>알림</h1>
             </div>
-            { notifications?.map((item) => <NotiItem key={item?.id} notification={item}/>) }
             <div>
-
+                { notifications?.map((item) => <NotiItem key={item?.id} notification={item}/>) }
             </div>
         </div>
     )

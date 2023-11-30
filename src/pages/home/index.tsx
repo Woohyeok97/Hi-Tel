@@ -40,9 +40,13 @@ export default function HomePage() {
                 <h1>초기화면</h1>
             </div>
             <div>
-                <div className="page__title">[ 게 / 시 / 물 / 광 / 장 ]</div>
-                {/* 임시 */}
-                <Link to='/notification'>알림</Link> 
+                <div className="page__flex">
+                    <div className="page__title">[ 게 / 시 / 물 / 광 / 장 ]</div>
+                    <div className="page__notification">
+                        <Link to='/notification'>알림</Link>
+                    </div> 
+                </div>
+                
                 <div>
                 { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
                 </div>
