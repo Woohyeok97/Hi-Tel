@@ -30,3 +30,12 @@ export interface ProfileType {
 export interface FollowType {
     uid : string,
 }
+// 알림 타입
+export interface NotificationType {
+    id : string,
+    uid : string,
+    content : string,
+    url? : string,
+    createdAt : string,
+    isRead : boolean,
+}

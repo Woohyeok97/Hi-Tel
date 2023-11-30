@@ -38,7 +38,7 @@ export default function ProfilePage() {
     }, [id])
 
     // 유저정보 요청 함수(한번에 상태 업데이트)
-    const fetchUserInfo = useCallback(async () => {
+    const fetchUserInfo = useCallback(() => {
         if(profile?.uid) {
 
             try {
@@ -96,7 +96,6 @@ export default function ProfilePage() {
         <>{ userInfo && 
         <div className="page">
             <div className="page__header">
-                <button onClick={()=>{ console.log(profile?.uid) }}>click</button>
                 <h1>회원정보</h1>
             </div>
 

@@ -1,0 +1,29 @@
+@import './_utils.scss';
+
+.notiItem {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 40px;
+    cursor: pointer;
+
+    &__body {
+        &:hover {
+            font-weight: 600;
+        }
+    }
+    &__read {
+        color: $fontColorSub;
+    }
+    &__content {
+        padding-bottom: 10px;
+    }
+    &__createdAt {
+        font-size: $font1;
+    }
+    &__delete {
+        color: $fontWarning;
+        &:hover {
+            color: $fontWarning-hover;
+        }
+    }
+}

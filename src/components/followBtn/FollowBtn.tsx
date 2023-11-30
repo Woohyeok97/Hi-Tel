@@ -3,6 +3,8 @@ import { useCallback, useContext, useEffect, useState } from "react"
 import AuthContext from "context/AuthContext"
 import { arrayRemove, arrayUnion, doc, onSnapshot, setDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
+// hooks
+import useNotification from 'hooks/useNotification'
 // 데이터 타입
 import { FollowType } from "interface"
 
@@ -14,6 +16,7 @@ interface FollowBtnProps {
 export default function FollowBtn({ targetUid } : FollowBtnProps) {
     const { user } = useContext(AuthContext)
     const [ followingList, setFollowingList ] = useState<string[] | null>(null)
+    const { createNotification } = useNotification({ targetUid : targetUid })
 
     // 팔로잉리스트 요청 함수   
     const fetchFollowing = useCallback(async () => {
@@ -44,6 +47,12 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
             await setDoc(followerRef, {
                 users : arrayUnion({ uid : user?.uid })
             })
+
+            // 알림생성
+            await createNotification(
+                `${user?.displayName || user?.email}님이 팔로우를 시작하였습니다.`,
+                `/profile/${user?.uid}`
+            )
 
             console.log('해당 회원님을 팔로우 하셨습니다.')
         } catch(err : any) {

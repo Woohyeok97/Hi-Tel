@@ -5,6 +5,7 @@ import { db } from "firebaseApp";
 import PostItem from "components/post/PostItem";
 // 데이터 타입
 import { PostType } from "interface";
+import { Link } from "react-router-dom";
 
 
 export default function HomePage() {
@@ -40,6 +41,8 @@ export default function HomePage() {
             </div>
             <div>
                 <div className="page__title">[ 게 / 시 / 물 / 광 / 장 ]</div>
+                {/* 임시 */}
+                <Link to='/notification'>알림</Link> 
                 <div>
                 { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
                 </div>
