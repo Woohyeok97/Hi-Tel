@@ -90,7 +90,7 @@ export default function ProfilePage() {
     // console.log('렌더링') // 리팩전 -> 전부 3번
     // console.log('렌더링') // 각각 userInfo 업데이트 -> 4번
     // 가끔씩 팔로우/언팔로우 버튼을 누르면 팔로잉/팔로워 둘다 올라가던데 왜그러지..
-    console.log(profile, userInfo)
+    // console.log(profile, userInfo)
     
     return (
         <>{ userInfo && 

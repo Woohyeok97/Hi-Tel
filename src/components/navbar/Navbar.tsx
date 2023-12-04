@@ -1,14 +1,20 @@
 import styles from './Navbar.module.scss'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import AuthContext from 'context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 import { app } from 'firebaseApp'
+// 데이터 타입 
+import { CommandActionsType } from 'interface'
 
 
+// 터미널메시지 기본값
+const initialMessage = '명령어를 입력하십시오.'
 
 export default function Navbar() {
     const { user } = useContext(AuthContext)
+    const [ command, setCommand ] = useState<string>('')
+    const [ terminalMessage, setTerminalMessage ] = useState<string>(initialMessage)
     const navigate = useNavigate()
 
     // 로그아웃 핸들러
@@ -22,31 +28,64 @@ export default function Navbar() {
         }
     }
 
+    // 명령어 입력 핸들러
+    const handleCommand = (e : React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e?.target;
+        setCommand(value?.trim())
+    }
+
+    // 명령어 실행함수
+    const commandActions : CommandActionsType = {
+        'h' : () =>  navigate('/'),
+        'p' : () => user?.uid ? navigate(`/profile/${user?.uid}`) : false,
+        's' : () => navigate('/search'),
+        'w' : () => user?.uid ? navigate('/post/new') : false,
+        'q' : () => user?.uid ? handleLogout() : navigate('/users/login'),
+    }
+
+    // 명령어 실행 핸들러
+    const handleCommandEnter = (e : any) => {
+        const ENTER_KEY_CODE = 13
+        let terminalMessage = initialMessage
+        
+        if(command !== '' && e?.keyCode === ENTER_KEY_CODE) {
+            const lowerCommand = command.toLowerCase();
+
+            if(lowerCommand in commandActions) {
+                const action = commandActions[lowerCommand]()
+
+                if(typeof(action) == 'boolean' && !action) {
+                    terminalMessage = '접속이후 이용해주십시오.'
+                }
+
+            } else {
+                    terminalMessage = '올바른 명령어를 입력하십시오.'
+            }
+
+            setCommand('')
+            setTerminalMessage(terminalMessage)
+        } 
+    }
+
+
     return (
         <div className={ styles.navbar }> 
             <div className={ styles.navbar__flex }>
-                <div className={ styles.navbar__menu } onClick={()=>{ navigate('/') }}>
-                    초기화면(A)
+                <div className={ styles.navbar__menu } onClick={ commandActions['h'] }>
+                    초기화면(H)
                 </div>
-                <div className={ styles.navbar__menu } onClick={() => { navigate(`/profile/${user?.uid}`) }}>
-                    마이페이지(B)
+                <div className={ styles.navbar__menu } onClick={ commandActions['p'] }>
+                    마이페이지(P)
                 </div>
-                <div className={ styles.navbar__menu } onClick={() => navigate('/search') }>
-                    검색(C)
+                <div className={ styles.navbar__menu } onClick={ commandActions['s'] }>
+                    검색(S)
                 </div>
-                <div className={ styles.navbar__menu } 
-                    onClick={() => user?.uid ? navigate('/post/new') : console.log('접속후 이용하십시오.') }>
-                    글쓰기(D)
+                <div className={ styles.navbar__menu } onClick={ commandActions['w'] }>
+                    글쓰기(W)
                 </div>
-
-                { user?.uid ? 
-                <div className={ styles.navbar__menu } onClick={ handleLogout }>
-                    접속종료(E)
+                <div className={ styles.navbar__menu } onClick={ commandActions['q'] }>
+                    { user?.uid ? '접속종료(Q)' : '접속(Q)' }
                 </div> 
-                : 
-                <div className={ styles.navbar__menu } onClick={() => navigate('/users/login') }>
-                    접속(E)
-                </div> }
             </div>
 
             {/* 명령어 인풋 */}
@@ -55,6 +94,10 @@ export default function Navbar() {
                 <input 
                     type="text"
                     id='command'
+                    onChange={ handleCommand }
+                    onKeyUp={ handleCommandEnter }
+                    value={ command }
+                    placeholder={ terminalMessage }
                     className={ styles.navbar__terminal }
                 />
             </div>

@@ -39,3 +39,7 @@ export interface NotificationType {
     createdAt : string,
     isRead : boolean,
 }
+// 명령어액션 타입
+export interface CommandActionsType {
+    [ key : string ] : () => void 
+}
