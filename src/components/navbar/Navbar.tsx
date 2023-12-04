@@ -9,12 +9,12 @@ import { CommandActionsType } from 'interface'
 
 
 // 터미널메시지 기본값
-const initialMessage = '명령어를 입력하십시오.'
+const INITIAL_MESSAGE = '명령어를 입력하십시오.'
 
 export default function Navbar() {
     const { user } = useContext(AuthContext)
     const [ command, setCommand ] = useState<string>('')
-    const [ terminalMessage, setTerminalMessage ] = useState<string>(initialMessage)
+    const [ terminalMessage, setTerminalMessage ] = useState<string>(INITIAL_MESSAGE)
     const navigate = useNavigate()
 
     // 로그아웃 핸들러
@@ -36,34 +36,49 @@ export default function Navbar() {
 
     // 명령어 실행함수
     const commandActions : CommandActionsType = {
-        'h' : () =>  navigate('/'),
-        'p' : () => user?.uid ? navigate(`/profile/${user?.uid}`) : false,
-        's' : () => navigate('/search'),
-        'w' : () => user?.uid ? navigate('/post/new') : false,
-        'q' : () => user?.uid ? handleLogout() : navigate('/users/login'),
+        'h' : () => {
+            navigate('/')
+            setTerminalMessage(INITIAL_MESSAGE) 
+        },
+        'p' : () => {
+            user?.uid
+            ? navigate(`/profile/${user?.uid}`)
+            : setTerminalMessage('접속이후 이용해주십시오.')
+        }, 
+        's' : () => {
+            navigate('/search')
+            setTerminalMessage(INITIAL_MESSAGE) 
+        },
+        'w' : () => {
+            user?.uid
+            ? navigate('/post/new') 
+            : setTerminalMessage('접속이후 이용해주십시오.')
+        },
+        'q' : () => {
+            user?.uid
+            ? handleLogout()
+            : navigate('/users/login')
+
+            setTerminalMessage(INITIAL_MESSAGE)
+        },
     }
 
     // 명령어 실행 핸들러
     const handleCommandEnter = (e : any) => {
-        const ENTER_KEY_CODE = 13
-        let terminalMessage = initialMessage
+        const ENTER_KEY_CODE = 13 // 엔터키 keyCode값
         
         if(command !== '' && e?.keyCode === ENTER_KEY_CODE) {
+            // 대소문자 구별x(명령어 소문자 변환)
             const lowerCommand = command.toLowerCase();
 
+            // 입력한명령어가 commandActions에 속한 key값일때
             if(lowerCommand in commandActions) {
-                const action = commandActions[lowerCommand]()
-
-                if(typeof(action) == 'boolean' && !action) {
-                    terminalMessage = '접속이후 이용해주십시오.'
-                }
-
+                const action = commandActions[lowerCommand]
+                action()
             } else {
-                    terminalMessage = '올바른 명령어를 입력하십시오.'
+                setTerminalMessage('올바른 명령어를 입력하십시오.')
             }
-
             setCommand('')
-            setTerminalMessage(terminalMessage)
         } 
     }
 
@@ -90,7 +105,7 @@ export default function Navbar() {
 
             {/* 명령어 인풋 */}
             <div className={ styles.navbar__flex }>
-                <label htmlFor='command'>{'명령어 입력 >> '}</label>
+                <label htmlFor='command'>{'명령어 >> '}</label>
                 <input 
                     type="text"
                     id='command'

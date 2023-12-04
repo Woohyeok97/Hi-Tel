@@ -20,6 +20,7 @@
     
     &__flex {
         display: flex;
+        align-items: center;
         gap: 10px;
     }
     &__menu {
@@ -30,6 +31,9 @@
     }
     &__terminal {
         color: $fontColor;
-        background-color: $bgColor;
+        background-color: $darkBule;
+        flex-grow: 1;
+        // width: 100%;
+        padding: 15px;
     }
 }
