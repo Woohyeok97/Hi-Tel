@@ -8,8 +8,15 @@ import { PostType } from "interface";
 import { Link } from "react-router-dom";
 
 
+import { useRecoilState } from "recoil";
+import { languageSate } from "atom";
+
+
 export default function HomePage() {
     const [ postList, setPostList ] = useState<PostType[]>([])
+    const [ language, setLanguage ] = useRecoilState(languageSate)
+
+    console.log(language)
 
     // 게시물리스트 요청 함수
     const fetchPostList = async () => {
@@ -27,12 +34,20 @@ export default function HomePage() {
         }
     }
 
+    // 언어변경 핸들러
+    const handleLanguage = () => {
+        setLanguage((prev) => prev === 'ko' ? 'en' : 'ko')
+        // state변경이 비동기적이기 때문에 로컬스토리지에 저장할값을 수동으로 설정해줌
+        localStorage.setItem('language', language === 'ko' ? 'en' : 'ko')
+    }
+
     // 로그아웃하면 fetchPostList()가 안되는 에러발견..
-    // user랑 상관없는데 왜..?
+    // user랑 상관없는데 왜..?(firebase 보안설정때문임)
     useEffect(() => {
         fetchPostList()
     }, [])
     
+
 
     return (
         <div className="page">
@@ -42,8 +57,12 @@ export default function HomePage() {
             <div>
                 <div className="page__flex">
                     <div className="page__title">[ 게 / 시 / 물 / 광 / 장 ]</div>
+
                     <div className="page__notification">
                         <Link to='/notification'>알림</Link>
+                        <div onClick={ handleLanguage }>
+                            언어선택 : { language === 'ko' ? '한글' : 'English' }
+                        </div>
                     </div> 
                 </div>
                 

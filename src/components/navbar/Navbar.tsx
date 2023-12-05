@@ -96,7 +96,7 @@ export default function Navbar() {
                     검색(S)
                 </div>
                 <div className={ styles.navbar__menu } onClick={ commandActions['w'] }>
-                    글쓰기(W)
+                    글작성(W)
                 </div>
                 <div className={ styles.navbar__menu } onClick={ commandActions['q'] }>
                     { user?.uid ? '접속종료(Q)' : '접속(Q)' }
