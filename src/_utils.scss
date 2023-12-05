@@ -14,15 +14,52 @@ $fontWarning : orangered;
 $fontWarning-hover : rgb(255, 98, 40);
 
 // font-size
-$font1 : calc(20px + 2px);
-$font2 : calc(24px + 2px);
-$font3 : calc(28px + 2px);
-$font4 : calc(32px + 2px);
-$font5 : calc(40px + 2px);
+$font1 : calc(16px + 2px);
+$font2 : calc(20px + 2px);
+$font3 : calc(24px + 2px);
+$font4 : calc(28px + 2px);
+$font5 : calc(32px + 2px);
 
 .shadow {
     border-top: 3px solid rgba(0, 0, 255, 1);
     border-bottom: 5px solid #000000;
     border-right: 5px solid #000000;
     border-left: 3px solid rgba(0, 0, 255, 1);
+}
+
+// 화면크기 최소기준
+$mobile: 380px;
+$tablet: 600px;
+$desktop: 1024px;
+
+// 미디어쿼리 사이즈 설정
+// 제일작은 사이즈
+@mixin xsMobile {
+    @media (max-width : #{$mobile - 1px}) {
+        @content;
+    }
+}
+// 모바일
+@mixin mobile {
+    @media (min-width : $mobile) and (max-width : #{$tablet - 1px}) {
+        @content;
+    }
+}
+
+// 패드
+@mixin tablet {
+    @media (min-width : $tablet) and (max-width : #{$desktop - 1px}) {
+        @content;
+    } 
+}
+
+// 데스크탑
+@mixin desktop {
+    @media (min-width : $desktop) {
+        @content;
+    }
+}
+
+@include mobile {
+    $bgColor : black;
 }

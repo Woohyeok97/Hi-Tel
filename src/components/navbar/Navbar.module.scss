@@ -37,3 +37,20 @@
         padding: 15px;
     }
 }
+
+@include mobile {
+    .navbar {
+
+        label {
+            display: none;
+        }
+    }
+}
+@include xsMobile {
+    .navbar {
+        
+        label {
+            display: none;
+        }
+    }
+}
