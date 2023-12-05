@@ -2,6 +2,8 @@ import styles from './Comment.module.scss'
 import { useContext } from 'react'
 import AuthContext from 'context/AuthContext'
 import { Link } from 'react-router-dom'
+// hooks
+import useTranslation from 'hooks/useTranslation'
 // 데이터타입
 import { CommentType, PostType } from 'interface'
 import { arrayRemove, doc, updateDoc } from 'firebase/firestore'
@@ -16,6 +18,7 @@ interface CommentItemProps {
 
 export default function CommentItem({ comment, post } : CommentItemProps) {
     const { user } = useContext(AuthContext)
+    const { translation } = useTranslation()
 
     // 댓글삭제 핸들러
     const handleCommentDelete = async () => {
@@ -55,7 +58,7 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
     
             { comment?.uid === user?.uid && 
             <div className={ styles.commentItem__delete } onClick={ handleCommentDelete }>
-                삭제
+                { translation('DELETE') }
             </div> }
         </div>
     )

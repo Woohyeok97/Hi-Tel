@@ -3,6 +3,8 @@ import AuthContext from "context/AuthContext"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { arrayRemove, arrayUnion, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
+// hooks
+import useTranslation from 'hooks/useTranslation'
 // components
 import CommentForm from "components/comment/CommentForm"
 import CommentItem from "components/comment/CommentItem"
@@ -15,6 +17,7 @@ export default function PostPage() {
     const { id } = useParams()
     const [ post, setPost ] = useState<PostType | null>(null)
     const navigate = useNavigate()
+    const { translation } = useTranslation()
     
     // 게시글 요청 핸들러 (실시간 댓글추적을 위해 onSanpshot, useCallback사용)
     const fetchPost = useCallback(async () => {
@@ -112,15 +115,19 @@ export default function PostPage() {
                             <div 
                                 className={`post__like ${ user?.uid && post?.likes?.includes(user?.uid) && 'post__like--active' }`} 
                                 onClick={ handleLikePost }>
-                                추천 : { post?.likeCount || 0 }
+                                { translation('LIKE') } : { post?.likeCount || 0 }
                             </div>
-                            <div>덧글 : { post?.comments?.length || 0 }</div>
+                            <div>{ translation('COMMENT') } : { post?.comments?.length || 0 }</div>
                         </div>
 
                         { post?.uid === user?.uid && // 게시글과 로그인정보가 일치할때만 렌더링
                         <div className="post__flex">
-                            <Link to={`/post/edit/${post?.id}`}>편집</Link>
-                            <div className="post__delete" onClick={ handlePostDelete }>삭제</div>
+                            <Link to={`/post/edit/${post?.id}`}>
+                                { translation('EDIT') }
+                            </Link>
+                            <div className="post__delete" onClick={ handlePostDelete }>
+                                { translation('DELETE') }
+                            </div>
                         </div> }
                     </div>
                 </div>

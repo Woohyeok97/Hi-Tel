@@ -24,6 +24,10 @@ const TRANSLATIONS = {
         ko : '접속',
         en : 'Signin',
     },
+    MENU_COMMAND : {
+        ko : '명령어',
+        en : 'Command',
+    },
     MENU_NOTI : {
         ko : '알림',
         en : 'Noti',
@@ -31,6 +35,42 @@ const TRANSLATIONS = {
     MENU_SETTING : {
         ko : '설정',
         en : 'Setting',
+    },
+    MENU_LANGUAGE : {
+        ko : '언어',
+        en : 'Language',
+    },
+    EDIT : {
+        ko : '편집',
+        en : 'Edit',
+    },
+    DELETE : {
+        ko : '삭제',
+        en : 'Delete',
+    },
+    LIKE : {
+        ko : '추천',
+        en : 'Like',
+    },
+    COMMENT : {
+        ko : '덧글',
+        en : 'Comment',
+    },
+    FOLLOW: {
+        ko : '팔로우',
+        en : 'Follow',
+    },
+    POST : {
+        ko : '게시글',
+        en : 'Post',
+    },
+    FOLLOWER : {
+        ko : '팔로워',
+        en : 'Follower',
+    },
+    FOLLOWING : {
+        ko : '팔로윙',
+        en : 'Following',
     },
 }
 

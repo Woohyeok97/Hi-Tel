@@ -2,6 +2,8 @@ import styles from './PostItem.module.scss'
 import { useContext } from 'react'
 import AuthContext from 'context/AuthContext'
 import { Link } from "react-router-dom"
+// hooks
+import useTranslation from 'hooks/useTranslation'
 // 데이터 타입
 import { PostType } from "interface"
 import { deleteDoc, doc } from 'firebase/firestore'
@@ -14,6 +16,7 @@ interface PostItemProps {
 
 export default function PostItem({ post } : PostItemProps) {
     const { user } = useContext(AuthContext)
+    const { translation } = useTranslation()
 
     // 게시글 삭제 핸들러
     const handlePostDelete = async () => {
@@ -53,16 +56,16 @@ export default function PostItem({ post } : PostItemProps) {
 
                 <div className={ styles.postItem__footer }>
                     <div className={ styles.postItem__flex }>
-                        <div>추천 : { post?.likeCount || 0 }</div>
-                        <div>덧글 : { post?.comments?.length || 0 }</div>
+                        <div>{ translation('LIKE') } : { post?.likeCount || 0 }</div>
+                        <div>{ translation('COMMENT') } : { post?.comments?.length || 0 }</div>
                     </div>
 
                     {/* 게시글 유틸박스 */}
                     { post?.uid === user?.uid && // 게시글과 로그인정보가 일치할때만 렌더링
                     <div className={ styles.postItem__flex }>
-                        <Link to={`/post/edit/${post?.id}`}>편집</Link>
+                        <Link to={`/post/edit/${post?.id}`}>{ translation('EDIT') }</Link>
                         <div className={ styles.postItem__delete } onClick={ handlePostDelete }>
-                            삭제
+                            { translation('DELETE') }
                         </div>
                     </div> }
                 </div>

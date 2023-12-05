@@ -6,17 +6,19 @@ import PostItem from "components/post/PostItem";
 // 데이터 타입
 import { PostType } from "interface";
 import { Link } from "react-router-dom";
-
+// hooks
+import useTranslation from "hooks/useTranslation";
 
 import { useRecoilState } from "recoil";
 import { languageSate } from "atom";
 
 
+
 export default function HomePage() {
     const [ postList, setPostList ] = useState<PostType[]>([])
     const [ language, setLanguage ] = useRecoilState(languageSate)
+    const { translation } = useTranslation()
 
-    console.log(language)
 
     // 게시물리스트 요청 함수
     const fetchPostList = async () => {
@@ -59,9 +61,11 @@ export default function HomePage() {
                     <div className="page__title">[ 게 / 시 / 물 / 광 / 장 ]</div>
 
                     <div className="page__notification">
-                        <Link to='/notification'>알림</Link>
+                        <Link to='/notification'>
+                            { translation('MENU_NOTI') }
+                        </Link>
                         <div onClick={ handleLanguage }>
-                            언어선택 : { language === 'ko' ? '한글' : 'English' }
+                            {`${translation('MENU_LANGUAGE')} : ${ language === 'ko' ? '한글' : 'English' }`}
                         </div>
                     </div> 
                 </div>

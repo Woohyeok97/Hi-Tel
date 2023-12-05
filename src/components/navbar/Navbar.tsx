@@ -4,6 +4,8 @@ import AuthContext from 'context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 import { app } from 'firebaseApp'
+// hooks
+import useTranslation from 'hooks/useTranslation'
 // 데이터 타입 
 import { CommandActionsType } from 'interface'
 
@@ -16,6 +18,9 @@ export default function Navbar() {
     const [ command, setCommand ] = useState<string>('')
     const [ terminalMessage, setTerminalMessage ] = useState<string>(INITIAL_MESSAGE)
     const navigate = useNavigate()
+    // 언어변경 커스텀 훅
+    const { translation } = useTranslation()
+    
 
     // 로그아웃 핸들러
     const handleLogout = async () => {
@@ -87,25 +92,25 @@ export default function Navbar() {
         <div className={ styles.navbar }> 
             <div className={ styles.navbar__flex }>
                 <div className={ styles.navbar__menu } onClick={ commandActions['h'] }>
-                    초기화면(H)
+                    { translation('MENU_HOME') }(H)
                 </div>
                 <div className={ styles.navbar__menu } onClick={ commandActions['p'] }>
-                    마이페이지(P)
+                    { translation('MENU_PROFILE') }(P)
                 </div>
                 <div className={ styles.navbar__menu } onClick={ commandActions['s'] }>
-                    검색(S)
+                    { translation('MENU_SEARCH') }(S)
                 </div>
                 <div className={ styles.navbar__menu } onClick={ commandActions['w'] }>
-                    글작성(W)
+                    { translation('MENU_WRITE') }(W)
                 </div>
                 <div className={ styles.navbar__menu } onClick={ commandActions['q'] }>
-                    { user?.uid ? '접속종료(Q)' : '접속(Q)' }
+                    { user?.uid ? `${translation('MENU_LOGOUT')}(Q)` : `${translation('MENU_LOGIN')}(Q)` }
                 </div> 
             </div>
 
             {/* 명령어 인풋 */}
             <div className={ styles.navbar__flex }>
-                <label htmlFor='command'>{'명령어 >> '}</label>
+                <label htmlFor='command'>{ translation('MENU_COMMAND') } : </label>
                 <input 
                     type="text"
                     id='command'

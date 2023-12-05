@@ -7,6 +7,8 @@ import { db } from 'firebaseApp'
 import { PostType } from 'interface'
 // hooks
 import useNotification from 'hooks/useNotification'
+import useTranslation from 'hooks/useTranslation'
+
 
 
 interface CommentFormProps {
@@ -17,6 +19,8 @@ export default function CommentForm({ post } : CommentFormProps) {
     const { user } = useContext(AuthContext)
     const [ content, setContent ] = useState<string>('')
     const { createNotification } = useNotification({ targetUid : post?.uid })
+    const { translation } = useTranslation()
+
 
     // submit 핸들러
     const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
@@ -71,7 +75,7 @@ export default function CommentForm({ post } : CommentFormProps) {
                 spellCheck={false}
             />
             <div className={ styles.commentForm__flexReverse }>
-                <input type='submit' value="덧글 남기기" className={ styles.commentForm__inputBtn }
+                <input type='submit' value={ translation('COMMENT') } className={ styles.commentForm__inputBtn }
                     disabled={!(user?.uid && content)}/>
             </div>
         </form>

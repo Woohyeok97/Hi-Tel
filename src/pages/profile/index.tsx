@@ -6,8 +6,11 @@ import { db } from "firebaseApp";
 // 컴포넌트
 import PostItem from "components/post/PostItem";
 import FollowBtn from "components/followBtn/FollowBtn";
+// hooks
+import useTranslation from "hooks/useTranslation";
 // 데이터 타입
 import { FollowType, PostType, ProfileType } from "interface";
+
 
 interface UserInfoType {
     postList : PostType[],
@@ -22,6 +25,7 @@ export default function ProfilePage() {
     const [ profile, setProfile ] = useState<ProfileType | null>(null)
     // 유저정보 상태관리
     const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null)
+    const { translation } = useTranslation()
 
     // 프로필 요청 함수
     const fetchProfile = useCallback(() => {
@@ -104,13 +108,16 @@ export default function ProfilePage() {
                     <img src={profile?.photoUrl} className="profile__user-img"/>
                     <div className="profile__flex-between">
                         <div className={`profile__info`}>
-                            <div>{ userInfo?.postList?.length || 0 }</div>게시물
+                            <div>{ userInfo?.postList?.length || 0 }</div>
+                            { translation('POST') }
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
-                            <div>{ userInfo?.follower?.length || 0 }</div>팔로워
+                            <div>{ userInfo?.follower?.length || 0 }</div>
+                            { translation('FOLLOWER') }
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
-                            <div>{ userInfo?.following?.length || 0 }</div>팔로윙
+                            <div>{ userInfo?.following?.length || 0 }</div>
+                            { translation('FOLLOWING') }
                         </div>
                     </div>
                 </div>
@@ -126,7 +133,9 @@ export default function ProfilePage() {
                         <FollowBtn targetUid={ profile?.uid }/> 
                         : 
                         <div className="profile__edit">
-                            <Link to="/profile/edit">회원정보 편집</Link> 
+                            <Link to="/profile/edit">
+                                { translation('EDIT') }
+                            </Link> 
                         </div> }
                     </div>
                 </div>
@@ -134,8 +143,12 @@ export default function ProfilePage() {
 
             <div className="profile__tabs">
                 <div className="profile__flex">
-                    <div className={`profile__tab ${'profile__tab--active'}`}>작성글</div>
-                    <div className={`profile__tab`}>추천글</div> 
+                    <div className={`profile__tab ${'profile__tab--active'}`}>
+                        { translation('POST') }
+                    </div>
+                    <div className={`profile__tab`}>
+                        { translation('LIKE') }
+                    </div> 
                 </div>
             </div>
 
