@@ -90,10 +90,6 @@ export default function PostPage() {
 
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>게시물</h1>
-            </div>
-
             { post?.id && <> 
             <div className="post">
                 <div className="post__user-img"></div>
@@ -132,8 +128,9 @@ export default function PostPage() {
                     </div>
                 </div>
             </div> 
-
+            
             <div className="comment">
+                <h3 className="comment__header">회원들 덧글</h3>
                 <div>
                 { post?.comments?.map((item) =>
                     <CommentItem key={item?.uid + item?.createdAt} comment={ item } post={ post }/>) }

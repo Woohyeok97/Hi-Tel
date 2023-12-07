@@ -44,9 +44,7 @@ export default function LoginPage() {
 
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>접속화면</h1>
-            </div>
+            <div className="page__title">접속화면</div>
 
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form__block">
@@ -82,7 +80,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="form__submit">
-                    <input type="submit" value="접속 요청" className="form__input-btn"/>
+                    <input type="submit" value="접속요청" className="form__input-btn"/>
                 </div>
 
                 <div className="form__block">

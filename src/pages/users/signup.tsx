@@ -138,9 +138,7 @@ export default function SignupPage() {
 
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>가입화면</h1>
-            </div>
+            <div className="page__title">가입화면</div>
 
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form__block">
@@ -193,7 +191,7 @@ export default function SignupPage() {
                 </div>
 
                 <div className="form__submit">
-                    <input type="submit" value="가입 요청" className="form__input-btn"
+                    <input type="submit" value="가입요청" className="form__input-btn"
                     disabled={!!errorMessage}/>
                 </div>
 

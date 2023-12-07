@@ -1,0 +1,26 @@
+@import './_utils.scss';
+@import './index.scss';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 20px;
+    margin-bottom: 40px;
+    @extend .shadow;
+
+    @include mobile {
+        padding: 20px 10px;
+        margin-bottom : 20px;
+    }
+    
+    h1 {
+        font-size: $font5;
+    }
+    &__utils {
+        display: flex;
+    }
+    &__util {
+        padding: 0 5px;
+    }
+}

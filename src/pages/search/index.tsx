@@ -36,9 +36,7 @@ export default function SearchPage() {
 
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>검색</h1>
-            </div>
+            <div className="page__title">검색</div>
 
             <div className="form">
                 <div className="form__block">

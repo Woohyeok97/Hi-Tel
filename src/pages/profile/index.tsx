@@ -99,9 +99,6 @@ export default function ProfilePage() {
     return (
         <>{ userInfo && 
         <div className="page">
-            <div className="page__header">
-                <h1>회원정보</h1>
-            </div>
 
             <div className="profile">
                 <div className="profile__header">
@@ -132,8 +129,11 @@ export default function ProfilePage() {
                         { profile?.uid && user?.uid !== profile?.uid ? 
                         <FollowBtn targetUid={ profile?.uid }/> 
                         : 
-                        <div className="profile__edit">
-                            <Link to="/profile/edit">
+                        <div className="profile__utils">
+                            <Link to='/notification' className="profile__noti">
+                                { translation('MENU_NOTI') }
+                            </Link>
+                            <Link to="/profile/edit" className="profile__edit">
                                 { translation('EDIT') }
                             </Link> 
                         </div> }

@@ -5,10 +5,7 @@ export default function NewPostPage() {
 
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>글쓰기</h1>
-            </div>
-            
+            <div className="page__title">게시글 작성</div>
             <PostForm/>
         </div>
     )

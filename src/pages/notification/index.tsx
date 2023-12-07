@@ -32,9 +32,7 @@ export default function NotificationPage() {
     
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>알림</h1>
-            </div>
+            <div className="page__title">알림</div>
             <div>
                 { notifications?.map((item) => <NotiItem key={item?.id} notification={item}/>) }
             </div>
