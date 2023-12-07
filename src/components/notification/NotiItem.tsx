@@ -1,6 +1,8 @@
 import styles from './NotiItem.module.scss'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
+// hooks
+import useTranslation from 'hooks/useTranslation'
 // 데이터 타입
 import { NotificationType } from 'interface'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +14,7 @@ interface NotiItemProps {
 
 export default function NotiItem({ notification } : NotiItemProps) {
     const navigate = useNavigate()
+    const { translation } = useTranslation()
     
     //알림삭제 핸들러 완성
     const handleNotiClick = async () => {
@@ -58,7 +61,7 @@ export default function NotiItem({ notification } : NotiItemProps) {
             </div>
 
             <div className={ styles.notiItem__delete } onClick={ handleNotiDelete }>
-                삭제
+                { translation('DELETE') }
             </div>
         </div>
     )

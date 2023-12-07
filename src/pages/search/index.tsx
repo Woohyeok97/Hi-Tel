@@ -4,12 +4,15 @@ import { collection, onSnapshot, orderBy, query, where } from "firebase/firestor
 import { db } from "firebaseApp";
 import { PostType } from "interface";
 import PostItem from "components/post/PostItem";
+// hooks
+import useTranslation from "hooks/useTranslation";
 
 
 export default function SearchPage() {
     const { user } = useContext(AuthContext)
     const [ searchQuery, setSearchQuery ] = useState<string>('')
     const [ searchPosts, setSearchPost ] = useState<PostType[]>([])
+    const { translation } = useTranslation()
 
     // 게시글 요청 함수
     const fetchPostList = async () => {
@@ -36,7 +39,7 @@ export default function SearchPage() {
 
     return (
         <div className="page">
-            <div className="page__title">검색</div>
+            <div className="page__title">{ translation('MENU_SEARCH') }</div>
 
             <div className="form">
                 <div className="form__block">
@@ -52,7 +55,9 @@ export default function SearchPage() {
 
             <div className="search">
                 <div className="search__tabs">
-                    <div className={`search__tab ${'search__tab--active'}`}>게시글</div> 
+                    <div className={`search__tab ${'search__tab--active'}`}>
+                        { translation('POST') }
+                    </div> 
                 </div>
 
                 <div className="search__list">

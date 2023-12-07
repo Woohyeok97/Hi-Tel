@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { GithubAuthProvider, GoogleAuthProvider, User, createUserWithEmailAndPassword, getAuth, signInWithPopup } from "firebase/auth";
 import { app, db } from "firebaseApp";
 import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+// hooks
+import useTranslation from "hooks/useTranslation";
 
 
 export default function SignupPage() {
@@ -10,6 +12,7 @@ export default function SignupPage() {
     const [ password, setPassword  ] = useState<string>('')
     const [ passwordConfirm, setPasswordConfirm ] = useState<string>('')
     const [ errorMessage, setErrerMessage ] = useState<string>('')
+    const { translation } = useTranslation()
     const navigate = useNavigate()
 
     // 기존프로필 확인 함수
@@ -138,12 +141,12 @@ export default function SignupPage() {
 
     return (
         <div className="page">
-            <div className="page__title">가입화면</div>
+            <div className="page__title">{ translation('MENU_SIGNUP') }</div>
 
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form__block">
                     <div className="form__block">
-                        <label htmlFor="email">아이디</label>
+                        <label htmlFor="email">{ translation('EMAIL') }</label>
                     </div>
                     <input 
                         type="email" 
@@ -156,7 +159,7 @@ export default function SignupPage() {
 
                 <div className="form__block">
                     <div className="form__block">
-                        <label htmlFor="password">비밀번호</label>
+                        <label htmlFor="password">{ translation('PASSWORD') }</label>
                     </div>
                     <input 
                         type="password" 
@@ -169,7 +172,7 @@ export default function SignupPage() {
 
                 <div className="form__block">
                     <div className="form__block">
-                        <label htmlFor="passwordConfirm">비밀번호 확인</label>
+                        <label htmlFor="passwordConfirm">{ translation('PASSWORD_CONFIRM') }</label>
                     </div>
                     <input 
                         type="password" 
@@ -191,15 +194,20 @@ export default function SignupPage() {
                 </div>
 
                 <div className="form__submit">
-                    <input type="submit" value="가입요청" className="form__input-btn"
+                    <input type="submit" value={ translation('MENU_SIGNUP') } className="form__input-btn"
                     disabled={!!errorMessage}/>
                 </div>
 
                 {/* 소셜 로그인 */}
                 <div className="form__block">
                     <div className="form__flex">
-                        <div id="github" onClick={ handleSocialLogin }>깃허브 접속</div>
-                        <div id="google" onClick={ handleSocialLogin }>구글 접속</div>
+                        <div id="github" onClick={ handleSocialLogin }>
+                        { translation('GITHUB') }?
+                        </div>
+                        <div>or</div>
+                        <div id="google" onClick={ handleSocialLogin }>
+                        { translation('GOOGLE') }
+                        </div>
                     </div>
                 </div>
             </form>

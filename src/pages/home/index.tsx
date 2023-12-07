@@ -5,11 +5,14 @@ import { db } from "firebaseApp";
 import PostItem from "components/post/PostItem";
 // 데이터 타입
 import { PostType } from "interface";
+// hooks
+import useTranslation from "hooks/useTranslation";
 
 
 
 export default function HomePage() {
     const [ postList, setPostList ] = useState<PostType[]>([])
+    const { translation } = useTranslation()
 
     // 게시물리스트 요청 함수
     const fetchPostList = async () => {
@@ -37,7 +40,7 @@ export default function HomePage() {
 
     return (
         <div className="page">
-            <div className="page__title">초기화면</div>
+            <div className="page__title">{ translation('MENU_HOME') }</div>
             <div>
             { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
             </div>

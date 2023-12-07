@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import AuthContext from "context/AuthContext"
 import { addDoc, collection } from "firebase/firestore"
 import { db } from "firebaseApp"
+// hooks
+import useTranslation from "hooks/useTranslation"
 
 
 export default function PostForm() {
@@ -12,7 +14,7 @@ export default function PostForm() {
     // 입력중인 해쉬태그
     const [ hashTag, setHashTag ] = useState<string>('')
     const navigate = useNavigate()
-
+    const { translation } = useTranslation()
 
     // submit 핸들러
     const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
@@ -113,7 +115,7 @@ export default function PostForm() {
             </div>
 
             <div className="form__submit">
-                <input type="submit" value="글작성" className="form__input-btn" disabled={ !content }/>
+                <input type="submit" value={ translation('MENU_WRITE') } className="form__input-btn" disabled={ !content }/>
             </div>
         </form>
     )

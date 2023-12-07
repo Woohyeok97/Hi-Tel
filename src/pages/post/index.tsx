@@ -130,7 +130,7 @@ export default function PostPage() {
             </div> 
             
             <div className="comment">
-                <h3 className="comment__header">회원들 덧글</h3>
+                <h3 className="comment__header">{ translation('COMMENT') }</h3>
                 <div>
                 { post?.comments?.map((item) =>
                     <CommentItem key={item?.uid + item?.createdAt} comment={ item } post={ post }/>) }

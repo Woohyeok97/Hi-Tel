@@ -5,6 +5,8 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
 // 데이터 타입
 import { PostType } from "interface"
+// hooks
+import useTranslation from "hooks/useTranslation"
 
 
 export default function PostEditForm() {
@@ -17,6 +19,7 @@ export default function PostEditForm() {
     // 입력중인 해쉬태그
     const [ hashTag, setHashTag ] = useState<string>('')
     const navigate = useNavigate()
+    const { translation } = useTranslation()
 
     // 기존게시물 요청 함수
     const fetchPrevPost = async (id : string) => {
@@ -136,7 +139,7 @@ export default function PostEditForm() {
             </div>
             
             <div className="form__submit">
-                <input type="submit" value="편집" className="form__input-btn" disabled={ !content }/>
+                <input type="submit" value={ translation('EDIT') } className="form__input-btn" disabled={ !content }/>
             </div>
         </form> } </>
     )

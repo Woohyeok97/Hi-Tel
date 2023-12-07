@@ -4,12 +4,15 @@ import AuthContext from "context/AuthContext"
 import { updateProfile } from "firebase/auth"
 import { collection, doc, getDocs, query, updateDoc, where, writeBatch } from "firebase/firestore"
 import { db } from "firebaseApp"
+// hooks
+import useTranslation from "hooks/useTranslation"
 
 
 export default function EditProfilePage() {
     const [ displayName, setDisplayName ] = useState<string>('')
     const { user } = useContext(AuthContext)
     const navigate = useNavigate()
+    const { translation } = useTranslation()
 
     // submit 핸들러
     const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
@@ -68,14 +71,12 @@ export default function EditProfilePage() {
 
     return (
         <div className="page">
-            <div className="page__header">
-                <h1>회원정보 편집</h1>
-            </div>
+            <div className="page__title">{ translation('PROFILE_EDIT') }</div>
 
             <form onSubmit={ handleSubmit } className="form">
                 <div className="form__block">
                     <div className="form__block">
-                        <label htmlFor="name">이름편집</label>
+                        <label htmlFor="name">{ translation('PROFILE_EDIT_NAME') }</label>
                     </div>
                     <input 
                         type="text" 
@@ -89,7 +90,7 @@ export default function EditProfilePage() {
                 </div>
 
                 <div className="form__submit">
-                    <input type="submit" value="회원정보 편집" className="form__input-btn"/>
+                    <input type="submit" value={ translation('PROFILE_EDIT') } className="form__input-btn"/>
                 </div>
             </form>
         </div>

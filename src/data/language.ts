@@ -1,5 +1,4 @@
 const TRANSLATIONS = {
-    // 메뉴
     MENU_HOME : {
         ko : '초기화면',
         en : 'Home',
@@ -23,6 +22,10 @@ const TRANSLATIONS = {
     MENU_LOGIN : {
         ko : '접속',
         en : 'Signin',
+    },
+    MENU_SIGNUP : {
+        ko : '가입',
+        en : 'Signup',
     },
     MENU_COMMAND : {
         ko : '명령어',
@@ -64,6 +67,10 @@ const TRANSLATIONS = {
         ko : '게시글',
         en : 'Post',
     },
+    WRITE : {
+        ko : '작성',
+        en : 'Write',
+    },
     FOLLOWER : {
         ko : '팔로워',
         en : 'Follower',
@@ -71,6 +78,34 @@ const TRANSLATIONS = {
     FOLLOWING : {
         ko : '팔로윙',
         en : 'Following',
+    },
+    PROFILE_EDIT : {
+        ko : '회원정보 편집',
+        en : 'Profile Edit',
+    },
+    PROFILE_EDIT_NAME : {
+        ko : '이름편집',
+        en : 'Name',
+    },
+    EMAIL : {
+        ko : 'E-메일',
+        en : 'Email',
+    },
+    PASSWORD : {
+        ko : '비밀번호',
+        en : 'Password',
+    },
+    PASSWORD_CONFIRM : {
+        ko : '비밀번호 확인',
+        en : 'Password Confirm',
+    },
+    GITHUB : {
+        ko : '깃허브',
+        en : 'Github',
+    },
+    GOOGLE : {
+        ko : '구글',
+        en : 'Google',
     },
 }
 

@@ -6,11 +6,14 @@ import { db } from "firebaseApp"
 import NotiItem from "components/notification/NotiItem"
 // 데이터 타입
 import { NotificationType } from "interface"
+// hooks
+import useTranslation from "hooks/useTranslation"
 
 
 export default function NotificationPage() {
     const { user } = useContext(AuthContext)
     const [ notifications, setNotifications ] = useState<NotificationType[]>([])
+    const { translation } = useTranslation()
 
     // 알림 요청 함수
     const fetchNotifications = useCallback(() => {
@@ -32,7 +35,9 @@ export default function NotificationPage() {
     
     return (
         <div className="page">
-            <div className="page__title">알림</div>
+            <div className="page__title">
+                { translation('MENU_NOTI') }
+            </div>
             <div>
                 { notifications?.map((item) => <NotiItem key={item?.id} notification={item}/>) }
             </div>
