@@ -53,7 +53,6 @@ export default function ProfilePage() {
                 // 각각의 정보를 onSnapshot으로 가져온뒤, fetchData에 저장
                 const postsRef = collection(db, 'posts')
                 const postsQuery = query(postsRef, where('uid', '==', profile?.uid), orderBy('createdAt', 'desc'))
-                const likesQuery = query(postsRef, where('likes', 'array-contains', user?.uid), orderBy('createdAt', 'desc'))
                 const followerRef = doc(db, 'follower', profile?.uid)
                 const followingRef = doc(db, 'following', profile?.uid)
 
@@ -61,11 +60,6 @@ export default function ProfilePage() {
                     // fetchData.postList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
                     const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
                     setUserInfo((prev) => ({ ...prev, myPosts : result } as UserInfoType))
-                })
-                onSnapshot(likesQuery, (snapshot) => {
-                    // fetchData.likePostList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    setUserInfo((prev) => ({ ...prev, likePosts : result } as UserInfoType))
                 })
                 onSnapshot(followerRef, (doc) => {
                     // fetchData.follower = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
@@ -77,6 +71,17 @@ export default function ProfilePage() {
                     const result = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
                     setUserInfo((prev) => ({ ...prev, following : result } as UserInfoType))
                 })
+
+                // 로그인 상태일때만 추천 게시글 가져오기 
+                if(profile?.uid === user?.uid) {
+                    const likesQuery = query(postsRef, where('likes', 'array-contains', user?.uid), orderBy('createdAt', 'desc'))
+
+                    onSnapshot(likesQuery, (snapshot) => {
+                        // fetchData.likePostList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
+                        const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
+                        setUserInfo((prev) => ({ ...prev, likePosts : result } as UserInfoType))
+                    })
+                }
 
             } catch(err : any) {
                 console.log(err?.code)
@@ -102,7 +107,7 @@ export default function ProfilePage() {
     // console.log('렌더링') // 각각 userInfo 업데이트 -> 4번
     // 가끔씩 팔로우/언팔로우 버튼을 누르면 팔로잉/팔로워 둘다 올라가던데 왜그러지..
     // console.log(profile, userInfo)
-    
+    console.log(userInfo)
     return (
         <>{ userInfo && 
         <div className="page">
