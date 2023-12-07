@@ -58,7 +58,7 @@ export default function NotiItem({ notification } : NotiItemProps) {
             </div>
 
             <div className={ styles.notiItem__delete } onClick={ handleNotiDelete }>
-                지우기
+                삭제
             </div>
         </div>
     )

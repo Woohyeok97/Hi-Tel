@@ -109,15 +109,15 @@ export default function ProfilePage() {
                     <div className="profile__flex-between">
                         <div className={`profile__info`}>
                             <div>{ userInfo?.postList?.length || 0 }</div>
-                            { translation('POST') }
+                            <span>{ translation('POST') }</span>
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
                             <div>{ userInfo?.follower?.length || 0 }</div>
-                            { translation('FOLLOWER') }
+                            <span>{ translation('FOLLOWER') }</span>
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
                             <div>{ userInfo?.following?.length || 0 }</div>
-                            { translation('FOLLOWING') }
+                            <span>{ translation('FOLLOWING') }</span>
                         </div>
                     </div>
                 </div>

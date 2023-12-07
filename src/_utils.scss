@@ -33,19 +33,13 @@ $tablet: 600px;
 $desktop: 1024px;
 
 // 미디어쿼리 사이즈 설정
-// 제일작은 사이즈
-@mixin xsMobile {
-    @media (max-width : #{$mobile - 1px}) {
-        @content;
-    }
-}
+
 // 모바일
 @mixin mobile {
-    @media (min-width : $mobile) and (max-width : #{$tablet - 1px}) {
+    @media (max-width : #{$tablet - 1px}) {
         @content;
     }
 }
-
 // 패드
 @mixin tablet {
     @media (min-width : $tablet) and (max-width : #{$desktop - 1px}) {

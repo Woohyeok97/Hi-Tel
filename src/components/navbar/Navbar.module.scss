@@ -17,6 +17,11 @@
     z-index: 10;
     @extend .shadow;
     border-bottom: none;
+
+    @include mobile {
+        padding: 15px;
+        gap: 15px;
+    }
     
     &__flex {
         display: flex;
@@ -33,23 +38,10 @@
         color: $fontColor;
         background-color: $darkBule;
         flex-grow: 1;
-        // width: 100%;
         padding: 15px;
     }
-}
-
-@include mobile {
-    .navbar {
-
-        label {
-            display: none;
-        }
-    }
-}
-@include xsMobile {
-    .navbar {
-        
-        label {
+    label {
+        @include mobile {
             display: none;
         }
     }
