@@ -13,15 +13,19 @@ import { FollowType, PostType, ProfileType } from "interface";
 
 
 interface UserInfoType {
-    postList : PostType[],
-    likePostList? : PostType[],
+    myPosts : PostType[],
+    likePosts? : PostType[],
     following : string[]
     follower : string[],
 }
 
+type TabType = 'myPosts' | 'likePosts'
+
 export default function ProfilePage() {
     const { id } = useParams()
     const { user } = useContext(AuthContext)
+    // 탭 상태관리
+    const [ activeTab, setActiveTab ] = useState<TabType>('myPosts')
     const [ profile, setProfile ] = useState<ProfileType | null>(null)
     // 유저정보 상태관리
     const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null)
@@ -56,12 +60,12 @@ export default function ProfilePage() {
                 onSnapshot(postsQuery, (snapshot) => {
                     // fetchData.postList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
                     const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    setUserInfo((prev) => ({ ...prev, postList : result } as UserInfoType))
+                    setUserInfo((prev) => ({ ...prev, myPosts : result } as UserInfoType))
                 })
                 onSnapshot(likesQuery, (snapshot) => {
                     // fetchData.likePostList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
                     const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    setUserInfo((prev) => ({ ...prev, likePostList : result } as UserInfoType))
+                    setUserInfo((prev) => ({ ...prev, likePosts : result } as UserInfoType))
                 })
                 onSnapshot(followerRef, (doc) => {
                     // fetchData.follower = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
@@ -83,7 +87,10 @@ export default function ProfilePage() {
 
     // 프로필 가져오기
     useEffect(() => {
-        if(id) fetchProfile()
+        if(id) {
+            fetchProfile()
+            setActiveTab('myPosts')
+        }
     }, [fetchProfile, id])
 
     // 유저정보 가져오기
@@ -105,7 +112,7 @@ export default function ProfilePage() {
                     <img src={profile?.photoUrl} className="profile__user-img"/>
                     <div className="profile__flex-between">
                         <div className={`profile__info`}>
-                            <div>{ userInfo?.postList?.length || 0 }</div>
+                            <div>{ userInfo?.myPosts?.length || 0 }</div>
                             <span>{ translation('POST') }</span>
                         </div>
                         <div className={`profile__info ${false && 'profile__info-no'}`}>
@@ -143,17 +150,23 @@ export default function ProfilePage() {
 
             <div className="profile__tabs">
                 <div className="profile__flex">
-                    <div className={`profile__tab ${'profile__tab--active'}`}>
+                    <div className={`profile__tab ${ activeTab === 'myPosts' && 'profile__tab--active' }`}
+                        onClick={() => setActiveTab('myPosts')}>
                         { translation('POST') }
                     </div>
-                    <div className={`profile__tab`}>
+
+                    {/* like탭은 나의 프로필 페이지에서 렌더링 */}
+                    { profile?.uid === user?.uid &&
+                    <div className={`profile__tab ${ activeTab === 'likePosts' && 'profile__tab--active' }`}
+                        onClick={() => setActiveTab('likePosts')}>
                         { translation('LIKE') }
-                    </div> 
+                    </div> }
                 </div>
             </div>
 
             <div>
-            { userInfo?.postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
+            { userInfo[activeTab]?.map((item) => <PostItem key={item?.id} post={ item }/>) }
+            {/* { userInfo?.postList?.map((item) => <PostItem key={item?.id} post={ item }/>) } */}
             </div>
         </div> } </>
     )

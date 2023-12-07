@@ -37,14 +37,9 @@ export default function HomePage() {
 
     return (
         <div className="page">
+            <div className="page__title">초기화면</div>
             <div>
-                <div className="page__flex">
-                    <div className="page__title">초기화면</div>
-                </div>
-                
-                <div>
-                { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
-                </div>
+            { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
             </div>
         </div>
     )
