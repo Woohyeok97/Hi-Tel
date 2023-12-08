@@ -29,8 +29,8 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
             })
         }
     }, [user?.uid])
-
-
+    console.log('target', targetUid)
+    console.log(user?.uid)
     // 팔로우 핸들러
     const handleFollow = async () => {
         if(!user?.uid) {
@@ -39,14 +39,14 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
         }
         try {
             const followingRef = doc(db, 'following', user?.uid)
-            const followerRef = doc(db, 'follower', targetUid)
-            
             await setDoc(followingRef, {
                 users : arrayUnion({ uid : targetUid })
-            })
+            }, { merge : true })
+
+            const followerRef = doc(db, 'follower', targetUid)
             await setDoc(followerRef, {
                 users : arrayUnion({ uid : user?.uid })
-            })
+            }, { merge : true })
 
             // 알림생성
             await createNotification(
@@ -67,11 +67,11 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
         }
         try {
             const followingRef = doc(db, 'following', user?.uid)
-            const followerRef = doc(db, 'follower', targetUid)
-
             await setDoc(followingRef, {
                 users : arrayRemove({ uid : targetUid })
             })
+
+            const followerRef = doc(db, 'follower', targetUid)
             await setDoc(followerRef, {
                 users : arrayRemove({ uid : user?.uid })
             })
