@@ -1,3 +1,4 @@
+import './tailwind.css'
 import { useContext } from "react";
 import AuthContext from "context/AuthContext";
 import { RecoilRoot } from "recoil";
