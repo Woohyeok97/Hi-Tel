@@ -89,48 +89,51 @@ export default function PostPage() {
 
 
     return (
-        <div className="page">
+        <div className="">
             { post?.id && <> 
-            <div className="post">
-                <div className="post__user-img"></div>
+            <div className="flex flex-col pb-5 mb-10 border-gray border-b-2">
+                <div className="flex items-center gap-5 mb-5">
+                    <div className="user-img"></div>
 
-                <div className="post__box">
-                    <Link to={`/profile/${post?.uid}`}>
-                    <div className="post__header">
-                        <div className="post__name">{ post?.displayName || post?.email }</div>
-                        <div className="post__createdAt">{ post?.createdAt }</div>
-                    </div>
-                    </Link>
-
-                    <div className="post__content">
-                        <div className="post__text">{ post?.content }</div>
-                    </div>
-
-                    <div className="post__footer">
-                        <div className="post__flex">
-                            <div 
-                                className={`post__like ${ user?.uid && post?.likes?.includes(user?.uid) && 'post__like--active' }`} 
-                                onClick={ handleLikePost }>
-                                { translation('LIKE') } : { post?.likeCount || 0 }
-                            </div>
-                            <div>{ translation('COMMENT') } : { post?.comments?.length || 0 }</div>
-                        </div>
-
-                        { post?.uid === user?.uid && // 게시글과 로그인정보가 일치할때만 렌더링
-                        <div className="post__flex">
-                            <Link to={`/post/edit/${post?.id}`}>
-                                { translation('EDIT') }
+                    <div className="flex flex-col">
+                        <div className="text-btn font-semibold truncate">
+                            <Link to={`/profile/${post?.uid}`}>
+                                { post?.displayName || post?.email }
                             </Link>
-                            <div className="post__delete" onClick={ handlePostDelete }>
-                                { translation('DELETE') }
-                            </div>
-                        </div> }
+                        </div>
+                        <div className="text-gray font-extralight">
+                            { post?.createdAt }
+                        </div>
                     </div>
+                </div>
+
+                <div className="pb-10 px-5">
+                    { post?.content }
+                </div>
+
+                <div className="flex justify-between">
+                    <div className="flex gap-3">
+                        <div 
+                            className={`text-btn ${ user?.uid && post?.likes?.includes(user?.uid) && 'post__like--active' }`} 
+                            onClick={ handleLikePost }>
+                            { translation('LIKE') } : { post?.likeCount || 0 }
+                        </div>
+                        <div>{ translation('COMMENT') } : { post?.comments?.length || 0 }</div>
+                    </div>
+
+                    { post?.uid === user?.uid && // 게시글과 로그인정보가 일치할때만 렌더링
+                    <div className="flex gap-3">
+                        <Link to={`/post/edit/${post?.id}`} className="text-btn underline underline-offset-4">
+                            { translation('EDIT') }
+                        </Link>
+                        <div className="delete-btn" onClick={ handlePostDelete }>
+                            { translation('DELETE') }
+                        </div>
+                    </div> }
                 </div>
             </div> 
             
-            <div className="comment">
-                <h3 className="comment__header">{ translation('COMMENT') }</h3>
+            <div className="">
                 <div>
                 { post?.comments?.map((item) =>
                     <CommentItem key={item?.uid + item?.createdAt} comment={ item } post={ post }/>) }
@@ -138,7 +141,6 @@ export default function PostPage() {
                 <CommentForm post={ post }/>
             </div> 
             </> }
-
         </div>
     )
 }

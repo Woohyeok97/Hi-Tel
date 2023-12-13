@@ -2,3 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
+/* @layer를 사용하여 purge 최적화에 포함시킴 */
+
+@layer base {
+    body {
+        @apply bg-bgColor text-white font-default;
+    }
+    input {
+        @apply font-default;
+        outline: none;
+        border: none;
+        box-sizing: border-box;
+    }
+    textarea {
+        @apply font-default;
+        outline: none;
+        border: none;
+        box-sizing: border-box;
+        resize: none;
+    }
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}
+
+@layer components {
+    .shadow-border {
+        border-top: 3px solid rgba(0, 0, 255, 1);
+        border-bottom: 5px solid #000000;
+        border-right: 5px solid #000000;
+        border-left: 3px solid rgba(0, 0, 255, 1);
+    }
+    .text-input {
+        @apply text-white;
+    } 
+    .text-btn {
+        @apply cursor-pointer text-white hover:text-whiteHover;
+    }
+    .delete-btn {
+        @apply cursor-pointer text-warning hover:text-warningHover;
+    }
+    .user-img {
+        @apply min-w-[40px] h-[40px] rounded-full bg-white lg:min-w-[50px] lg:h-[50px];
+    }
+}
+
+
+

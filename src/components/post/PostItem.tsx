@@ -1,4 +1,3 @@
-import styles from './PostItem.module.scss'
 import { useContext } from 'react'
 import AuthContext from 'context/AuthContext'
 import { Link } from "react-router-dom"
@@ -35,36 +34,37 @@ export default function PostItem({ post } : PostItemProps) {
     }
 
     return (
-        <div className={ styles.postItem }>
-            <div className={ styles.postItem__userImg }></div>
+        <div className="flex gap-5 mb-12 mt-3">
+            <div className="user-img"></div>
 
-            <div className={ styles.postItem__box }>
+            <div className="grow">
                 {/* 게시글 프로필 */}
                 <Link to={`/profile/${post?.uid}`}>
-                <div className={ styles.postItem__header }>
-                    <div className={ styles.postItem__name }>{ post?.displayName || post?.email }</div>
-                    <div className={ styles.postItem__createdAt }>{ post?.createdAt }</div>
+                <div className="flex mb-3 gap-3 lg:gap-5">
+                    <div className="text-btn font-semibold truncate">
+                        { post?.displayName || post?.email }
+                    </div>
+                    <div className="text-gray font-extralight">{ post?.createdAt }</div>
                 </div>
                 </Link>
 
                 {/* 게시물 내용 */}
-                <Link to={`/post/${post?.id}`}>
-                <div className={ styles.postItem__content }>
-                    <div className={ styles.postItemt__text }>{ post?.content }</div>
+                <div className="text-btn pb-8">
+                    <Link to={`/post/${post?.id}`}>{ post?.content }</Link>
                 </div>
-                </Link>
+                
 
-                <div className={ styles.postItem__footer }>
-                    <div className={ styles.postItem__flex }>
+                <div className="flex justify-between">
+                    <div className="flex gap-3">
                         <div>{ translation('LIKE') } : { post?.likeCount || 0 }</div>
                         <div>{ translation('COMMENT') } : { post?.comments?.length || 0 }</div>
                     </div>
 
                     {/* 게시글 유틸박스 */}
                     { post?.uid === user?.uid && // 게시글과 로그인정보가 일치할때만 렌더링
-                    <div className={ styles.postItem__flex }>
+                    <div className="flex gap-3">
                         <Link to={`/post/edit/${post?.id}`}>{ translation('EDIT') }</Link>
-                        <div className={ styles.postItem__delete } onClick={ handlePostDelete }>
+                        <div className="delete-btn" onClick={ handlePostDelete }>
                             { translation('DELETE') }
                         </div>
                     </div> }

@@ -1,4 +1,3 @@
-import styles from './Navbar.module.scss'
 import { useContext, useState } from 'react'
 import AuthContext from 'context/AuthContext'
 import { useNavigate } from 'react-router-dom'
@@ -89,28 +88,31 @@ export default function Navbar() {
 
 
     return (
-        <div className={ styles.navbar }> 
-            <div className={ styles.navbar__flex }>
-                <div className={ styles.navbar__menu } onClick={ commandActions['h'] }>
+        <div className="flex flex-col gap-3 flex-grow-1 grow justify-between bg-bgColor border-t-3 p-3
+            lg:p-0 lg:border-0">
+            <div className="flex lg:flex-col lg:px-8 lg:gap-5">
+                <div className='cursor-pointer' onClick={ commandActions['h'] }>
                     { translation('MENU_HOME') }(H)
                 </div>
-                <div className={ styles.navbar__menu } onClick={ commandActions['p'] }>
+                <div className='cursor-pointer' onClick={ commandActions['p'] }>
                     { translation('MENU_PROFILE') }(P)
                 </div>
-                <div className={ styles.navbar__menu } onClick={ commandActions['s'] }>
+                <div className='cursor-pointer' onClick={ commandActions['s'] }>
                     { translation('MENU_SEARCH') }(S)
                 </div>
-                <div className={ styles.navbar__menu } onClick={ commandActions['w'] }>
+                <div className='cursor-pointer' onClick={ commandActions['w'] }>
                     { translation('MENU_WRITE') }(W)
                 </div>
-                <div className={ styles.navbar__menu } onClick={ commandActions['q'] }>
+                <div className='cursor-pointer' onClick={ commandActions['q'] }>
                     { user?.uid ? `${translation('MENU_LOGOUT')}(Q)` : `${translation('MENU_LOGIN')}(Q)` }
                 </div> 
             </div>
 
             {/* 명령어 인풋 */}
-            <div className={ styles.navbar__flex }>
-                <label htmlFor='command'>{ translation('MENU_COMMAND') } : </label>
+            <div className="flex items-center lg:gap-1 lg:p-5">
+                <label htmlFor='command' className='lg:hidden'>
+                    { translation('MENU_COMMAND') } : 
+                </label>
                 <input 
                     type="text"
                     id='command'
@@ -118,7 +120,7 @@ export default function Navbar() {
                     onKeyUp={ handleCommandEnter }
                     value={ command }
                     placeholder={ terminalMessage }
-                    className={ styles.navbar__terminal }
+                    className=" bg-darkBlue p-3 grow"
                 />
             </div>
         </div>

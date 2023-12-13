@@ -1,4 +1,3 @@
-import styles from './Comment.module.scss'
 import { useContext } from 'react'
 import AuthContext from 'context/AuthContext'
 import { Link } from 'react-router-dom'
@@ -8,7 +7,6 @@ import useTranslation from 'hooks/useTranslation'
 import { CommentType, PostType } from 'interface'
 import { arrayRemove, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
-
 
 
 interface CommentItemProps {
@@ -39,27 +37,28 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
     }
 
     return (
-        <div className={ styles.commentItem }>
-            <div className={ styles.commentItem__flex }>
-                <div className={ styles.commentItem__userImg }></div>
-                <div>
-                    <Link to={`/profile/${comment?.uid}`}>
-                    <div className={ styles.commentItem__header }>
-                        <div className={ styles.commentItem__name }>
-                            { comment?.displayName || comment?.email }
-                        </div>
-                        <div className={ styles.commentItem__createdAt }>{ comment?.createdAt }</div>
-                    </div>
-                    </Link>
+        <div className="flex gap-5 mb-12 mt-3">
+            <div className="user-img"></div>
 
-                    <div className={ styles.commentItem__content }>{ comment?.content }</div>
+            <div className="grow">
+                <div className="flex gap-5">
+                    <div className='text-btn mb-1 font-semibold truncate'>
+                        <Link to={`/profile/${comment?.uid}`}>
+                            { comment?.displayName || comment?.email }
+                        </Link>
+                    </div>
+                    
+                    { comment?.uid === user?.uid && 
+                    <div className="delete-btn" onClick={ handleCommentDelete }>
+                        { translation('DELETE') }
+                    </div> }
+                </div>
+
+                <div className="mb-5">{ comment?.content }</div>
+                <div className="text-gray font-extralight">
+                    { comment?.createdAt }
                 </div>
             </div>
-    
-            { comment?.uid === user?.uid && 
-            <div className={ styles.commentItem__delete } onClick={ handleCommentDelete }>
-                { translation('DELETE') }
-            </div> }
         </div>
     )
 }
