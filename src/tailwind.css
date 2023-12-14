@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './font/font.scss';
+
 
 /* @layer를 사용하여 purge 최적화에 포함시킴 */
 
 @layer base {
     body {
-        @apply bg-bgColor text-white font-default h-screen;
+        @apply bg-bgColor text-white font-default h-screen text-xl;
     }
     input {
         @apply font-default;
@@ -34,7 +36,7 @@
 @layer components {
     /* 페이지 헤더 */
     .page-header {
-        @apply font-bold text-4xl mb-5 p-3;
+        @apply font-bold text-4xl mb-5 p-3 lg:mb-10;
     }
     .shadow-border {
         border-top: 3px solid rgba(0, 0, 255, 1);
