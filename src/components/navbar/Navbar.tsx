@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react'
 import AuthContext from 'context/AuthContext'
+import { useRecoilState } from 'recoil'
+import { languageSate } from 'atom'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 import { app } from 'firebaseApp'
@@ -16,8 +18,9 @@ export default function Navbar() {
     const { user } = useContext(AuthContext)
     const [ command, setCommand ] = useState<string>('')
     const [ terminalMessage, setTerminalMessage ] = useState<string>(INITIAL_MESSAGE)
+    const [ language, setLanguage ] = useRecoilState(languageSate)
     const navigate = useNavigate()
-    // 언어변경 커스텀 훅
+
     const { translation } = useTranslation()
     
 
@@ -30,6 +33,13 @@ export default function Navbar() {
 
             console.log('접속을 종료하셨습니다.')
         }
+    }
+
+    // 언어변경 핸들러
+    const handleLanguage = () => {
+        setLanguage((prev) => prev === 'ko' ? 'en' : 'ko')
+        // state변경이 비동기적이기 때문에 로컬스토리지에 저장할값을 수동으로 설정해줌
+        localStorage.setItem('language', language === 'ko' ? 'en' : 'ko')
     }
 
     // 명령어 입력 핸들러
@@ -65,6 +75,10 @@ export default function Navbar() {
 
             setTerminalMessage(INITIAL_MESSAGE)
         },
+        'l' : () => {
+            handleLanguage()
+            setTerminalMessage(INITIAL_MESSAGE) 
+        }
     }
 
     // 명령어 실행 핸들러
@@ -88,31 +102,32 @@ export default function Navbar() {
 
 
     return (
-        <div className="flex flex-col gap-3 flex-grow-1 grow justify-between bg-bgColor border-t-3 p-3
+        <div className="flex flex-col gap-3 flex-grow-1 grow justify-between bg-bgColor border-t-3 py-3
             lg:p-0 lg:border-0">
-            <div className="flex lg:flex-col lg:px-8 lg:gap-5">
-                <div className='cursor-pointer' onClick={ commandActions['h'] }>
+            <div className="flex justify-between lg:flex-col lg:px-8 lg:gap-5">
+                <div className='text-btn' onClick={ commandActions['h'] }>
                     { translation('MENU_HOME') }(H)
                 </div>
-                <div className='cursor-pointer' onClick={ commandActions['p'] }>
+                <div className='text-btn' onClick={ commandActions['p'] }>
                     { translation('MENU_PROFILE') }(P)
                 </div>
-                <div className='cursor-pointer' onClick={ commandActions['s'] }>
-                    { translation('MENU_SEARCH') }(S)
-                </div>
-                <div className='cursor-pointer' onClick={ commandActions['w'] }>
+                <div className='text-btn' onClick={ commandActions['w'] }>
                     { translation('MENU_WRITE') }(W)
                 </div>
-                <div className='cursor-pointer' onClick={ commandActions['q'] }>
+                <div className='text-btn' onClick={ commandActions['s'] }>
+                    { translation('MENU_SEARCH') }(S)
+                </div>
+                <div className='text-btn hidden lg:block' onClick={ commandActions['l'] }>
+                    { language === 'ko' ? '언어설정(L)' : 'Language(L)' }
+                </div>
+                <div className='text-btn' onClick={ commandActions['q'] }>
                     { user?.uid ? `${translation('MENU_LOGOUT')}(Q)` : `${translation('MENU_LOGIN')}(Q)` }
                 </div> 
+                
             </div>
 
             {/* 명령어 인풋 */}
-            <div className="flex items-center lg:gap-1 lg:p-5">
-                <label htmlFor='command' className='lg:hidden'>
-                    { translation('MENU_COMMAND') } : 
-                </label>
+            <div className="lg:p-5">
                 <input 
                     type="text"
                     id='command'
@@ -120,7 +135,7 @@ export default function Navbar() {
                     onKeyUp={ handleCommandEnter }
                     value={ command }
                     placeholder={ terminalMessage }
-                    className="text-input grow"
+                    className="text-input w-full truncate"
                 />
             </div>
         </div>

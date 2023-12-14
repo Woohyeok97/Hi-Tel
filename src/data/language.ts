@@ -3,6 +3,10 @@ const TRANSLATIONS = {
         ko : '초기화면',
         en : 'Home',
     },
+    MENU_MORE : {
+        ko : '더보기',
+        en : 'More',
+    },
     MENU_PROFILE : {
         ko : '마이페이지',
         en : 'Profile',
@@ -34,10 +38,6 @@ const TRANSLATIONS = {
     MENU_NOTI : {
         ko : '알림',
         en : 'Noti',
-    },
-    MENU_SETTING : {
-        ko : '설정',
-        en : 'Setting',
     },
     MENU_LANGUAGE : {
         ko : '언어',
