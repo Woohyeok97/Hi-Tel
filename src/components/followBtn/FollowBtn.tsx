@@ -1,4 +1,3 @@
-import styles from './FollowBtn.module.scss'
 import { useCallback, useContext, useEffect, useState } from "react"
 import AuthContext from "context/AuthContext"
 import { arrayRemove, arrayUnion, doc, onSnapshot, setDoc } from "firebase/firestore"
@@ -90,13 +89,15 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
 
     return (
         <> { followingList && user?.uid !== targetUid && // 로그인정보와 targetUid가 다를때만 렌더링
-            <div className={ styles.followBox }>
+            <div className="flex items-center font-bold text-btn text-2xl">
                 { followingList?.includes(targetUid) ? 
-                <div className={ styles.followBox__following } onClick={ handleUnfollow }>
+                <div className="px-4 py-3 rounded-xl border-3 border-blue-500" 
+                    onClick={ handleUnfollow }>
                     팔로잉
                 </div>
                 : 
-                <div className={ styles.followBox__follow } onClick={ handleFollow }>
+                <div className="px-4 py-3 rounded-xl border-3 border-gray hover:border-4" 
+                    onClick={ handleFollow }>
                     팔로우
                 </div> }
             </div>

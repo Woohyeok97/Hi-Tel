@@ -1,4 +1,3 @@
-import styles from './NotiItem.module.scss'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
 // hooks
@@ -53,16 +52,20 @@ export default function NotiItem({ notification } : NotiItemProps) {
 
 
     return (
-        <div className={ styles.notiItem }>
-            <div onClick={ handleNotiClick }
-                className={`${styles.notiItem__body } ${ notification?.isRead && styles.notiItem__read }`}>
-                <div className={ styles.notiItem__content }>{ notification?.content }</div>
-                <div className={ styles.notiItem__createdAt }>{ notification?.createdAt }</div>
-            </div>
+        <div className="flex flex-col bt-6 mb-12">
+                <div className={`font-bold cursor-pointer py-3 ${ notification?.isRead
+                ? 'text-gray hover:text-grayHover'
+                : 'text-white hover:text-whiteHover'}`} onClick={ handleNotiClick }>
+                    { notification?.content }
+                </div>
 
-            <div className={ styles.notiItem__delete } onClick={ handleNotiDelete }>
-                { translation('DELETE') }
+            <div className='flex justify-between text-lg'>
+                <div className="text-gray">{ notification?.createdAt }</div>
+                <div className="delete-btn" onClick={ handleNotiDelete }>
+                    { translation('DELETE') }
+                </div>
             </div>
+            
         </div>
     )
 }

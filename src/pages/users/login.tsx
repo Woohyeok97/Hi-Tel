@@ -101,54 +101,58 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="page">
-            <div className="page__title">{ translation('MENU_LOGIN') }</div>
+        <div className="">
+            <div className="page-header">{ translation('MENU_LOGIN') }</div>
 
-            <form onSubmit={ handleSubmit } className="form">
-                <div className="form__block">
-                    <div className="form__block">
-                        <label htmlFor="email">{ translation('EMAIL') }</label>
-                    </div>
+            <form onSubmit={ handleSubmit } className="flex flex-col mb-10">
+                <div className="mb-5">
+                    <label htmlFor="email" className="font-bold block pb-3 pl-3">
+                        { translation('EMAIL') }
+                    </label>
+                   
                     <input 
                         type="email" 
                         name="email"
                         id="email" 
                         onChange={ handleChange }
-                        className="form__input"
+                        className="text-input w-full"
                     />
                 </div>
 
-                <div className="form__block">
-                    <div className="form__block">
-                        <label htmlFor="password">{ translation('PASSWORD') }</label>
-                    </div>
+                <div className="mb-5">
+                    <label htmlFor="password" className="font-bold block pb-3 pl-3">
+                        { translation('PASSWORD') }
+                    </label>
+
                     <input 
                         type="password" 
                         name="password" 
                         id="password" 
                         onChange={ handleChange }
-                        className="form__input"
+                        className="text-input w-full"
                     />
                 </div>
 
-                <div className="form__block">
-                    <Link to="/users/signup" className="form__link">
-                        도움말) 신규/무료가입을 원하시면 클릭하십시오.
-                    </Link> 
-                </div>
-
-                <div className="form__submit">
-                    <input type="submit" value={ translation('MENU_LOGIN') } className="form__input-btn"/>
-                </div>
-
-                <div className="form__block">
-                    <div className="form__flex">
-                        <div id="github" onClick={ handleSocialLogin }>{ translation('GITHUB') }?</div>
-                        <div>or</div>
-                        <div id="google" onClick={ handleSocialLogin }>{ translation('GOOGLE') }?</div>
-                    </div>
+                <Link to="/users/signup" className="text-gray text-lg cursor-pointer hover:text-grayHover">
+                    도움말) 신규/무료가입을 원하시면 클릭하십시오.
+                </Link> 
+              
+                <div className="flex flex-row-reverse">
+                    <input type="submit" value={ translation('MENU_LOGIN') } className="submit-btn py-3 px-5"/>
                 </div>
             </form>
+
+            <div className="mb-5">
+                <div className="flex gap-3">
+                    <div id="github" onClick={ handleSocialLogin } className="text-btn font-bold">
+                        { translation('GITHUB') }?
+                    </div>
+                    <div>or</div>
+                    <div id="google" onClick={ handleSocialLogin } className="text-btn font-bold">
+                        { translation('GOOGLE') }?
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

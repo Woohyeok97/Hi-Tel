@@ -3,13 +3,11 @@
 @tailwind utilities;
 
 
-
-
 /* @layer를 사용하여 purge 최적화에 포함시킴 */
 
 @layer base {
     body {
-        @apply bg-bgColor text-white font-default;
+        @apply bg-bgColor text-white font-default h-screen;
     }
     input {
         @apply font-default;
@@ -23,6 +21,9 @@
         border: none;
         box-sizing: border-box;
         resize: none;
+    }
+    h1 {
+        margin: 0;
     }
     a {
         color: inherit;
@@ -65,6 +66,9 @@
     /* 유저 프로필 이미지 */
     .user-img {
         @apply min-w-[40px] h-[40px] rounded-full bg-white lg:min-w-[50px] lg:h-[50px];
+    }
+    .profile-img {
+        @apply min-w-[150px] h-[150px] rounded-full bg-white lg:min-w-[200px] lg:h-[200px];
     }
 
     /* 해쉬태그 */

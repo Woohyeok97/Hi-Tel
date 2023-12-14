@@ -30,17 +30,14 @@ export default function HomePage() {
         }
     }
 
- 
-    // 로그아웃하면 fetchPostList()가 안되는 에러발견..
-    // user랑 상관없는데 왜..?(firebase 보안설정때문임)
     useEffect(() => {
         fetchPostList()
     }, [])
     
 
     return (
-        <div className="page">
-            {/* <div className="page__title">{ translation('MENU_HOME') }</div> */}
+        <div className="">
+            <div className="page-header">{ translation('MENU_HOME') }</div>
             <div>
             { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
             </div>

@@ -110,63 +110,64 @@ export default function ProfilePage() {
     console.log(userInfo)
     return (
         <>{ userInfo && 
-        <div className="page">
+        <div className="">
+            <div className="flex flex-col pb-10 border-gray border-b-2">
+                <div className="flex justify-between mb-10">
+                    <img src={profile?.photoUrl} className="profile-img"/>
 
-            <div className="profile">
-                <div className="profile__header">
-                    <img src={profile?.photoUrl} className="profile__user-img"/>
-                    <div className="profile__flex-between">
-                        <div className={`profile__info`}>
-                            <div>{ userInfo?.myPosts?.length || 0 }</div>
+                    <div className="flex justify-between gap-10">
+                        <div className={`flex flex-col text-btn justify-center items-center cursor-pointer text-2xl lg:text-3xl`}>
+                            <div className={`text-3xl lg:text-4xl`}>
+                                { userInfo?.myPosts?.length || 0 }
+                            </div>
                             <span>{ translation('POST') }</span>
                         </div>
-                        <div className={`profile__info ${false && 'profile__info-no'}`}>
-                            <div>{ userInfo?.follower?.length || 0 }</div>
+                        <div className={`flex flex-col text-btn justify-center items-center cursor-pointer text-2xl lg:text-3xl`}>
+                            <div className={`text-3xl lg:text-4xl`}>
+                                { userInfo?.follower?.length || 0 }
+                            </div>
                             <span>{ translation('FOLLOWER') }</span>
                         </div>
-                        <div className={`profile__info ${false && 'profile__info-no'}`}>
-                            <div>{ userInfo?.following?.length || 0 }</div>
+                        <div className={`flex flex-col text-btn justify-center items-center cursor-pointer text-2xl lg:text-3xl`}>
+                            <div className={`text-3xl lg:text-4xl`}>
+                                { userInfo?.following?.length || 0 }
+                            </div>
                             <span>{ translation('FOLLOWING') }</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="profile__user">
-                    <div className="profile__flex-between">
-                        <div>
-                            <div className="profile__name">{ profile?.displayName || "이름미지정" }</div>
-                            <div className="profile__email">{ profile?.email }</div>
+                <div className="flex justify-between">
+                    <div>
+                        <div className="text-3xl font-bold">
+                            { profile?.displayName || "이름미지정" }
                         </div>
-                        
-                        { profile?.uid && user?.uid !== profile?.uid ? 
-                        <FollowBtn targetUid={ profile?.uid }/> 
-                        : 
-                        <div className="profile__utils">
-                            <Link to='/notification' className="profile__noti">
-                                { translation('MENU_NOTI') }
-                            </Link>
-                            <Link to="/profile/edit" className="profile__edit">
-                                { translation('EDIT') }
-                            </Link> 
-                        </div> }
+                        <div className="text-gray">{ profile?.email }</div>
                     </div>
+                    
+                    { profile?.uid && user?.uid !== profile?.uid ? 
+                    <FollowBtn targetUid={ profile?.uid }/> 
+                    :                     
+                    <Link to="/profile/edit" className="text-btn underline underline-offset-2">
+                        { translation('EDIT') }
+                    </Link> }
                 </div>
             </div>
 
-            <div className="profile__tabs">
-                <div className="profile__flex">
-                    <div className={`profile__tab ${ activeTab === 'myPosts' && 'profile__tab--active' }`}
-                        onClick={() => setActiveTab('myPosts')}>
-                        { translation('POST') }
-                    </div>
-
-                    {/* like탭은 나의 프로필 페이지에서 렌더링 */}
-                    { profile?.uid === user?.uid &&
-                    <div className={`profile__tab ${ activeTab === 'likePosts' && 'profile__tab--active' }`}
-                        onClick={() => setActiveTab('likePosts')}>
-                        { translation('LIKE') }
-                    </div> }
+            <div className="flex gap-5 py-8">
+                <div className={`text-gray hover:text-grayHover font-bold cursor-pointer text-2xl
+                ${ activeTab === 'myPosts' && 'text-white hover:text-whiteHover' }`}
+                    onClick={() => setActiveTab('myPosts')}>
+                    { translation('POST') }
                 </div>
+
+                {/* like탭은 나의 프로필 페이지에서 렌더링 */}
+                { profile?.uid === user?.uid &&
+                <div className={`text-gray hover:text-grayHover font-bold cursor-pointer text-2xl
+                ${ activeTab === 'likePosts' && 'text-white hover:text-whiteHover' }`}
+                    onClick={() => setActiveTab('likePosts')}>
+                    { translation('LIKE') }
+                </div> }
             </div>
 
             <div>

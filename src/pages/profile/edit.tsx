@@ -70,14 +70,14 @@ export default function EditProfilePage() {
 
 
     return (
-        <div className="page">
-            <div className="page__title">{ translation('PROFILE_EDIT') }</div>
+        <div className="">
+            <div className="page-header">{ translation('PROFILE_EDIT') }</div>
 
-            <form onSubmit={ handleSubmit } className="form">
-                <div className="form__block">
-                    <div className="form__block">
-                        <label htmlFor="name">{ translation('PROFILE_EDIT_NAME') }</label>
-                    </div>
+            <form onSubmit={ handleSubmit } className="flex flex-col pt-5 mb-10">
+                <div className="mb-5">
+                    <label htmlFor="name" className="font-bold block pb-3 pl-3">
+                        { translation('PROFILE_EDIT_NAME') }
+                    </label>
                     <input 
                         type="text" 
                         name="name" 
@@ -85,12 +85,12 @@ export default function EditProfilePage() {
                         onChange={ handleNameChange }
                         value={ displayName }
                         placeholder={ !user?.displayName ? '이름을 설정하십시오.' : '' }
-                        className="form__input"
+                        className="text-input w-full"
                     />
                 </div>
 
-                <div className="form__submit">
-                    <input type="submit" value={ translation('PROFILE_EDIT') } className="form__input-btn"/>
+                <div className="flex flex-row-reverse">
+                    <input type="submit" value={ translation('PROFILE_EDIT') } className="submit-btn py-3 px-5"/>
                 </div>
             </form>
         </div>

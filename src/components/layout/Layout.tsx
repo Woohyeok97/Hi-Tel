@@ -11,11 +11,11 @@ export default function Layout({ children } : LayoutProps) {
     return (
         <div className="relative h-screen w-[600px] mx-auto lg:w-full">
             {/* 헤더 : 태블릿, 모바일 버전일때 렌더링 */}
-            <header className='shadow-border bg-bgColor flex justify-center items-center fixed top-0 max-w-[600px] w-full h-20 p-5 text-5xl lg:hidden'>
+            <header className='shadow-border bg-bgColor flex justify-center items-center fixed top-0 max-w-[600px] w-full h-[80px] p-5 text-5xl lg:hidden'>
                 HI-TEL
             </header>
 
-            <div className="mt-20 mb-25 p-3 lg:ml-[360px] h-full lg:m-0 lg:p-20 lg:overflow-y-auto">
+            <div className="mt-[80px] mb-[100px] p-3 lg:ml-[360px] h-full lg:m-0 lg:p-20 lg:overflow-y-auto">
                 {children}
             </div>
 

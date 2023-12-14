@@ -34,8 +34,8 @@ export default function NotificationPage() {
     }, [fetchNotifications, user?.uid])
     
     return (
-        <div className="page">
-            <div className="page__title">
+        <div className="">
+            <div className="page-header">
                 { translation('MENU_NOTI') }
             </div>
             <div>

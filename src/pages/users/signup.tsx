@@ -141,72 +141,72 @@ export default function SignupPage() {
 
     return (
         <div className="page">
-            <div className="page__title">{ translation('MENU_SIGNUP') }</div>
+            <div className="page-header">{ translation('MENU_SIGNUP') }</div>
 
-            <form onSubmit={ handleSubmit } className="form">
-                <div className="form__block">
-                    <div className="form__block">
-                        <label htmlFor="email">{ translation('EMAIL') }</label>
-                    </div>
+            <form onSubmit={ handleSubmit } className="flex flex-col mb-10">
+                <div className="mb-5">
+                    <label htmlFor="email" className="font-bold block pb-3 pl-3">
+                        { translation('EMAIL') }
+                    </label>
                     <input 
                         type="email" 
                         name="email"
                         id="email" 
                         onChange={ handleChange } 
-                        className="form__input"
+                        className="text-input w-full"
                     />
                 </div>
 
-                <div className="form__block">
-                    <div className="form__block">
-                        <label htmlFor="password">{ translation('PASSWORD') }</label>
-                    </div>
+                <div className="mb-5">
+                    <label htmlFor="password" className="font-bold block pb-3 pl-3">
+                        { translation('PASSWORD') }
+                    </label>
                     <input 
                         type="password" 
                         name="password" 
                         id="password"
                         onChange={ handleChange } 
-                        className="form__input"
+                        className="text-input w-full"
                     />
                 </div>
 
-                <div className="form__block">
-                    <div className="form__block">
-                        <label htmlFor="passwordConfirm">{ translation('PASSWORD_CONFIRM') }</label>
-                    </div>
+                <div className="mb-5">
+                    <label htmlFor="passwordConfirm" className="font-bold block pb-3 pl-3">
+                        { translation('PASSWORD_CONFIRM') }
+                    </label>
                     <input 
                         type="password" 
                         name="passwordConfirm" 
                         id="passwordConfirm" 
                         onChange={ handleChange } 
-                        className="form__input"
+                        className="text-input w-full"
                     />
                 </div>
 
-                <div className="form__block">
-                    <Link to="/users/login" className="form__link">
-                        도움말) 기존회원이라면 클릭하십시오.
-                    </Link> 
-                </div>
 
-                <div className="form__block">
-                { errorMessage && <div className="form__error">안내) { errorMessage }</div> }
-                </div>
+                { errorMessage && 
+                <div className="mb-5">
+                    <div className="text-warning text-lg">안내) { errorMessage }</div>
+                </div> }
 
-                <div className="form__submit">
-                    <input type="submit" value={ translation('MENU_SIGNUP') } className="form__input-btn"
+                <Link to="/users/login" className="text-gray text-lg cursor-pointer hover:text-grayHover">
+                    도움말) 기존회원이라면 클릭하십시오.
+                </Link> 
+
+                <div className="flex flex-row-reverse">
+                    <input type="submit" value={ translation('MENU_SIGNUP') } className="submit-btn py-3 px-5"
                     disabled={!!errorMessage}/>
                 </div>
 
                 {/* 소셜 로그인 */}
-                <div className="form__block">
-                    <div className="form__flex">
-                        <div id="github" onClick={ handleSocialLogin }>
-                        { translation('GITHUB') }?
+                <div className="mb-5">
+                    <div className="flex gap-3">
+                        <div id="github" onClick={ handleSocialLogin } className="text-btn font-bold">
+                            { translation('GITHUB') }?
                         </div>
                         <div>or</div>
-                        <div id="google" onClick={ handleSocialLogin }>
-                        { translation('GOOGLE') }
+                        <div id="google" onClick={ handleSocialLogin } className="text-btn font-bold">
+                            { translation('GOOGLE') }
                         </div>
                     </div>
                 </div>
