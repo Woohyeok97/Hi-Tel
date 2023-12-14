@@ -1,11 +1,13 @@
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import AuthContext from "context/AuthContext";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
-import { PostType } from "interface";
+// components
 import PostItem from "components/post/PostItem";
 // hooks
 import useTranslation from "hooks/useTranslation";
+// 데이터 타입
+import { PostType } from "interface";
 
 
 export default function SearchPage() {
@@ -38,29 +40,27 @@ export default function SearchPage() {
 
 
     return (
-        <div className="page">
-            <div className="page__title">{ translation('MENU_SEARCH') }</div>
+        <div className="">
+            <div className="page-header">{ translation('MENU_SEARCH') }</div>
 
-            <div className="form">
-                <div className="form__block">
-                    <input 
-                        id="search"
-                        className="form__input"
-                        onChange={ handleQueryChange }
-                        placeholder={ user?.uid ? "검색어를 입력하십시오." : "접속이후 이용해주십시오." }
-                        disabled={ !user?.uid }
-                    />
-                </div>
+            <div className="mb-5">
+                <input 
+                    id="search"
+                    className="text-input w-full"
+                    onChange={ handleQueryChange }
+                    placeholder={ user?.uid ? "검색어를 입력하십시오." : "접속이후 이용해주십시오." }
+                    disabled={ !user?.uid }
+                />
             </div>
 
-            <div className="search">
-                <div className="search__tabs">
-                    <div className={`search__tab ${'search__tab--active'}`}>
+            <div className="border-gray border-t-2">
+                <div className="py-6">
+                    <div className={`text-btn font-bold text-2xl`}>
                         { translation('POST') }
                     </div> 
                 </div>
 
-                <div className="search__list">
+                <div className="">
                 { searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
                 </div>
             </div>

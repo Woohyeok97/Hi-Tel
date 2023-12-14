@@ -120,7 +120,7 @@ export default function Navbar() {
                     onKeyUp={ handleCommandEnter }
                     value={ command }
                     placeholder={ terminalMessage }
-                    className=" bg-darkBlue p-3 grow"
+                    className="text-input grow"
                 />
             </div>
         </div>

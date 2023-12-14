@@ -82,40 +82,43 @@ export default function PostForm() {
 
 
     return (
-        <form onSubmit={ handleSubmit } className="form">
-            {/* 글입력 */}
-            <div className="form__block">
-                <textarea 
-                    id='content'
-                    className="form__textarea"
-                    onChange={ handleContentChange }
-                    spellCheck={false}
-                    placeholder="> 내용을 입력해주세요."
-                />
-            </div>
+        <form onSubmit={ handleSubmit } className="flex flex-col gap-3">
+            <textarea 
+                id='content'
+                className="textarea grow min-h-[360px]"
+                onChange={ handleContentChange }
+                spellCheck={false}
+                placeholder="내용을 입력해주십시오."
+            />
         
-            <div className="form__block">
-                <div className="form__hashTag-area">
-                    {/* 해쉬태그 */}
-                { hashTagList?.length > 0 && hashTagList?.map((item) => 
-                    <span key={item} id={item} onClick={ handleHashTagDelete } className="form__hashTag">
+            {/* 해쉬태그 */}
+            <div className="bg-darkBlue">
+                { hashTagList?.length > 0 && 
+                <div className="pt-4 px-4">
+                    { hashTagList?.map((item) => 
+                    <span key={item} id={item} className="hash-tag text-btn hover:text-warningHover"
+                        onClick={ handleHashTagDelete }>
                         #{ item }
                     </span> )}
+                </div> }
 
-                    {/* 해쉬태그 입력 */}
-                    <input
-                        type='text'
-                        className="form__input"
-                        onChange={ handleHashTagChange }
-                        onKeyUp={ handleAddHashTag }
-                        value={ hashTag }
-                        placeholder='> 해쉬태그 + 스페이스바 (최대 3개)'
-                    />
-                </div>
+                <input
+                    type='text'
+                    className="text-input"
+                    onChange={ handleHashTagChange }
+                    onKeyUp={ handleAddHashTag }
+                    value={ hashTag }
+                    placeholder='> 해쉬태그 + 스페이스바 (최대 3개)'
+                />
             </div>
 
-            <div className="form__submit">
-                <input type="submit" value={ translation('MENU_WRITE') } className="form__input-btn" disabled={ !content }/>
+            <div className="flex flex-row-reverse">
+                <input
+                    type="submit" 
+                    value={ translation('MENU_WRITE') } 
+                    className="submit-btn py-3 px-5" 
+                    disabled={ !content }
+                />
             </div>
         </form>
     )

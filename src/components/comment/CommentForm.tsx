@@ -1,4 +1,3 @@
-import styles from './Comment.module.scss'
 import { useContext, useState } from 'react'
 import AuthContext from 'context/AuthContext'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
@@ -65,19 +64,21 @@ export default function CommentForm({ post } : CommentFormProps) {
 
     
     return (
-        <form onSubmit={ handleSubmit } className={ styles.commentForm }>
+        <form onSubmit={ handleSubmit } className="flex flex-col items-end mb-10">
             <textarea 
-                className={ styles.commentForm__textarea }
+                className="p-3 text-white bg-darkBlue w-full"
                 onChange={ handleContentChange }
                 value={ content }
                 placeholder={ user?.uid ? '덧글을 입력하십시오.' : '접속이후 이용해주십시오.' }
                 disabled={ !user?.uid }
                 spellCheck={false}
             />
-            <div className={ styles.commentForm__flexReverse }>
-                <input type='submit' value={ translation('COMMENT') } className={ styles.commentForm__inputBtn }
-                    disabled={!(user?.uid && content)}/>
-            </div>
+            <input 
+                type='submit'
+                value={ translation('COMMENT') } 
+                className="submit-btn py-3 px-5"
+                disabled={!(user?.uid && content)}
+            />
         </form>
     )
 }

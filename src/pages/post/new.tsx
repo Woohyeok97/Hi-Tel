@@ -7,8 +7,10 @@ export default function NewPostPage() {
     const { translation } = useTranslation()
 
     return (
-        <div className="page">
-            <div className="page__title">{ `${translation('POST')} ${translation('WRITE')}` }</div>
+        <div className="">
+            <div className="page-header">
+                { `${translation('POST')} ${translation('WRITE')}` }
+            </div>
             <PostForm/>
         </div>
     )

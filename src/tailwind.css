@@ -31,23 +31,45 @@
 }
 
 @layer components {
+    /* 페이지 헤더 */
+    .page-header {
+        @apply font-bold text-4xl mb-5 p-3;
+    }
     .shadow-border {
         border-top: 3px solid rgba(0, 0, 255, 1);
         border-bottom: 5px solid #000000;
         border-right: 5px solid #000000;
         border-left: 3px solid rgba(0, 0, 255, 1);
     }
+
+    /* input  */
     .text-input {
-        @apply text-white;
+        @apply text-white bg-darkBlue p-4;
     } 
+    .textarea {
+        @apply text-white bg-darkBlue p-4;
+    }
+
+    /* 버튼 */
     .text-btn {
         @apply cursor-pointer text-white hover:text-whiteHover;
     }
     .delete-btn {
         @apply cursor-pointer text-warning hover:text-warningHover;
     }
+    .submit-btn {
+        @apply cursor-pointer text-white hover:text-whiteHover font-bold text-2xl;
+    }
+
+
+    /* 유저 프로필 이미지 */
     .user-img {
         @apply min-w-[40px] h-[40px] rounded-full bg-white lg:min-w-[50px] lg:h-[50px];
+    }
+
+    /* 해쉬태그 */
+    .hash-tag {
+        @apply text-blue-500 font-semibold pr-3;
     }
 }
 
