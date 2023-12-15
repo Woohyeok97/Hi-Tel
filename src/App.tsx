@@ -2,9 +2,14 @@ import './tailwind.css'
 import { useContext } from "react";
 import AuthContext from "context/AuthContext";
 import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 // components
 import Router from "Router";
 import Layout from "components/layout/Layout";
+
+// 리액트쿼리 클라이언트
+const queryClient = new QueryClient()
 
 
 function App() {
@@ -12,9 +17,12 @@ function App() {
   
     return (
         <RecoilRoot> 
-            <Layout>
-            { init ? <Router isAuthentication={ !!user }/> : '하이텔' }
-            </Layout>
+            <QueryClientProvider client={ queryClient }>
+                <Layout>
+                { init ? <Router isAuthentication={ !!user }/> : '하이텔' }
+                </Layout>
+                <ReactQueryDevtools/>
+            </QueryClientProvider>
         </RecoilRoot>
     );
 }

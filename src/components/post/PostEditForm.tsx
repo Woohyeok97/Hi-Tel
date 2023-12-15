@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import AuthContext from "context/AuthContext"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
@@ -12,8 +13,8 @@ import useTranslation from "hooks/useTranslation"
 export default function PostEditForm() {
     const { user } = useContext(AuthContext)
     const { id } = useParams()
-    // 기존게시물
-    const [ prevPost, setPrevPost ] = useState<PostType | null>(null)
+    const queryClient = useQueryClient()
+    // const [ prevPost, setPrevPost ] = useState<PostType | null>(null)
     const [ content, setContent ] = useState<string>('')
     const [ hashTagList, setHashTagList ] = useState<string[]>([])
     // 입력중인 해쉬태그
@@ -21,44 +22,48 @@ export default function PostEditForm() {
     const navigate = useNavigate()
     const { translation } = useTranslation()
 
-    // 기존게시물 요청 함수
-    const fetchPrevPost = async (id : string) => {
-        try {
+
+    // 기존 게시글 요청함수
+    const fetchPrevPost = async () => {
+        if(id) {
             const postRef = doc(db, 'posts', id)
             const result = await getDoc(postRef)
 
-            // 게시물과 로그인정보가 일치하는지 확인
-            if(result.data()?.uid !== user?.uid) {
-                alert('너 누구야')
-                navigate('/')
-            } else {
-                setPrevPost({ ...result.data() as PostType, id : result.id })
-                setContent(result.data()?.content)
-                setHashTagList(result.data()?.hashTag)
-            }
-        } catch(err : any) {
-            console.log(err?.code)
+            return result
         }
     }
+
+    const { data : prevPost, isError, error, isLoading } = useQuery('prevPost', fetchPrevPost, {
+        enabled : !!id,
+        refetchOnWindowFocus : false,
+        staleTime : 100000,
+    })
+
+    // 게시글 수정 뮤테이션
+    const mutation = useMutation({
+        mutationFn : async (id : string) => {
+            const postRef = doc(db, 'posts', id)
+            await updateDoc(postRef, {
+                content : content,
+                hashTag : hashTagList, 
+            })
+        }, 
+        onSuccess : () => {
+            navigate('/')
+            queryClient.invalidateQueries('prevPost')
+            console.log('게시글을 편집하셨습니다.')
+        },
+        onError : (err : any) => {
+            console.log(err?.code)
+        }
+    })
 
     // submit 핸들러
     const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault()
 
         if(prevPost?.id) {
-            try {
-                const postRef = doc(db, 'posts', prevPost?.id)
-                // 게시글 수정
-                await updateDoc(postRef, {
-                    content : content,
-                    hashTag : hashTagList, 
-                })
-    
-                navigate('/')
-                console.log('게시글을 편집하셨습니다.')
-            } catch(err : any) {
-                console.log(err?.code)
-            }
+            mutation.mutate(prevPost?.id)
         }
     }
 
@@ -98,13 +103,31 @@ export default function PostEditForm() {
         }  
     }
 
-    // 기존게시물 요청(id가 있을때만)
+    // prevPost로 상태업데이트(페칭한 or 캐싱된 데이터사용)
     useEffect(() => {
-        if(id) fetchPrevPost(id)
-    }, [id])
+        if(prevPost?.id && prevPost?.data()?.uid !== user?.uid) {
+            alert('너 누구야')
+            navigate('/')
+            return
+        }
+        setContent(prevPost?.data()?.content)
+        setHashTagList(prevPost?.data()?.hashTag)
+        
+    }, [prevPost?.id])
+
+
+    if(isLoading) return (
+        <div>기다려주셈</div>
+    )
+
+    if(isError) {
+        console.log(error)
+
+        return <div>에러남</div>    
+    }
+
 
     return (
-        <> { prevPost &&  // prevPost가 준비되면 렌더링
         <form onSubmit={ handleSubmit } className="flex flex-col gap-3">
             <textarea 
                 id='content'
@@ -144,6 +167,6 @@ export default function PostEditForm() {
                     disabled={ !content }
                 />
             </div>
-        </form> } </>
+        </form>
     )
 }
