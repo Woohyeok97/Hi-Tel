@@ -1,7 +1,7 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "context/AuthContext";
 import { Link, useParams } from "react-router-dom";
-import { collection, doc, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
 // 컴포넌트
 import PostItem from "components/post/PostItem";
@@ -10,106 +10,103 @@ import FollowBtn from "components/followBtn/FollowBtn";
 import useTranslation from "hooks/useTranslation";
 // 데이터 타입
 import { FollowType, PostType, ProfileType } from "interface";
+import { useQueries, useQuery } from "react-query";
 
-
-interface UserInfoType {
-    myPosts : PostType[],
-    likePosts? : PostType[],
-    following : string[]
-    follower : string[],
-}
 
 type TabType = 'myPosts' | 'likePosts'
 
 export default function ProfilePage() {
     const { id } = useParams()
     const { user } = useContext(AuthContext)
-    // 탭 상태관리
     const [ activeTab, setActiveTab ] = useState<TabType>('myPosts')
-    const [ profile, setProfile ] = useState<ProfileType | null>(null)
-    // 유저정보 상태관리
-    const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null)
     const { translation } = useTranslation()
 
-    // 프로필 요청 함수
-    const fetchProfile = useCallback(() => {
+    // 유저 프로필 요청함수
+    const fetchProfile = async () => {
         if(id) {
-            try {
-                const profileRef = doc(db, 'profiles', id)
-                onSnapshot(profileRef, (doc) => {
-                    setProfile({ ...doc?.data(), uid : doc?.id} as ProfileType)
-                })
-            } catch(err : any) {
-                console.log(err?.code)
+            const profileRef = doc(db, 'profiles', id)
+            const result = await getDoc(profileRef)
+    
+            if(!result.exists()) {
+                return null
             }
+            return { ...result?.data(), uid : result?.id } as ProfileType
         }
+    }
+
+    // 유저 프로필
+    const { data : profile, isError, isLoading } = useQuery([`profile-${id}`], fetchProfile, {
+        enabled : !!id,
+        refetchOnWindowFocus : false,
+        staleTime : 10000,
+    })
+
+    const fetchPost = async () => {
+        const postsRef = collection(db, 'posts')
+        const postsQuery = query(postsRef, where('uid', '==', profile?.uid), orderBy('createdAt', 'desc'))
+        const result = await getDocs(postsQuery)
+        
+        return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
+    }
+
+    const fetchLikePost = async () => {
+        const postsRef = collection(db, 'posts')
+        const likesQuery = query(postsRef, where('likes', 'array-contains', user?.uid), orderBy('createdAt', 'desc'))
+        const result = await getDocs(likesQuery)
+        
+        return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
+    }
+
+    const fetchFollower = async () => {
+        if(profile?.uid) {
+            const followerRef = doc(db, 'follower', profile?.uid)
+            const result = await getDoc(followerRef)
+
+            return result?.data()?.users?.map((item : FollowType) => item?.uid)
+        }
+    }
+
+    const fetchFollowing = async () => {
+        if(profile?.uid) {
+            const followingRef = doc(db, 'following', profile?.uid)
+            const result = await getDoc(followingRef)
+      
+            return result?.data()?.users?.map((item : FollowType) => item?.uid)
+        }
+    }
+
+    const queryOptions = {
+        enabled : !!profile,
+        refetchOnWindowFocus : false,
+        staleTime : 10000,
+    }
+    const [ myPosts, likePosts, follower, following ] = useQueries([
+        { queryKey : ['myPosts', profile?.uid], queryFn : fetchPost, ...queryOptions },
+        { queryKey : ['likePosts', profile?.uid], queryFn : fetchLikePost, ...queryOptions, enabled : !!profile && profile?.uid === user?.uid },
+        { queryKey : ['follower', profile?.uid, user?.uid], queryFn : fetchFollower, ...queryOptions },
+        { queryKey : ['following', profile?.uid, user?.uid], queryFn : fetchFollowing, ...queryOptions },
+    ])
+
+    useEffect(() => {
+        setActiveTab('myPosts')
     }, [id])
 
-    // 유저정보 요청 함수(한번에 상태 업데이트)
-    const fetchUserInfo = useCallback(() => {
-        if(profile?.uid) {
 
-            try {
-                // 각각의 정보를 onSnapshot으로 가져온뒤, fetchData에 저장
-                const postsRef = collection(db, 'posts')
-                const postsQuery = query(postsRef, where('uid', '==', profile?.uid), orderBy('createdAt', 'desc'))
-                const followerRef = doc(db, 'follower', profile?.uid)
-                const followingRef = doc(db, 'following', profile?.uid)
+    const loadingState = [ myPosts, likePosts, follower, following ]?.some(query => query.isLoading);
+    const errorState = [ myPosts, likePosts, follower, following ]?.every(query => !query.isLoading && !query.isError);
 
-                onSnapshot(postsQuery, (snapshot) => {
-                    // fetchData.postList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                    setUserInfo((prev) => ({ ...prev, myPosts : result } as UserInfoType))
-                })
-                onSnapshot(followerRef, (doc) => {
-                    // fetchData.follower = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
-                    const result = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
-                    setUserInfo((prev) => ({ ...prev, follower : result } as UserInfoType))
-                })
-                onSnapshot(followingRef, (doc) => {
-                    // fetchData.following = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
-                    const result = doc?.data()?.users?.map((item : FollowType) => (item?.uid))
-                    setUserInfo((prev) => ({ ...prev, following : result } as UserInfoType))
-                })
+    if(isError) return <div>에러발생</div>
 
-                // 로그인 상태일때만 추천 게시글 가져오기 
-                if(profile?.uid === user?.uid) {
-                    const likesQuery = query(postsRef, where('likes', 'array-contains', user?.uid), orderBy('createdAt', 'desc'))
+    if(isLoading) return <div>로딩중..</div>
 
-                    onSnapshot(likesQuery, (snapshot) => {
-                        // fetchData.likePostList = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                        const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id } as PostType))
-                        setUserInfo((prev) => ({ ...prev, likePosts : result } as UserInfoType))
-                    })
-                }
+    if(!profile) return <div>유저정보가 없습니다.</div>
 
-            } catch(err : any) {
-                console.log(err?.code)
-            }
-        }
-    }, [profile?.uid])
+    if(loadingState) return <div>로딩중..</div>
+
+    if(!errorState) return <div>유저정보 에러발생</div>
 
 
-    // 프로필 가져오기
-    useEffect(() => {
-        if(id) {
-            fetchProfile()
-            setActiveTab('myPosts')
-        }
-    }, [fetchProfile, id])
-
-    // 유저정보 가져오기
-    useEffect(() => {
-        if(profile?.uid)  fetchUserInfo()
-    }, [fetchUserInfo, profile?.uid])
-
-    // console.log('렌더링') // 리팩전 -> 전부 3번
-    // console.log('렌더링') // 각각 userInfo 업데이트 -> 4번
-    // 가끔씩 팔로우/언팔로우 버튼을 누르면 팔로잉/팔로워 둘다 올라가던데 왜그러지..
-    // console.log(profile, userInfo)
-    console.log(userInfo)
     return (
-        <>{ userInfo && 
         <div className="">
             <div className="flex flex-col pb-10 border-gray border-b-2">
                 <div className="flex justify-between mb-10">
@@ -118,19 +115,19 @@ export default function ProfilePage() {
                     <div className="flex justify-between gap-10">
                         <div className={`flex flex-col text-btn justify-center items-center cursor-pointer text-2xl lg:text-3xl`}>
                             <div className={`text-3xl lg:text-4xl`}>
-                                { userInfo?.myPosts?.length || 0 }
+                                { myPosts?.data?.length || 0 }
                             </div>
                             <span>{ translation('POST') }</span>
                         </div>
                         <div className={`flex flex-col text-btn justify-center items-center cursor-pointer text-2xl lg:text-3xl`}>
                             <div className={`text-3xl lg:text-4xl`}>
-                                { userInfo?.follower?.length || 0 }
+                                { follower?.data?.length || 0 }
                             </div>
                             <span>{ translation('FOLLOWER') }</span>
                         </div>
                         <div className={`flex flex-col text-btn justify-center items-center cursor-pointer text-2xl lg:text-3xl`}>
                             <div className={`text-3xl lg:text-4xl`}>
-                                { userInfo?.following?.length || 0 }
+                                { following?.data?.length || 0 }
                             </div>
                             <span>{ translation('FOLLOWING') }</span>
                         </div>
@@ -171,9 +168,12 @@ export default function ProfilePage() {
             </div>
 
             <div>
-            { userInfo[activeTab]?.map((item) => <PostItem key={item?.id} post={ item }/>) }
-            {/* { userInfo?.postList?.map((item) => <PostItem key={item?.id} post={ item }/>) } */}
+            { activeTab === 'myPosts' && myPosts?.data?.map((item) => <PostItem key={item?.id} post={ item }/> )}
+
+            { activeTab === 'likePosts' && profile?.uid === user?.uid &&
+                likePosts?.data?.map((item) => <PostItem key={item?.id} post={ item }/> )
+            }
             </div>
-        </div> } </>
+        </div>
     )
 }

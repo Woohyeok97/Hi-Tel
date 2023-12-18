@@ -13,7 +13,6 @@ import CommentItem from "components/comment/CommentItem"
 import { PostType } from "interface"
 
 
-
 export default function PostPage() {
     const { user } = useContext(AuthContext)
     const { id } = useParams()
