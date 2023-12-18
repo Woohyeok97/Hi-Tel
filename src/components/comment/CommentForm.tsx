@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import { useMutation, useQueryClient } from 'react-query'
 import AuthContext from 'context/AuthContext'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
@@ -9,7 +10,6 @@ import useNotification from 'hooks/useNotification'
 import useTranslation from 'hooks/useTranslation'
 
 
-
 interface CommentFormProps {
     post : PostType,
 }
@@ -17,15 +17,13 @@ interface CommentFormProps {
 export default function CommentForm({ post } : CommentFormProps) {
     const { user } = useContext(AuthContext)
     const [ content, setContent ] = useState<string>('')
+    const queryClient = useQueryClient()
     const { createNotification } = useNotification({ targetUid : post?.uid })
     const { translation } = useTranslation()
 
-
-    // submit 핸들러
-    const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
-        e?.preventDefault()
-
-        try {
+    
+    const postMutation = useMutation({
+        mutationFn : async () => {
             const postRef = doc(db, 'posts', post?.id)
             const insertComment = {
                 uid : user?.uid,
@@ -38,22 +36,29 @@ export default function CommentForm({ post } : CommentFormProps) {
                     second : '2-digit'
                 }), 
             }
-
-            // 게시글 comments필드에 댓글추가
             await updateDoc(postRef, {
                 comments : arrayUnion(insertComment)
             })
-
+        },
+        onSuccess : async () => {
             if(post?.uid !== user?.uid) {
                 await createNotification('회원님 게시글에 덧글이 생성되었습니다.', `/post/${post?.id}`)
             }
-
+            
             setContent('') // 댓글작성후, content초기화
-            console.log('덧글을 작성하였습니다.')
+            queryClient.invalidateQueries(`post-${post?.id}`)
 
-        } catch(err : any) {
+            console.log('덧글을 작성하였습니다.')
+        },
+        onError : (err : any) => {
             console.log(err?.code)
         }
+    })
+
+    // submit 핸들러
+    const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
+        e?.preventDefault()
+        postMutation.mutate()
     }
 
     // content 핸들러

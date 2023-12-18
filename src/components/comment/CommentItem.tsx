@@ -7,6 +7,7 @@ import useTranslation from 'hooks/useTranslation'
 import { CommentType, PostType } from 'interface'
 import { arrayRemove, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
+import { useMutation, useQueryClient } from 'react-query'
 
 
 interface CommentItemProps {
@@ -16,25 +17,30 @@ interface CommentItemProps {
 
 export default function CommentItem({ comment, post } : CommentItemProps) {
     const { user } = useContext(AuthContext)
+    const queryClient = useQueryClient()
     const { translation } = useTranslation()
 
-    // 댓글삭제 핸들러
-    const handleCommentDelete = async () => {
-        const confirm = window.confirm('삭제하시겠습니까?')
-        
-        if(confirm && comment?.uid === user?.uid) {
-            try {
+    // 댓글삭제
+    const deleteMutation = useMutation({
+        mutationFn : async () => {
+            const confirm = window.confirm('삭제하시겠습니까?')
+
+            if(confirm) {
                 const postRef = doc(db, 'posts', post?.id)
                 await updateDoc(postRef, {
                     comments : arrayRemove(comment)
                 })
-    
-                console.log('덧글을 삭제하였습니다.')
-            } catch(err : any) {
-                console.log(err?.code)
             }
+        },
+        onSuccess : () => {
+            console.log('덧글을 삭제하였습니다.')
+            queryClient.invalidateQueries(`post-${post?.id}`)
+        },
+        onError : (err : any) => {
+            console.log(err?.code)
         }
-    }
+    })
+
 
     return (
         <div className="flex gap-5 mb-12 mt-3">
@@ -49,7 +55,7 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
                     </div>
                     
                     { comment?.uid === user?.uid && 
-                    <div className="delete-btn" onClick={ handleCommentDelete }>
+                    <div className="delete-btn" onClick={ () => deleteMutation.mutate() }>
                         { translation('DELETE') }
                     </div> }
                 </div>

@@ -1,7 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useContext } from "react"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import AuthContext from "context/AuthContext"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { arrayRemove, arrayUnion, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore"
+import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
 // hooks
 import useTranslation from 'hooks/useTranslation'
@@ -12,85 +13,104 @@ import CommentItem from "components/comment/CommentItem"
 import { PostType } from "interface"
 
 
+
 export default function PostPage() {
     const { user } = useContext(AuthContext)
     const { id } = useParams()
-    const [ post, setPost ] = useState<PostType | null>(null)
+    const queryClient = useQueryClient()
     const navigate = useNavigate()
     const { translation } = useTranslation()
-    
-    // 게시글 요청 핸들러 (실시간 댓글추적을 위해 onSanpshot, useCallback사용)
-    const fetchPost = useCallback(async () => {
+
+
+    const fetchPost = async () => {
         if(id) {
-            try {
-                const postRef = doc(db, 'posts', id)
-                onSnapshot(postRef, (snapshot) => {
-                    const result = { id : snapshot?.id, ...snapshot?.data() }
-                    setPost(result as PostType)
+            const postRef = doc(db, 'posts', id)
+            const result = await getDoc(postRef)
+            
+            if(!result.exists()) {
+                return null
+            }
+            return { ...result?.data(), id : result?.id } as PostType
+        }
+    }
+
+    const { data : post, isError, error, isLoading } = useQuery(`post-${id}`, fetchPost, {
+        enabled : !!id,
+        refetchOnWindowFocus : false,
+        staleTime : 100000,
+    })
+
+
+    const deleteMutation = useMutation({
+        mutationFn : async (postId : string) => {
+            const confirm = window.confirm('삭제하시겠습니까?')
+            if(!confirm) return
+            
+            const postRef = doc(db, 'posts', postId)
+            await deleteDoc(postRef)
+            
+        },
+        onSuccess : () => {
+            navigate('/')
+            console.log('삭제하셨습니다.')
+        },
+        onError : (err : any) => {
+            console.log(err?.code)
+        }
+    })
+
+    const likeMutation = useMutation({
+        mutationFn : async () => {
+            if(!user?.uid) {
+                console.log('접속이후 이용해주십시오.')
+                return
+            }
+
+            if(!post) return
+
+            const postRef = doc(db, 'posts', post?.id)
+
+            if(post?.likes?.includes(user?.uid)) {
+                await updateDoc(postRef, {
+                    likes : arrayRemove(user?.uid),
+                    likeCount : post?.likeCount ? post?.likeCount - 1 : 0
                 })
-            } catch(err : any) {
-                console.log(err?.code)
+                console.log('추천을 취소하셨습니다.')
+                
+            } else {
+                await updateDoc(postRef, {
+                    likes : arrayUnion(user?.uid),
+                    likeCount : post?.likeCount ? post?.likeCount + 1 : 1
+                })
+                console.log('게시글을 추천하셨습니다.')
             }
+        },
+        onSuccess : () => {
+            queryClient.invalidateQueries(`post-${post?.id}`);
+        },
+        onError : (err : any) => {
+            console.log(err?.code)
         }
-    }, [id])
 
-    // 게시글 삭제 핸들러
-    const handlePostDelete = async () => {
-        const confirm = window.confirm('삭제하시겠습니까?')
+    })
 
-        if(confirm && post && post?.uid === user?.uid) {
-            try {
-                const postRef = doc(db, 'posts', post?.id)
-                await deleteDoc(postRef)
+    if(isLoading) return (
+        <div>기다려주셈</div>
+    )
 
-                navigate('/')
-                console.log('삭제하셨습니다.')
-            } catch(err : any) {
-                console.log(err?.code)
-            }
-        }
+    if(isError) {
+        console.log(error)
+
+        return <div>에러남</div>    
     }
+ 
+    if(!post) return <div>해당 게시글은 없습니다.</div> 
 
-    // 게시글 추천 핸들러
-    const handleLikePost = async () => {
-        if(!user?.uid) {
-            console.log('접속이후 이용해주십시오.')
-            return
-        }
-        if(post?.id) {
-            try {
-                const postRef = doc(db, 'posts', post?.id)
-
-                // 기존에 좋아요를 누른적이 있다면, 좋아요 취소
-                if(post?.likes?.includes(user?.uid)) {
-                    await updateDoc(postRef, {
-                        likes : arrayRemove(user?.uid),
-                        likeCount : post?.likeCount ? post?.likeCount - 1 : 0
-                    })
-                    console.log('추천을 취소하셨습니다.')
-
-                // 기존에 좋아요를 누른적이 없다면, 좋아요
-                } else {
-                    await updateDoc(postRef, {
-                        likes : arrayUnion(user?.uid),
-                        likeCount : post?.likeCount ? post?.likeCount + 1 : 1
-                    })
-                    console.log('게시글을 추천하셨습니다.')
-                }        
-            } catch(err : any) {
-                console.log(err?.code)
-            }
-        }
-    }
-
-    useEffect(() => {
-        if(id) fetchPost()
-    }, [fetchPost, id])
 
 
     return (
         <div className="">
-            { post?.id && <> 
+            { post?.id && <>
             <div className="flex flex-col pb-5 mb-10 border-gray border-b-2">
                 <div className="flex items-center gap-5 mb-5">
                     <div className="user-img"></div>
@@ -115,7 +135,7 @@ export default function PostPage() {
                     <div className="flex gap-3">
                         <div 
                             className={`text-btn ${ user?.uid && post?.likes?.includes(user?.uid) && 'post__like--active' }`} 
-                            onClick={ handleLikePost }>
+                            onClick={() => likeMutation.mutate() }>
                             { translation('LIKE') } : { post?.likeCount || 0 }
                         </div>
                         <div>{ translation('COMMENT') } : { post?.comments?.length || 0 }</div>
@@ -126,7 +146,7 @@ export default function PostPage() {
                         <Link to={`/post/edit/${post?.id}`} className="text-btn underline underline-offset-4">
                             { translation('EDIT') }
                         </Link>
-                        <div className="delete-btn" onClick={ handlePostDelete }>
+                        <div className="delete-btn" onClick={() => deleteMutation.mutate(post?.id)}> 
                             { translation('DELETE') }
                         </div>
                     </div> }
@@ -139,8 +159,7 @@ export default function PostPage() {
                     <CommentItem key={item?.uid + item?.createdAt} comment={ item } post={ post }/>) }
                 </div>
                 <CommentForm post={ post }/>
-            </div> 
-            </> }
+            </div> </> }
         </div>
     )
 }

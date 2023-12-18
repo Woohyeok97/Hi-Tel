@@ -36,7 +36,7 @@ export default function PostEditForm() {
     const { data : prevPost, isError, error, isLoading } = useQuery('prevPost', fetchPrevPost, {
         enabled : !!id,
         refetchOnWindowFocus : false,
-        staleTime : 100000,
+        staleTime : 1000,
     })
 
     // 게시글 수정 뮤테이션
