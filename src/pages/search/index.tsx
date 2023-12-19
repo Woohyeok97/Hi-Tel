@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "context/AuthContext";
-import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { useQuery } from "react-query";
+import { useRecoilState } from "recoil";
+import { searchQueryState } from "atom";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
 // components
 import PostItem from "components/post/PostItem";
@@ -10,33 +13,43 @@ import useTranslation from "hooks/useTranslation";
 import { PostType } from "interface";
 
 
+
 export default function SearchPage() {
     const { user } = useContext(AuthContext)
-    const [ searchQuery, setSearchQuery ] = useState<string>('')
-    const [ searchPosts, setSearchPost ] = useState<PostType[]>([])
+    const [ searchQuery, setSearchQuery ] = useRecoilState(searchQueryState)
+    const [ textValue, setTextValue ] = useState<string>(searchQuery)
     const { translation } = useTranslation()
 
     // 게시글 요청 함수
     const fetchPostList = async () => {
         const postsRef = collection(db, 'posts')
-        // hashTag라는 필드(배열)에 searchQuery를 포함하고 있는 doc이 있는지
         const postsQuery = query(postsRef, where('hashTag', 'array-contains', searchQuery), orderBy('createdAt', "desc"))
-        onSnapshot(postsQuery, (snapshot) => {
-            const result = snapshot?.docs?.map((item) => ({ ...item?.data(), id : item?.id }))
-            setSearchPost(result as PostType[])
-        })
+        const result = await getDocs(postsQuery)
+  
+        return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
+
+    const { data : searchPosts, isLoading } = useQuery([`post-search`, searchQuery], fetchPostList, {
+        enabled : !!searchQuery,
+        refetchOnWindowFocus : false,
+        staleTime : 30000,
+    })
     
+
     // 검색쿼리 핸들러
     const handleQueryChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e?.target;
-        setSearchQuery(value?.trim())
+        setTextValue(value?.trim())
     }
 
-    // 검색결과(게시글) 가져오기(로그인상태일때만)
     useEffect(() => {
-        if(user?.uid && searchQuery) fetchPostList()
-    }, [user?.uid, searchQuery])
+        const timer = setTimeout(() => {
+            setSearchQuery(textValue)
+        }, 500)
+
+        return () => clearTimeout(timer)
+
+    }, [textValue])
 
 
     return (
@@ -48,6 +61,7 @@ export default function SearchPage() {
                     id="search"
                     className="text-input w-full"
                     onChange={ handleQueryChange }
+                    value={ textValue }
                     placeholder={ user?.uid ? "검색어를 입력하십시오." : "접속이후 이용해주십시오." }
                     disabled={ !user?.uid }
                 />
@@ -60,9 +74,10 @@ export default function SearchPage() {
                     </div> 
                 </div>
 
+                { isLoading ? <div>Loading..</div> :
                 <div className="">
-                { searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
-                </div>
+                    { searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
+                </div> }
             </div>
         </div>
     )

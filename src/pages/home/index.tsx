@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useQuery } from "react-query";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "firebaseApp";
 // components
 import PostItem from "components/post/PostItem";
@@ -9,30 +9,26 @@ import { PostType } from "interface";
 import useTranslation from "hooks/useTranslation";
 
 
-
 export default function HomePage() {
-    const [ postList, setPostList ] = useState<PostType[]>([])
     const { translation } = useTranslation()
 
     // 게시물리스트 요청 함수
     const fetchPostList = async () => {
-        try {
-            const postsRef = collection(db, 'posts')
-            const postsQuery = query(postsRef, orderBy('createdAt', 'desc'))
+        const postsRef = collection(db, 'posts')
+        const postsQuery = query(postsRef, orderBy('createdAt', 'desc'))
+        const result = await getDocs(postsQuery)
 
-            // 실시간 리스너 부착을 위해 onSnapshot으로 가져오기
-            onSnapshot(postsQuery, (snapshot) => {
-                const result = snapshot?.docs?.map((item) => ({ ...item.data(), id : item?.id }))
-                setPostList(result as PostType[])
-            })
-        } catch(err : any) {
-            console.log(err?.code)
-        }
+        return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    useEffect(() => {
-        fetchPostList()
-    }, [])
+    const { data : postList, isError, error, isLoading } = useQuery([`post`], fetchPostList, {
+        refetchOnWindowFocus : false,
+        staleTime : 30000,
+    })
+
+    if(isError) return <div>에러발생</div>
+
+    if(isLoading) return <div>하이텔</div>
     
 
     return (

@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
     if(!profile) return <div>유저정보가 없습니다.</div>
 
-    if(loadingState) return <div>로딩중..</div>
+    if(loadingState) return <div>로딩중..!</div>
 
     if(!errorState) return <div>유저정보 에러발생</div>
 
