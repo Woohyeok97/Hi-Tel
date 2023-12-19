@@ -6,6 +6,7 @@ export interface PostType {
     email : string,
     content : string,
     createdAt : string,
+    hashTag : string[],
     likes? : string[],
     likeCount? : number,
     comments? : CommentType[],

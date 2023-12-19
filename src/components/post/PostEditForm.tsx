@@ -14,7 +14,6 @@ export default function PostEditForm() {
     const { user } = useContext(AuthContext)
     const { id } = useParams()
     const queryClient = useQueryClient()
-    // const [ prevPost, setPrevPost ] = useState<PostType | null>(null)
     const [ content, setContent ] = useState<string>('')
     const [ hashTagList, setHashTagList ] = useState<string[]>([])
     // 입력중인 해쉬태그
@@ -29,14 +28,13 @@ export default function PostEditForm() {
             const postRef = doc(db, 'posts', id)
             const result = await getDoc(postRef)
 
-            return result
+            return { ...result?.data(), id : result?.id } as PostType
         }
     }
 
-    const { data : prevPost, isError, error, isLoading } = useQuery('prevPost', fetchPrevPost, {
-        enabled : !!id,
+    const { data : prevPost, isError, isLoading } = useQuery(['prevPost'], fetchPrevPost, {
+        enabled : !!id && !!user?.uid,
         refetchOnWindowFocus : false,
-        staleTime : 1000,
     })
 
     // 게시글 수정 뮤테이션
@@ -49,8 +47,9 @@ export default function PostEditForm() {
             })
         }, 
         onSuccess : () => {
+            queryClient.invalidateQueries(`postList`)
+            queryClient.invalidateQueries(`prevPost`)
             navigate('/')
-            queryClient.invalidateQueries('prevPost')
             console.log('게시글을 편집하셨습니다.')
         },
         onError : (err : any) => {
@@ -103,28 +102,25 @@ export default function PostEditForm() {
         }  
     }
 
+
     // prevPost로 상태업데이트(페칭한 or 캐싱된 데이터사용)
     useEffect(() => {
-        if(prevPost?.id && prevPost?.data()?.uid !== user?.uid) {
+        if(!isLoading && prevPost?.uid !== user?.uid) {
             alert('너 누구야')
             navigate('/')
             return
         }
-        setContent(prevPost?.data()?.content)
-        setHashTagList(prevPost?.data()?.hashTag)
+        if(prevPost) {
+            setContent(prevPost?.content)
+            setHashTagList(prevPost?.hashTag || [])
+        }
         
     }, [prevPost?.id])
 
 
-    if(isLoading) return (
-        <div>기다려주셈</div>
-    )
+    if(isError) return <div>에러발생</div>
 
-    if(isError) {
-        console.log(error)
-
-        return <div>에러남</div>    
-    }
+    if(isLoading) return <div>로딩중..</div>
 
 
     return (

@@ -20,17 +20,13 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
     const queryClient = useQueryClient()
     const { translation } = useTranslation()
 
-    // 댓글삭제
+    // 댓글삭제 로직
     const deleteMutation = useMutation({
         mutationFn : async () => {
-            const confirm = window.confirm('삭제하시겠습니까?')
-
-            if(confirm) {
-                const postRef = doc(db, 'posts', post?.id)
-                await updateDoc(postRef, {
-                    comments : arrayRemove(comment)
-                })
-            }
+            const postRef = doc(db, 'posts', post?.id)
+            await updateDoc(postRef, {
+                comments : arrayRemove(comment)
+            })
         },
         onSuccess : () => {
             console.log('덧글을 삭제하였습니다.')
@@ -41,6 +37,13 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
         }
     })
 
+    // 댓글삭제 핸들러
+    const handleDelete = () => {
+        const confirm = window.confirm('삭제하시겠습니까?')
+        if(confirm && comment?.uid === user?.uid) {
+            deleteMutation.mutate()
+        }
+    }
 
     return (
         <div className="flex gap-5 mb-12 mt-3">
@@ -55,7 +58,7 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
                     </div>
                     
                     { comment?.uid === user?.uid && 
-                    <div className="delete-btn" onClick={ () => deleteMutation.mutate() }>
+                    <div className="delete-btn" onClick={ handleDelete }>
                         { translation('DELETE') }
                     </div> }
                 </div>

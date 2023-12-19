@@ -1,10 +1,11 @@
+import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from 'react-query'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
 // hooks
 import useTranslation from 'hooks/useTranslation'
 // 데이터 타입
 import { NotificationType } from 'interface'
-import { useNavigate } from 'react-router-dom'
 
 
 interface NotiItemProps {
@@ -13,6 +14,7 @@ interface NotiItemProps {
 
 export default function NotiItem({ notification } : NotiItemProps) {
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const { translation } = useTranslation()
     
     //알림삭제 핸들러 완성
@@ -24,6 +26,8 @@ export default function NotiItem({ notification } : NotiItemProps) {
                 await updateDoc(notiRef, {
                     isRead : true,
                 })
+
+                queryClient.invalidateQueries('notifications')
             } catch(err : any) {
                 console.log(err?.code)
             }
@@ -42,7 +46,8 @@ export default function NotiItem({ notification } : NotiItemProps) {
             try {
                 const notiRef = doc(db, 'notifications', notification?.id)
                 await deleteDoc(notiRef)
-    
+
+                queryClient.invalidateQueries('notifications')
                 console.log('알림을 삭제하셨습니다.')
             } catch(err : any) {
                 console.log(err?.code)

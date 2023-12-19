@@ -13,9 +13,11 @@ export default function Layout({ children } : LayoutProps) {
     return (
         <div className="relative min-h-screen w-[600px] mx-auto pt-[80px] pb-[120px] lg:w-full lg:p-0">
             {/* 헤더 : 태블릿, 모바일 버전일때 렌더링 */}
-            <header className='shadow-border bg-bgColor flex justify-center items-center fixed top-0 max-w-[600px] w-full h-[80px] p-5 text-5xl lg:hidden'>
-                <Link to={'/'}>HI-TEL</Link>
-            </header>
+            <div className='fixed top-0 max-w-[600px] w-full h-[80px] lg:hidden'>
+                <header className='shadow-border bg-bgColor flex justify-center items-center p-3 text-5xl mx-3'>
+                    <Link to={'/'}>HI-TEL</Link>
+                </header>
+            </div>
 
             <div className="p-3 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto">
                 {children}

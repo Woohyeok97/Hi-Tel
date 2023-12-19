@@ -21,7 +21,7 @@ export default function HomePage() {
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    const { data : postList, isError, error, isLoading } = useQuery([`post`], fetchPostList, {
+    const { data : postList, isError, error, isLoading } = useQuery([`postList`], fetchPostList, {
         refetchOnWindowFocus : false,
         staleTime : 30000,
     })

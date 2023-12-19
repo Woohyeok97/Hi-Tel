@@ -22,7 +22,7 @@ export default function CommentForm({ post } : CommentFormProps) {
     const { translation } = useTranslation()
 
     
-    const postMutation = useMutation({
+    const commentMutation = useMutation({
         mutationFn : async () => {
             const postRef = doc(db, 'posts', post?.id)
             const insertComment = {
@@ -58,7 +58,7 @@ export default function CommentForm({ post } : CommentFormProps) {
     // submit 핸들러
     const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault()
-        postMutation.mutate()
+        commentMutation.mutate()
     }
 
     // content 핸들러

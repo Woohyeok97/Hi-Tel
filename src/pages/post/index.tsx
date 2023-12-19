@@ -33,7 +33,7 @@ export default function PostPage() {
         }
     }
 
-    const { data : post, isError, error, isLoading } = useQuery(`post-${id}`, fetchPost, {
+    const { data : post, isError, isLoading } = useQuery([`post-${id}`], fetchPost, {
         enabled : !!id,
         refetchOnWindowFocus : false,
         staleTime : 100000,
@@ -86,6 +86,7 @@ export default function PostPage() {
         },
         onSuccess : () => {
             queryClient.invalidateQueries(`post-${post?.id}`);
+            queryClient.invalidateQueries(`likePosts`);
         },
         onError : (err : any) => {
             console.log(err?.code)
@@ -93,15 +94,9 @@ export default function PostPage() {
 
     })
 
-    if(isLoading) return (
-        <div>기다려주셈</div>
-    )
+    if(isLoading) return <div>Loading..</div>
 
-    if(isError) {
-        console.log(error)
-
-        return <div>에러남</div>    
-    }
+    if(isError) return <div>에러발생</div>
  
     if(!post) return <div>해당 게시글은 없습니다.</div> 
 
@@ -126,8 +121,18 @@ export default function PostPage() {
                     </div>
                 </div>
 
-                <div className="pb-10 px-5">
-                    { post?.content }
+                <div className="px-5">
+                    <div className="pb-5">
+                        { post?.content }
+                    </div>
+
+                    { post?.hashTag?.length > 0 && 
+                    <div className="pb-3">
+                        { post?.hashTag?.map((item) => 
+                        <span key={item} id={item} className="hash-tag font-bold">
+                            #{ item }
+                        </span> )}
+                    </div> }
                 </div>
 
                 <div className="flex justify-between">

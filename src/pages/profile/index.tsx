@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "context/AuthContext";
 import { Link, useParams } from "react-router-dom";
-import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
 // 컴포넌트
 import PostItem from "components/post/PostItem";
@@ -70,7 +70,7 @@ export default function ProfilePage() {
         if(profile?.uid) {
             const followingRef = doc(db, 'following', profile?.uid)
             const result = await getDoc(followingRef)
-      
+
             return result?.data()?.users?.map((item : FollowType) => item?.uid)
         }
     }
@@ -81,10 +81,10 @@ export default function ProfilePage() {
         staleTime : 10000,
     }
     const [ myPosts, likePosts, follower, following ] = useQueries([
-        { queryKey : ['myPosts', profile?.uid], queryFn : fetchPost, ...queryOptions },
+        { queryKey : ['postList', profile?.uid], queryFn : fetchPost, ...queryOptions },
         { queryKey : ['likePosts', profile?.uid], queryFn : fetchLikePost, ...queryOptions, enabled : !!profile && profile?.uid === user?.uid },
-        { queryKey : ['follower', profile?.uid, user?.uid], queryFn : fetchFollower, ...queryOptions },
-        { queryKey : ['following', profile?.uid, user?.uid], queryFn : fetchFollowing, ...queryOptions },
+        { queryKey : ['follower', profile?.uid], queryFn : fetchFollower, ...queryOptions },
+        { queryKey : ['following', profile?.uid], queryFn : fetchFollowing, ...queryOptions },
     ])
 
     useEffect(() => {

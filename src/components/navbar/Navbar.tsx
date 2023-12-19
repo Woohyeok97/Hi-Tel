@@ -31,6 +31,7 @@ export default function Navbar() {
             const auth = getAuth(app)
             await signOut(auth)
 
+            navigate('/')
             console.log('접속을 종료하셨습니다.')
         }
     }
@@ -50,24 +51,29 @@ export default function Navbar() {
 
     // 명령어 실행함수
     const commandActions : CommandActionsType = {
+        // 초기화면
         'h' : () => {
             navigate('/')
             setTerminalMessage(INITIAL_MESSAGE) 
         },
+        // 마이페이지
         'p' : () => {
             user?.uid
             ? navigate(`/profile/${user?.uid}`)
             : setTerminalMessage('접속이후 이용해주십시오.')
         }, 
+        // 검색
         's' : () => {
             navigate('/search')
             setTerminalMessage(INITIAL_MESSAGE) 
         },
+        // 글작성
         'w' : () => {
             user?.uid
             ? navigate('/post/new') 
             : setTerminalMessage('접속이후 이용해주십시오.')
         },
+        // 로그인/로그아웃
         'q' : () => {
             user?.uid
             ? handleLogout()
@@ -75,9 +81,16 @@ export default function Navbar() {
 
             setTerminalMessage(INITIAL_MESSAGE)
         },
+        // 언어설정
         'l' : () => {
             handleLanguage()
             setTerminalMessage(INITIAL_MESSAGE) 
+        },
+        // 알림
+        'n' : () => {
+            user?.uid
+            ? navigate('/notification') 
+            : setTerminalMessage('접속이후 이용해주십시오.')
         }
     }
 
@@ -102,11 +115,14 @@ export default function Navbar() {
 
 
     return (
-        <div className="flex flex-col gap-3 flex-grow-1 grow justify-between bg-bgColor border-t-3 py-3
-            lg:p-0 lg:border-0">
+        <div className="flex flex-col gap-3 flex-grow-1 grow justify-between bg-bgColor border-t-3 mx-3 py-3
+            lg:p-0 lg:mx-0 lg:border-0">
             <div className="flex justify-between lg:flex-col lg:px-8 lg:gap-5">
-                <div className='text-btn' onClick={ commandActions['h'] }>
+                <div className='text-btn hidden lg:block' onClick={ commandActions['h'] }>
                     { translation('MENU_HOME') }(H)
+                </div>
+                <div className='text-btn' onClick={ commandActions['n'] }>
+                    { translation('MENU_NOTI') }(N)
                 </div>
                 <div className='text-btn' onClick={ commandActions['p'] }>
                     { translation('MENU_PROFILE') }(P)

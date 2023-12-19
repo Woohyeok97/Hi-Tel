@@ -1,4 +1,5 @@
 import { useContext, useState } from "react"
+import { useQueryClient } from "react-query"
 import { useNavigate } from "react-router-dom"
 import AuthContext from "context/AuthContext"
 import { addDoc, collection } from "firebase/firestore"
@@ -9,6 +10,7 @@ import useTranslation from "hooks/useTranslation"
 
 export default function PostForm() {
     const { user } = useContext(AuthContext)
+    const queryClient = useQueryClient()
     const [ content, setContent ] = useState<string>('')
     const [ hashTagList, setHashTagList ] = useState<string[]>([])
     // 입력중인 해쉬태그
@@ -37,6 +39,7 @@ export default function PostForm() {
             // 게시글 업로드
             await addDoc(postRef, insertPost)
 
+            queryClient.invalidateQueries('postList')
             navigate('/')
             console.log('게시글을 작성하셨습니다.')
         } catch(err : any) {
@@ -104,7 +107,7 @@ export default function PostForm() {
 
                 <input
                     type='text'
-                    className="text-input"
+                    className="text-input w-full"
                     onChange={ handleHashTagChange }
                     onKeyUp={ handleAddHashTag }
                     value={ hashTag }

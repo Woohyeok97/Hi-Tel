@@ -1,6 +1,6 @@
 const TRANSLATIONS = {
     MENU_HOME : {
-        ko : '초기화면',
+        ko : '글마당',
         en : 'Home',
     },
     MENU_MORE : {

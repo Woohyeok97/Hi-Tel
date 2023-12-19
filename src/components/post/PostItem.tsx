@@ -1,12 +1,13 @@
 import { useContext } from 'react'
 import AuthContext from 'context/AuthContext'
+import { useMutation, useQueryClient } from 'react-query'
+import { deleteDoc, doc } from 'firebase/firestore'
+import { db } from 'firebaseApp'
 import { Link } from "react-router-dom"
 // hooks
 import useTranslation from 'hooks/useTranslation'
 // 데이터 타입
 import { PostType } from "interface"
-import { deleteDoc, doc } from 'firebase/firestore'
-import { db } from 'firebaseApp'
 
 
 interface PostItemProps {
@@ -15,21 +16,30 @@ interface PostItemProps {
 
 export default function PostItem({ post } : PostItemProps) {
     const { user } = useContext(AuthContext)
+    const queryClient = useQueryClient()
     const { translation } = useTranslation()
 
-    // 게시글 삭제 핸들러
-    const handlePostDelete = async () => {
+    // 게시글삭제 로직
+    const deleteMutation = useMutation({
+        mutationFn : async () => {
+            const postRef = doc(db, 'posts', post?.id)
+            await deleteDoc(postRef)
+        },
+        onSuccess : () => {
+            queryClient.invalidateQueries('postList')
+            console.log('삭제하셨습니다.')
+        },
+        onError : (err : any) => {
+            console.log(err?.code)
+        }
+    })
+
+    // 삭제 핸들러
+    const handlePostDelete = () => {
         const confirm = window.confirm('삭제하시겠습니까?')
 
         if(confirm && post?.uid === user?.uid) {
-            try {
-                const postRef = doc(db, 'posts', post?.id)
-                await deleteDoc(postRef)
-
-                console.log('삭제하셨습니다.')
-            } catch(err : any) {
-                console.log(err?.code)
-            }
+            deleteMutation.mutate()
         }
     }
 
@@ -49,10 +59,17 @@ export default function PostItem({ post } : PostItemProps) {
                 </Link>
 
                 {/* 게시물 내용 */}
-                <div className="text-btn pb-8">
+                <div className="text-btn pb-5">
                     <Link to={`/post/${post?.id}`}>{ post?.content }</Link>
                 </div>
                 
+                { post?.hashTag?.length > 0 && 
+                <div className="pb-3">
+                    { post?.hashTag?.map((item) => 
+                    <span key={item} id={item} className="hash-tag font-bold">
+                        #{ item }
+                    </span> )}
+                </div> }
 
                 <div className="flex justify-between">
                     <div className="flex gap-3">
