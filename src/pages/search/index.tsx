@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import AuthContext from "context/AuthContext";
 import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
@@ -17,7 +17,6 @@ import { PostType } from "interface";
 export default function SearchPage() {
     const { user } = useContext(AuthContext)
     const [ searchQuery, setSearchQuery ] = useRecoilState(searchQueryState)
-    const [ textValue, setTextValue ] = useState<string>(searchQuery)
     const { translation } = useTranslation()
 
     // 게시글 요청 함수
@@ -25,32 +24,25 @@ export default function SearchPage() {
         const postsRef = collection(db, 'posts')
         const postsQuery = query(postsRef, where('hashTag', 'array-contains', searchQuery), orderBy('createdAt', "desc"))
         const result = await getDocs(postsQuery)
-  
+      
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    const { data : searchPosts, isLoading } = useQuery([`post-search`, searchQuery], fetchPostList, {
+    const { data : searchPosts, isLoading, isError } = useQuery([`postList`, searchQuery], fetchPostList, {
         enabled : !!searchQuery,
         refetchOnWindowFocus : false,
-        staleTime : 30000,
+        staleTime : 3000,
     })
     
-
     // 검색쿼리 핸들러
     const handleQueryChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e?.target;
-        setTextValue(value?.trim())
+        setSearchQuery(value?.trim())
     }
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setSearchQuery(textValue)
-        }, 500)
 
-        return () => clearTimeout(timer)
 
-    }, [textValue])
-
+    if(isError) return <div>에러발생</div>
 
     return (
         <div className="">
@@ -61,7 +53,7 @@ export default function SearchPage() {
                     id="search"
                     className="text-input w-full"
                     onChange={ handleQueryChange }
-                    value={ textValue }
+                    value={ searchQuery }
                     placeholder={ user?.uid ? "검색어를 입력하십시오." : "접속이후 이용해주십시오." }
                     disabled={ !user?.uid }
                 />

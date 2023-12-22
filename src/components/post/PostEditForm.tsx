@@ -27,12 +27,12 @@ export default function PostEditForm() {
         if(id) {
             const postRef = doc(db, 'posts', id)
             const result = await getDoc(postRef)
-
+            
             return { ...result?.data(), id : result?.id } as PostType
         }
     }
 
-    const { data : prevPost, isError, isLoading } = useQuery(['prevPost'], fetchPrevPost, {
+    const { data : prevPost, isError, isLoading } = useQuery(['prevPost', user?.uid], fetchPrevPost, {
         enabled : !!id && !!user?.uid,
         refetchOnWindowFocus : false,
     })

@@ -17,7 +17,7 @@ export default function HomePage() {
         const postsRef = collection(db, 'posts')
         const postsQuery = query(postsRef, orderBy('createdAt', 'desc'))
         const result = await getDocs(postsQuery)
-
+ 
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
@@ -33,6 +33,7 @@ export default function HomePage() {
 
     return (
         <div className="">
+
             <div className="page-header">{ translation('MENU_HOME') }</div>
             <div>
             { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
