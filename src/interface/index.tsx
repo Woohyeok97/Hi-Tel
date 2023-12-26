@@ -30,6 +30,7 @@ export interface ProfileType {
 // 팔로잉 & 팔로워 타입
 export interface FollowType {
     uid : string,
+    temp? : boolean,
 }
 // 알림 타입
 export interface NotificationType {

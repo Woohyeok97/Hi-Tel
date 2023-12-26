@@ -11,6 +11,7 @@ import useTranslation from "hooks/useTranslation";
 // 데이터 타입
 import { FollowType, PostType, ProfileType } from "interface";
 import { useQueries, useQuery } from "react-query";
+import TempPost from "pages/Temp";
 
 
 type TabType = 'myPosts' | 'likePosts'
@@ -105,7 +106,7 @@ export default function ProfilePage() {
 
     if(!errorState) return <div>유저정보 에러발생</div>
 
-
+    
     return (
         <div className="">
             <div className="flex flex-col pb-10 border-gray border-b-2">
@@ -139,6 +140,7 @@ export default function ProfilePage() {
                         <div className="text-3xl font-bold">
                             { profile?.displayName || "이름미지정" }
                         </div>
+                        <div>uid : { user?.uid }</div>
                         <div className="text-gray">{ profile?.email }</div>
                     </div>
                     
@@ -150,7 +152,7 @@ export default function ProfilePage() {
                     </Link> }
                 </div>
             </div>
-
+            <TempPost/>
             <div className="flex gap-5 py-8">
                 <div className={`text-gray hover:text-grayHover font-bold cursor-pointer text-2xl
                 ${ activeTab === 'myPosts' && 'text-white hover:text-whiteHover' }`}
