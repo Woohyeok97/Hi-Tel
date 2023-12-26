@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 // components
 import Router from "Router";
 import Layout from "components/layout/Layout";
+import Loader from 'components/UI/Loader';
 
 // 리액트쿼리 클라이언트
 const queryClient = new QueryClient()
@@ -19,7 +20,7 @@ function App() {
         <RecoilRoot> 
             <QueryClientProvider client={ queryClient }>
                 <Layout>
-                { init ? <Router isAuthentication={ !!user }/> : '하이텔' }
+                { init ? <Router isAuthentication={ !!user }/> : <Loader/> }
                 </Layout>
                 <ReactQueryDevtools/>
             </QueryClientProvider>

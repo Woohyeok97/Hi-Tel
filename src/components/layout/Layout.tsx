@@ -19,8 +19,8 @@ export default function Layout({ children } : LayoutProps) {
                 </header>
             </div>
 
-            <div className="p-3 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto">
-                {children}
+            <div className="p-3 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto lg:h-screen lg:relative">
+                { children }
             </div>
 
             <div className='flex flex-col fixed bottom-0 max-w-[600px] w-full  lg:h-full lg:left-0 lg:top-0 lg:max-w-[20%] lg:border-r-3'>

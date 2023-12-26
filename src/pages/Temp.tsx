@@ -12,7 +12,7 @@ export default function TempPost() {
 
         const postRef = collection(db, 'posts')
 
-        for(let i = 0; i < 100; i++) {
+        for(let i = 101; i < 201; i++) {
             await addDoc(postRef, {
                 uid : user?.uid,
                 displayName : user?.displayName,
@@ -45,6 +45,27 @@ export default function TempPost() {
 
         await batch.commit()
         alert('posts delete finish')
+    }
+
+    const handleDeletePost2 = async () => {
+        const confirm = window.confirm('81 post delete?')
+        if (!confirm) return;
+    
+        const postRef = collection(db, 'posts');
+        const batch = writeBatch(db);
+    
+        // 101부터 200까지 각각의 문서에 대해 쿼리를 수행
+        for (let i = 81; i <= 200; i++) {
+            const postQuery = query(postRef, where('hashTag', 'array-contains', `더미-${i}`));
+            const posts = await getDocs(postQuery);
+    
+            posts.forEach((item) => {
+                batch.delete(item.ref);
+            });
+        }
+    
+        await batch.commit();
+        alert('posts delete finish');
     }
 
     const handleFollow = async () => {
