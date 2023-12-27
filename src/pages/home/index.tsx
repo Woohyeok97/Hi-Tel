@@ -8,6 +8,7 @@ import { PostType } from "interface";
 // hooks
 import useTranslation from "hooks/useTranslation";
 import Loader from "components/UI/Loader";
+import TempPost from "pages/Temp";
 
 
 export default function HomePage() {
@@ -37,7 +38,8 @@ export default function HomePage() {
 
             <div className="page-header">{ translation('MENU_HOME') }</div>
             <div>
-                <Loader/>
+                {/* <TempPost/> */}
+                {/* <Loader/> */}
             {/* { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) } */}
             </div>
         </div>

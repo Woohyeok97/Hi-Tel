@@ -10,7 +10,13 @@ import Layout from "components/layout/Layout";
 import Loader from 'components/UI/Loader';
 
 // 리액트쿼리 클라이언트
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+    defaultOptions : {
+        queries : {
+            suspense : true, // suspense 모드사용
+        }
+    }
+})
 
 
 function App() {

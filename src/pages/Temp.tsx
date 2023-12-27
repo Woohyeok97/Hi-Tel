@@ -31,7 +31,7 @@ export default function TempPost() {
     }
 
     const handleDeletePost = async () => {
-        const confirm = window.confirm('100 post delete?')
+        const confirm = window.confirm('all post delete?')
         if(!confirm) return
 
         const postRef = collection(db, 'posts')
@@ -48,7 +48,7 @@ export default function TempPost() {
     }
 
     const handleDeletePost2 = async () => {
-        const confirm = window.confirm('81 post delete?')
+        const confirm = window.confirm('119 post delete?')
         if (!confirm) return;
     
         const postRef = collection(db, 'posts');
@@ -113,8 +113,11 @@ export default function TempPost() {
 
     return (
         <div className="font-bold p-5 border-5">
-            <button onClick={ handlepost }>create post</button>
-            <button onClick={ handleFollow }>follow</button>
+            <button onClick={ handleDeletePost2 } className="p-5 border-black border-5 z-50">
+                delete 120 post
+            </button>
+            {/* <button onClick={ handlepost }>create post</button>
+            <button onClick={ handleFollow }>follow</button> */}
         </div>
     )
 }
