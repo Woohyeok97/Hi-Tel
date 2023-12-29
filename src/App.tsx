@@ -2,21 +2,15 @@ import './tailwind.css'
 import { useContext } from "react";
 import AuthContext from "context/AuthContext";
 import { RecoilRoot } from "recoil";
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 // components
 import Router from "Router";
 import Layout from "components/layout/Layout";
 import Loader from 'components/UI/Loader';
 
-// 리액트쿼리 클라이언트
-const queryClient = new QueryClient({
-    defaultOptions : {
-        queries : {
-            suspense : true, // suspense 모드사용
-        }
-    }
-})
+const queryClient = new QueryClient()
+
 
 
 function App() {
@@ -26,7 +20,7 @@ function App() {
         <RecoilRoot> 
             <QueryClientProvider client={ queryClient }>
                 <Layout>
-                { init ? <Router isAuthentication={ !!user }/> : <Loader/> }
+                { init && <Router isAuthentication={ !!user }/> }
                 </Layout>
                 <ReactQueryDevtools/>
             </QueryClientProvider>

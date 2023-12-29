@@ -22,8 +22,8 @@ export default function Router({ isAuthentication } : RouterProps) {
         <Routes>
             <Route path="/" element={ <HomePage/> }/>
             <Route path="/post/:id" element={ <PostPage/> }/>
-            <Route path="/profile/:id" element={ <ProfilePage/> }/>
             <Route path="/search" element={ <SearchPage/> }/>
+            <Route path="/profile/:id" element={ <ProfilePage/> }/>
 
             {/* 로그인 상태일때 */}
             { isAuthentication ? <> 

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { useQueryClient } from "react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
 import AuthContext from "context/AuthContext"
 import { addDoc, collection } from "firebase/firestore"
@@ -39,7 +39,7 @@ export default function PostForm() {
             // 게시글 업로드
             await addDoc(postRef, insertPost)
 
-            queryClient.invalidateQueries('postList')
+            queryClient.invalidateQueries({ queryKey : ['postList'] })
             navigate('/')
             console.log('게시글을 작성하셨습니다.')
         } catch(err : any) {

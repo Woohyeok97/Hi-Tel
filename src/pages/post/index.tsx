@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import AuthContext from "context/AuthContext"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore"
@@ -33,7 +33,14 @@ export default function PostPage() {
         }
     }
 
-    const { data : post, isError, isLoading } = useQuery([`post-${id}`], fetchPost, {
+    // const { data : post, isError, isLoading } = useQuery([`post-${id}`], fetchPost, {
+    //     enabled : !!id,
+    //     refetchOnWindowFocus : false,
+    //     staleTime : 100000,
+    // })
+    const { data : post, isError, isLoading } = useQuery({
+        queryKey : [`post-${id}`],
+        queryFn : fetchPost,
         enabled : !!id,
         refetchOnWindowFocus : false,
         staleTime : 100000,
@@ -85,8 +92,8 @@ export default function PostPage() {
             }
         },
         onSuccess : () => {
-            queryClient.invalidateQueries(`post-${post?.id}`);
-            queryClient.invalidateQueries(`likePosts`);
+            // queryClient.invalidateQueries(`post-${post?.id}`);
+            // queryClient.invalidateQueries(`likePosts`);
         },
         onError : (err : any) => {
             console.log(err?.code)

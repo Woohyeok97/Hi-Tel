@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
 // hooks
@@ -27,7 +27,7 @@ export default function NotiItem({ notification } : NotiItemProps) {
                     isRead : true,
                 })
 
-                queryClient.invalidateQueries('notifications')
+                queryClient.invalidateQueries({ queryKey : ['notifications'] })
             } catch(err : any) {
                 console.log(err?.code)
             }
@@ -46,8 +46,8 @@ export default function NotiItem({ notification } : NotiItemProps) {
             try {
                 const notiRef = doc(db, 'notifications', notification?.id)
                 await deleteDoc(notiRef)
-
-                queryClient.invalidateQueries('notifications')
+                
+                queryClient.invalidateQueries({ queryKey : ['notifications'] })
                 console.log('알림을 삭제하셨습니다.')
             } catch(err : any) {
                 console.log(err?.code)

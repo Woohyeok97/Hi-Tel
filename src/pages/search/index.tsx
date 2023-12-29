@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import AuthContext from "context/AuthContext";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { searchQueryState } from "atom";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
@@ -28,11 +28,13 @@ export default function SearchPage() {
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    // const { data : searchPosts, isLoading, isError } = useQuery([`postList`, searchQuery], fetchPostList, {
-    //     enabled : !!searchQuery,
-    //     refetchOnWindowFocus : false,
-    //     staleTime : 3000,
-    // })
+    const { data : searchPosts, isError } = useQuery({
+        queryKey : [`postList`, searchQuery],
+        queryFn : fetchPostList,
+        enabled : !!searchQuery,
+        refetchOnWindowFocus : false,
+        staleTime : 3000,
+    })
     
     // 검색쿼리 핸들러
     const handleQueryChange = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +42,7 @@ export default function SearchPage() {
         setSearchQuery(value?.trim())
     }
 
-
-
-    // if(isError) return <div>에러발생</div>
+    if(isError) return <div>에러발생</div>
 
     return (
         <div className="">
@@ -65,11 +65,10 @@ export default function SearchPage() {
                         { translation('POST') }
                     </div> 
                 </div>
-{/* 
-                { isLoading ? <div>Loading..</div> :
+
                 <div className="">
                     { searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
-                </div> } */}
+                </div> 
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import AuthContext from 'context/AuthContext'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
@@ -46,8 +46,8 @@ export default function CommentForm({ post } : CommentFormProps) {
             }
             
             setContent('') // 댓글작성후, content초기화
-            queryClient.invalidateQueries(`post-${post?.id}`)
-
+            
+            queryClient.invalidateQueries({ queryKey : [`post-${post?.id}`] })
             console.log('덧글을 작성하였습니다.')
         },
         onError : (err : any) => {

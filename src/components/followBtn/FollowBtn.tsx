@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import AuthContext from "context/AuthContext"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
 // hooks
@@ -29,7 +29,9 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
     }
     
     // 팔로잉리스트 가져오기
-    const { data : followingList } = useQuery(['following-btn', user?.uid], fetchFollowing, {
+    const { data : followingList } = useQuery({
+        queryKey : ['following-btn', user?.uid],
+        queryFn : fetchFollowing,
         enabled : !!user?.uid, // 로그인상태
         refetchOnWindowFocus : false,
         staleTime : Infinity,
@@ -63,7 +65,7 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
                 `${user?.displayName || user?.email}님이 팔로우를 시작하였습니다.`,
                 `/profile/${user?.uid}`
             )
-            queryClient.invalidateQueries('following-btn')
+            queryClient.invalidateQueries({ queryKey : ['following-btn'] })
             console.log('해당 회원님을 팔로우 하셨습니다.')
         },
         onError : (err : any) => {
@@ -93,7 +95,7 @@ export default function FollowBtn({ targetUid } : FollowBtnProps) {
             })
         },
         onSuccess : async () => {
-            queryClient.invalidateQueries('following-btn')
+            queryClient.invalidateQueries({ queryKey : ['following-btn'] })
             console.log('팔로우를 취소하셨습니다.')
         },
         onError : (err : any) => {

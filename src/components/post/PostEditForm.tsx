@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import AuthContext from "context/AuthContext"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
@@ -22,7 +22,7 @@ export default function PostEditForm() {
     const { translation } = useTranslation()
 
 
-    // 기존 게시글 요청함수
+    // 기존 게시글 요청 함수
     const fetchPrevPost = async () => {
         if(id) {
             const postRef = doc(db, 'posts', id)
@@ -32,7 +32,10 @@ export default function PostEditForm() {
         }
     }
 
-    const { data : prevPost, isError, isLoading } = useQuery(['prevPost', user?.uid], fetchPrevPost, {
+    // 기존 게시글 가져오기
+    const { data : prevPost, isError, isLoading } = useQuery({
+        queryKey : ['prevPost', user?.uid],
+        queryFn : fetchPrevPost,
         enabled : !!id && !!user?.uid,
         refetchOnWindowFocus : false,
     })
@@ -47,8 +50,8 @@ export default function PostEditForm() {
             })
         }, 
         onSuccess : () => {
-            queryClient.invalidateQueries(`postList`)
-            queryClient.invalidateQueries(`prevPost`)
+            queryClient.invalidateQueries({ queryKey : ['postList'] })
+            queryClient.invalidateQueries({ queryKey : ['prevPost'] })
             navigate('/')
             console.log('게시글을 편집하셨습니다.')
         },

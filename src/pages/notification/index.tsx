@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import AuthContext from "context/AuthContext"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "firebaseApp"
 // components
@@ -27,11 +27,15 @@ export default function NotificationPage() {
     }
 
     // 알림 가져오기
-    const { data : notifications, isLoading } = useQuery([`notifications`], fetchNotifications, {
+    
+    const { data : notifications, isLoading } = useQuery({
+        queryKey : [`notifications`],
+        queryFn : fetchNotifications,
         enabled : !!user?.uid,
         refetchOnWindowFocus : false,
         staleTime : 100000,
     })
+
 
     
     return (

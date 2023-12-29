@@ -7,7 +7,7 @@ import useTranslation from 'hooks/useTranslation'
 import { CommentType, PostType } from 'interface'
 import { arrayRemove, doc, updateDoc } from 'firebase/firestore'
 import { db } from 'firebaseApp'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 
 interface CommentItemProps {
@@ -30,7 +30,8 @@ export default function CommentItem({ comment, post } : CommentItemProps) {
         },
         onSuccess : () => {
             console.log('덧글을 삭제하였습니다.')
-            queryClient.invalidateQueries(`post-${post?.id}`)
+            
+            queryClient.invalidateQueries({ queryKey : [`post-${post?.id}`] })
         },
         onError : (err : any) => {
             console.log(err?.code)

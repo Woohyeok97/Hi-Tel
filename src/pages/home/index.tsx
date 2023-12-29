@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "firebaseApp";
 // components
@@ -7,8 +7,6 @@ import PostItem from "components/post/PostItem";
 import { PostType } from "interface";
 // hooks
 import useTranslation from "hooks/useTranslation";
-import Loader from "components/UI/Loader";
-import TempPost from "pages/Temp";
 
 
 export default function HomePage() {
@@ -23,14 +21,16 @@ export default function HomePage() {
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    // const { data : postList, isError, error, isLoading } = useQuery([`postList`], fetchPostList, {
-    //     refetchOnWindowFocus : false,
-    //     staleTime : 30000,
-    // })
+    const { data : postList, isError, error, isLoading } = useQuery({
+        queryKey : [`postList`],
+        queryFn : fetchPostList,
+        refetchOnWindowFocus : false,
+        staleTime : 30000,
+    })
 
-    // if(isError) return <div>에러발생</div>
+    if(isError) return <div>에러발생</div>
 
-    // if(isLoading) return <div>하이텔</div>
+    if(isLoading) return <div>하이텔</div>
     
 
     return (
@@ -38,9 +38,7 @@ export default function HomePage() {
 
             <div className="page-header">{ translation('MENU_HOME') }</div>
             <div>
-                {/* <TempPost/> */}
-                {/* <Loader/> */}
-            {/* { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) } */}
+            { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
             </div>
         </div>
     )
