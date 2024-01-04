@@ -78,6 +78,8 @@ export default function Profile({ profile } : ProfileProps) {
         ]
     })
 
+    console.log(myPosts, likePosts, follower, following)
+
     // const myPosts = useQuery({
     //     queryKey : ['postList'],
     //     queryFn : fetchPost,

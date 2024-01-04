@@ -113,7 +113,7 @@ export default function TempPost() {
 
     return (
         <div className="font-bold p-5 border-5">
-            <button onClick={ handleDeletePost2 } className="p-5 border-black border-5 z-50">
+            <button onClick={ handleDeletePost } className="p-5 border-black border-5 z-50">
                 delete 120 post
             </button>
             {/* <button onClick={ handlepost }>create post</button>

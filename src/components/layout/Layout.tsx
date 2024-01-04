@@ -19,7 +19,7 @@ export default function Layout({ children } : LayoutProps) {
                 </header>
             </div>
 
-            <div className="p-3 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto lg:h-screen lg:relative">
+            <div className="p-8 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto lg:h-screen lg:relative">
                 { children }
             </div>
 

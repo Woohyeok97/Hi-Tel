@@ -7,6 +7,7 @@ import PostItem from "components/post/PostItem";
 import { PostType } from "interface";
 // hooks
 import useTranslation from "hooks/useTranslation";
+import TempPost from "pages/Temp";
 
 
 export default function HomePage() {
@@ -37,6 +38,7 @@ export default function HomePage() {
         <div className="">
 
             <div className="page-header">{ translation('MENU_HOME') }</div>
+
             <div>
             { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
             </div>

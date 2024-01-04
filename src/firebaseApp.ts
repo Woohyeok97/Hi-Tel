@@ -1,3 +1,4 @@
+// Firsebase SDK들
 import { FirebaseApp, getApp, initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore'
 import 'firebase/auth'
@@ -17,12 +18,13 @@ const firebaseConfig = {
 try {
     app = getApp('app');
 } catch {
-    app = initializeApp(firebaseConfig, 'app');
+    app = initializeApp(firebaseConfig, 'app'); // Firsebase 앱 초기화
 }
 
 
-const firebase = initializeApp(firebaseConfig);
-// 파이어스토어
+const firebase = initializeApp(firebaseConfig); // Firsebase 앱 초기화
+
+// 파이어스토어 (DB) 인스턴스 생성
 export const db = getFirestore(app)
 
 export default firebase;
