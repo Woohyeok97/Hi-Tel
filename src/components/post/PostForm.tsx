@@ -88,7 +88,7 @@ export default function PostForm() {
         <form onSubmit={ handleSubmit } className="flex flex-col gap-3">
             <textarea 
                 id='content'
-                className="textarea grow min-h-[360px]"
+                className="textarea grow min-h-[420px]"
                 onChange={ handleContentChange }
                 spellCheck={false}
                 placeholder="내용을 입력해주십시오."

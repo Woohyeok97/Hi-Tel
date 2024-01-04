@@ -7,7 +7,6 @@ import PostItem from "components/post/PostItem";
 import { PostType } from "interface";
 // hooks
 import useTranslation from "hooks/useTranslation";
-import TempPost from "pages/Temp";
 
 
 export default function HomePage() {
