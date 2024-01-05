@@ -29,7 +29,7 @@ export default function NotificationPage() {
     // 알림 가져오기
     
     const { data : notifications, isLoading } = useQuery({
-        queryKey : [`notifications`],
+        queryKey : [`notifications`, user?.uid],
         queryFn : fetchNotifications,
         enabled : !!user?.uid,
         refetchOnWindowFocus : false,

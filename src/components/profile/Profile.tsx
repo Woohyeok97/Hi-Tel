@@ -71,14 +71,13 @@ export default function Profile({ profile } : ProfileProps) {
 
     const [ myPosts, likePosts, follower, following ] = useQueries({
         queries : [
-            { queryKey : ['postList'], queryFn : fetchPost, ...queryOptions },
-            { queryKey : ['likePosts'], queryFn : fetchLikePost, ...queryOptions, enabled : profile?.uid === user?.uid },
-            { queryKey : ['follower'], queryFn : fetchFollower, ...queryOptions },
-            { queryKey : ['following'], queryFn : fetchFollowing, ...queryOptions },
+            { queryKey : [ 'postList', profile?.uid ], queryFn : fetchPost, ...queryOptions },
+            { queryKey : [ 'likePosts', profile?.uid ], queryFn : fetchLikePost, ...queryOptions, enabled : profile?.uid === user?.uid },
+            { queryKey : [ 'follower', profile?.uid ], queryFn : fetchFollower, ...queryOptions },
+            { queryKey : [ 'following', profile?.uid ], queryFn : fetchFollowing, ...queryOptions },
         ]
     })
 
-    console.log(myPosts, likePosts, follower, following)
 
     // const myPosts = useQuery({
     //     queryKey : ['postList'],
