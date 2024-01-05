@@ -43,7 +43,7 @@ export default function PostItem({ post } : PostItemProps) {
     }
 
     return (
-        <div className="flex gap-5 mb-12">
+        <div className="flex gap-5 pb-3 mb-12 mt-2 lg:pb-0">
             <div className="user-img"></div>
 
             <div className="grow">

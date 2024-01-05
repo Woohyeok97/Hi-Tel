@@ -36,7 +36,7 @@
 @layer components {
     /* 페이지 헤더 */
     .page-header {
-        @apply font-bold text-4xl mb-5 p-3 lg:mb-10;
+        @apply font-bold text-center border-b-3 text-4xl mb-10 pb-5 pt-3 lg:mb-12 lg:text-5xl lg:pb-10 lg:pt-5;
     }
     .shadow-border {
         border-top: 3px solid rgba(0, 0, 255, 1);

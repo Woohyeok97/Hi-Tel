@@ -117,7 +117,7 @@ export default function Navbar() {
     return (
         <div className="flex flex-col gap-3 flex-grow-1 grow justify-between bg-bgColor border-t-3 mx-3 py-3
             lg:p-0 lg:mx-0 lg:border-0">
-            <div className="flex justify-between lg:flex-col lg:px-8 lg:gap-5">
+            <div className="flex justify-between px-3 lg:flex-col lg:px-8 lg:gap-5">
                 <div className='text-btn hidden lg:block' onClick={ commandActions['h'] }>
                     { translation('MENU_HOME') }(H)
                 </div>

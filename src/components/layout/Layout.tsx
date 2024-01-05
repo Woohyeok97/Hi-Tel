@@ -19,11 +19,11 @@ export default function Layout({ children } : LayoutProps) {
                 </header>
             </div>
 
-            <div className="p-8 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto lg:h-screen lg:relative">
+            <div className="px-8 py-5 lg:ml-[20%] lg:m-0 lg:py-20 lg:px-[10%] lg:overflow-y-auto lg:h-screen lg:relative">
                 { children }
             </div>
 
-            <div className='flex flex-col fixed bottom-0 max-w-[600px] w-full  lg:h-full lg:left-0 lg:top-0 lg:max-w-[20%] lg:border-r-3'>
+            <div className='flex flex-col fixed bottom-0 max-w-[600px] w-full lg:h-full lg:left-0 lg:top-0 lg:max-w-[20%] lg:border-r-3'>
                 {/* 헤더 : 데스크탑 버전일때만 렌더링 */}
                 <header className='hidden text-5xl text-center py-10 lg:block'>
                     <Link to={'/'}>HI-TEL</Link>

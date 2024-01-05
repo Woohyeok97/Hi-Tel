@@ -36,7 +36,7 @@ export default function HomePage() {
     return (
         <div className="">
 
-            <div className="page-header">{ translation('MENU_HOME') }</div>
+            <div className="page-header"> { translation('MENU_HOME') } </div>
 
             <div>
             { postList?.map((item) => <PostItem key={item?.id} post={ item }/>) }
