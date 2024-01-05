@@ -1,6 +1,6 @@
 # HI-TEL
 90년대 PC통신 하이텔 감성의 SNS 서비스<br/>
-<br/>
+**[서비스 링크](https://d3h1har9mmknid.cloudfront.net)**<br/>
 <br/>
 
 ### 데스크탑 버전
