@@ -41,8 +41,7 @@ export default function SearchPage() {
         const { value } = e?.target;
         setSearchQuery(value?.trim())
     }
-   
-    if(isError) return <div>에러발생</div>
+    
 
     return (
         <div className="">
@@ -67,11 +66,19 @@ export default function SearchPage() {
                 </div>
                 <div className="">
                 { isLoading && searchQuery ? 
-                    <div className="w-full text-4xl text-center p-6">
+                    <div className="w-full text-4xl text-center p-6 mt-3">
                         Loading...
                     </div> : 
                     searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
                 </div> 
+
+                { isError && 
+                <div>
+                    <div className="w-full text-5xl text-center p-6 mt-3">
+                        Error
+                    </div>
+                    <p className="text-center">다시 한번 시도해 주십시오.</p>
+                </div> }
             </div>
         </div>
     )
