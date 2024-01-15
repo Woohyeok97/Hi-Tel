@@ -28,12 +28,12 @@ export default function SearchPage() {
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    const { data : searchPosts, isError } = useQuery({
+    const { data : searchPosts, isError, isLoading } = useQuery({
         queryKey : [`postList`, searchQuery],
         queryFn : fetchPostList,
         enabled : !!searchQuery,
         refetchOnWindowFocus : false,
-        staleTime : 3000,
+        staleTime : 30000,
     })
     
     // 검색쿼리 핸들러
@@ -41,7 +41,7 @@ export default function SearchPage() {
         const { value } = e?.target;
         setSearchQuery(value?.trim())
     }
-
+   
     if(isError) return <div>에러발생</div>
 
     return (
@@ -59,15 +59,18 @@ export default function SearchPage() {
                 />
             </div>
 
-            <div className="border-gray border-t-2">
+            <div className="">
                 <div className="py-6">
                     <div className={`text-btn font-bold text-2xl`}>
                         { translation('POST') }
                     </div> 
                 </div>
-
                 <div className="">
-                    { searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
+                { isLoading && searchQuery ? 
+                    <div className="w-full text-4xl text-center p-6">
+                        Loading...
+                    </div> : 
+                    searchPosts?.map((item) => <PostItem key={item?.id} post={ item }/>) }
                 </div> 
             </div>
         </div>

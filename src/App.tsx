@@ -22,7 +22,7 @@ function App() {
                 <Layout>
                 { init && <Router isAuthentication={ !!user }/> }
                 </Layout>
-                {/* <ReactQueryDevtools/> */}
+                <ReactQueryDevtools/>
             </QueryClientProvider>
         </RecoilRoot>
     );

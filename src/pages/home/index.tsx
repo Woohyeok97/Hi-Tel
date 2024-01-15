@@ -32,7 +32,6 @@ export default function HomePage() {
 
     if(isLoading) return <div>하이텔</div>
     
-
     return (
         <div className="">
 
