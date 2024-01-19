@@ -127,10 +127,10 @@ export default function PostEditForm() {
 
 
     return (
-        <form onSubmit={ handleSubmit } className="flex flex-col gap-3">
+        <form onSubmit={ handleSubmit } className="flex flex-col gap-3 grow">
             <textarea 
                 id='content'
-                className="textarea grow min-h-[360px]"
+                className="textarea basis-4/5"
                 onChange={ handleContentChange }
                 value={ content }
                 spellCheck={false}
@@ -162,7 +162,7 @@ export default function PostEditForm() {
                 <input 
                     type="submit" 
                     value={ translation('EDIT') } 
-                    className="submit-btn py-3 px-5" 
+                    className="submit-btn md:py-3 md:px-5lg:py-3 lg:px-5"
                     disabled={ !content }
                 />
             </div>

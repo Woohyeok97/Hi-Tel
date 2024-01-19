@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import AuthContext from "context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
@@ -16,7 +16,8 @@ import { PostType } from "interface";
 
 export default function SearchPage() {
     const { user } = useContext(AuthContext)
-    const [ searchQuery, setSearchQuery ] = useRecoilState(searchQueryState)
+    // const [ searchQuery, setSearchQuery ] = useRecoilState(searchQueryState)
+    const [ searchQuery, setSearchQuery ] = useState('')
     const { translation } = useTranslation()
 
     // 게시글 요청 함수
@@ -28,12 +29,12 @@ export default function SearchPage() {
         return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
     }
 
-    const { data : searchPosts, isError, isLoading } = useQuery({
+    const { data : searchPosts, isError, isLoading, isFetching } = useQuery({
         queryKey : [`postList`, searchQuery],
         queryFn : fetchPostList,
         enabled : !!searchQuery,
         refetchOnWindowFocus : false,
-        staleTime : 30000,
+        // staleTime : 30000,
     })
     
     // 검색쿼리 핸들러
@@ -41,10 +42,10 @@ export default function SearchPage() {
         const { value } = e?.target;
         setSearchQuery(value?.trim())
     }
-    
+
 
     return (
-        <div className="">
+        <div className="page-container">
             <div className="page-header">{ translation('MENU_SEARCH') }</div>
 
             <div className="mb-5">
@@ -59,13 +60,13 @@ export default function SearchPage() {
             </div>
 
             <div className="">
-                <div className="py-6">
-                    <div className={`text-btn font-bold text-2xl`}>
+                <div className="py-3 md:py-6">
+                    <div className={`text-btn font-bold lg-text`}>
                         { translation('POST') }
                     </div> 
                 </div>
                 <div className="">
-                { isLoading && searchQuery ? 
+                { isFetching && searchQuery ? 
                     <div className="w-full text-4xl text-center p-6 mt-3">
                         Loading...
                     </div> : 

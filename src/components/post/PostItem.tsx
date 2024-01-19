@@ -43,13 +43,13 @@ export default function PostItem({ post } : PostItemProps) {
     }
 
     return (
-        <div className="flex gap-5 pb-3 mb-12 mt-2 lg:pb-0">
+        <div className="flex gap-3 md:gap-5 pb-3 mb-4 mt-2 md:mb-12 md:mt-3 lg:pb-0">
             <div className="user-img"></div>
 
             <div className="grow">
                 {/* 게시글 프로필 */}
                 <Link to={`/profile/${post?.uid}`}>
-                <div className="flex mb-3 gap-3 lg:gap-5">
+                <div className="flex mb-4 gap-3 md:gap-5 md:mb-6">
                     <div className="text-btn font-semibold truncate">
                         { post?.displayName || post?.email }
                     </div>
@@ -58,12 +58,12 @@ export default function PostItem({ post } : PostItemProps) {
                 </Link>
 
                 {/* 게시물 내용 */}
-                <div className="text-btn pb-5">
+                <div className="text-btn pb-1 md:pb-3 font-semibold">
                     <Link to={`/post/${post?.id}`}>{ post?.content }</Link>
                 </div>
                 
                 { post?.hashTag?.length > 0 && 
-                <div className="pb-3">
+                <div className="pb-5 md:pb-8">
                     { post?.hashTag?.map((item) => 
                     <span key={item} id={item} className="hash-tag font-bold">
                         #{ item }

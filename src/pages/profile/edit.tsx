@@ -70,7 +70,7 @@ export default function EditProfilePage() {
 
 
     return (
-        <div className="">
+        <div className="page-container">
             <div className="page-header">{ translation('PROFILE_EDIT') }</div>
 
             <form onSubmit={ handleSubmit } className="flex flex-col pt-5 mb-10">

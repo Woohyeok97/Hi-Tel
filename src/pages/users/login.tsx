@@ -101,12 +101,12 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="">
+        <div className="page-container">
             <div className="page-header">{ translation('MENU_LOGIN') }</div>
 
             <form onSubmit={ handleSubmit } className="flex flex-col mb-10">
                 <div className="mb-5">
-                    <label htmlFor="email" className="font-bold block pb-3 pl-3">
+                    <label htmlFor="email" className="font-bold block pb-3 lg-text">
                         { translation('EMAIL') }
                     </label>
                    
@@ -120,7 +120,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="mb-5">
-                    <label htmlFor="password" className="font-bold block pb-3 pl-3">
+                    <label htmlFor="password" className="font-bold block pb-3 lg-text">
                         { translation('PASSWORD') }
                     </label>
 
@@ -133,12 +133,12 @@ export default function LoginPage() {
                     />
                 </div>
 
-                <Link to="/users/signup" className="text-gray text-lg cursor-pointer hover:text-grayHover">
+                <Link to="/users/signup" className="text-gray cursor-pointer hover:text-grayHover">
                     도움말) 신규/무료가입을 원하시면 클릭하십시오.
                 </Link> 
               
                 <div className="flex flex-row-reverse">
-                    <input type="submit" value={ translation('MENU_LOGIN') } className="submit-btn py-3 px-5"/>
+                    <input type="submit" value={ translation('MENU_LOGIN') } className="submit-btn py-3"/>
                 </div>
             </form>
 

@@ -110,7 +110,7 @@ export default function PostPage() {
 
 
     return (
-        <div className="">
+        <div className="page-container">
             { post?.id && <>
             <div className="flex flex-col pb-5 mb-10 border-gray border-b-2">
                 <div className="flex items-center gap-5 mb-5">

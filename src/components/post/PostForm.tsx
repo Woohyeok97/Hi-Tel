@@ -85,10 +85,10 @@ export default function PostForm() {
 
 
     return (
-        <form onSubmit={ handleSubmit } className="flex flex-col gap-3">
+        <form onSubmit={ handleSubmit } className="flex flex-col gap-3 grow">
             <textarea 
                 id='content'
-                className="textarea grow min-h-[420px]"
+                className="textarea basis-4/5"
                 onChange={ handleContentChange }
                 spellCheck={false}
                 placeholder="내용을 입력해주십시오."
@@ -119,7 +119,7 @@ export default function PostForm() {
                 <input
                     type="submit" 
                     value={ translation('MENU_WRITE') } 
-                    className="submit-btn py-3 px-5" 
+                    className="submit-btn md:py-3 md:px-5lg:py-3 lg:px-5" 
                     disabled={ !content }
                 />
             </div>

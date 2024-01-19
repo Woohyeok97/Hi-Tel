@@ -7,7 +7,7 @@ export default function EditPostPage() {
     const { translation } = useTranslation()
 
     return (
-        <div className="">
+        <div className="page-container">
             <div className="page-header">
                 { `${translation('POST')} ${translation('EDIT')}` }
             </div>
