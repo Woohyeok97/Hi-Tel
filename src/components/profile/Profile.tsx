@@ -11,72 +11,51 @@ import FollowBtn from "components/followBtn/FollowBtn";
 import useTranslation from "hooks/useTranslation";
 // 데이터 타입
 import { FollowType, PostType, ProfileType } from "interface";
+import { fetchFollowerByUid, fetchFollowingByUid, fetchLikePostsByUid, fetchPostsByUid } from "remotes/postAPI";
 
 
 
-type TabType = 'myPosts' | 'likePosts'
+type TabType = 'myPosts' | 'likePosts';
 
 interface ProfileProps {
-    profile : ProfileType,
+  profile: ProfileType;
 }
+export default function Profile({ profile }: ProfileProps) {
+  const { user } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState<TabType>('myPosts');
+  const { translation } = useTranslation();
 
-export default function Profile({ profile } : ProfileProps) {
-    const { user } = useContext(AuthContext)
-    const [ activeTab, setActiveTab ] = useState<TabType>('myPosts')
-    const { translation } = useTranslation()
+  const queryOptions = {
+    refetchOnWindowFocus: false,
+    staleTime: 10000,
+    suspense: true, 
+  };
 
-    // 작성 게시글 요청 함수
-    const fetchPost = async () => {
-        const postsRef = collection(db, 'posts')
-        const postsQuery = query(postsRef, where('uid', '==', profile?.uid), orderBy('createdAt', 'desc'))
-        const result = await getDocs(postsQuery)
-        
-        return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
-    }
-
-    // 좋아요 게시글 요청 함수
-    const fetchLikePost = async () => {
-        const postsRef = collection(db, 'posts')
-        const likesQuery = query(postsRef, where('likes', 'array-contains', user?.uid), orderBy('createdAt', 'desc'))
-        const result = await getDocs(likesQuery)
-       
-        return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[]
-    }
-
-    // 팔로워 목록 요청 함수
-    const fetchFollower = async () => {
-        if(profile?.uid) {
-            const followerRef = doc(db, 'follower', profile?.uid)
-            const result = await getDoc(followerRef)
-
-            return result?.data()?.users?.map((item : FollowType) => item?.uid)
-        }
-    }
-
-    // 팔로잉 목록 요청 함수
-    const fetchFollowing = async () => {
-        if(profile?.uid) {
-            const followingRef = doc(db, 'following', profile?.uid)
-            const result = await getDoc(followingRef)
-
-            return result?.data()?.users?.map((item : FollowType) => item?.uid)
-        }
-    }
-
-    const queryOptions = {
-        refetchOnWindowFocus : false,
-        staleTime : 10000,
-        suspense : true, 
-    }
-
-    const [ myPosts, likePosts, follower, following ] = useQueries({
-        queries : [
-            { queryKey : [ 'postList', profile?.uid ], queryFn : fetchPost, ...queryOptions },
-            { queryKey : [ 'likePosts', profile?.uid ], queryFn : fetchLikePost, ...queryOptions, enabled : profile?.uid === user?.uid },
-            { queryKey : [ 'follower', profile?.uid ], queryFn : fetchFollower, ...queryOptions },
-            { queryKey : [ 'following', profile?.uid ], queryFn : fetchFollowing, ...queryOptions },
-        ]
-    })
+  const [myPosts, likePosts, follower, following] = useQueries({
+    queries: [
+      { 
+        queryKey: ['postList', profile?.uid],
+        queryFn: () => fetchPostsByUid(profile.uid),
+        ...queryOptions,
+      },
+      {
+        queryKey: ['likePosts', profile?.uid],
+        queryFn: () => fetchLikePostsByUid(profile.uid),
+        enabled: profile?.uid === user?.uid,
+        ...queryOptions,
+      },
+      {
+        queryKey: ['follower', profile?.uid],
+        queryFn: () => fetchFollowerByUid(profile.uid),
+        ...queryOptions,
+      },
+      {
+        queryKey: [ 'following', profile?.uid ],
+        queryFn: () => fetchFollowingByUid(profile.uid),
+        ...queryOptions,
+      },
+    ]
+  });
 
 
     // const myPosts = useQuery({
@@ -103,14 +82,14 @@ export default function Profile({ profile } : ProfileProps) {
     // })
 
     useEffect(() => {
-        setActiveTab('myPosts')
-    }, [])
+      setActiveTab('myPosts')
+    }, []);
 
     return (
         <div className="page-container">
             <div className="flex flex-col pb-3 md:pb-6 border-gray border-b-2">
                 <div className="flex justify-between pb-5 md:pb-10">
-                    <img src={profile?.photoUrl} className="profile-img"/>
+                    <img className="profile-img"/>
 
                     <div className="flex justify-between gap-5 lg:gap-10">
                         <div className={`flex flex-col text-btn justify-center items-center cursor-pointer lg-text`}>

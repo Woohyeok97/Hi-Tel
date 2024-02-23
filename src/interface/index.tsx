@@ -1,37 +1,18 @@
+import { z } from "zod"
+import { CommentSchema, FollowSchema, PostSchema, ProfileSchema } from "./zod"
+
 // 게시글 타입
-export interface PostType {
-    id : string,
-    uid : string,
-    displayName? : string | null,
-    email : string,
-    content : string,
-    createdAt : string,
-    hashTag : string[],
-    likes? : string[],
-    likeCount? : number,
-    comments? : CommentType[],
-}
+export type PostType = z.infer<typeof PostSchema>;
+
 // 댓글 타입
-export interface CommentType {
-    uid : string
-    displayName : string | null,
-    email : string
-    content : string
-    createdAt : string,
-}
+export type CommentType = z.infer<typeof CommentSchema>;
+
 // 프로필 타입
-export interface ProfileType {
-    uid : string,
-    displayName : string | null,
-    email : string,
-    photoUrl : string,
-    createdAt : string,
-}
+export type ProfileType = z.infer<typeof ProfileSchema>;
+
 // 팔로잉 & 팔로워 타입
-export interface FollowType {
-    uid : string,
-    temp? : boolean,
-}
+export type FollowType = z.infer<typeof FollowSchema>;
+
 // 알림 타입
 export interface NotificationType {
     id : string,
