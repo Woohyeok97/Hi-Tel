@@ -7,12 +7,13 @@ interface QueryFetcherProps {
   renderFn: (data: any) => JSX.Element | null;
 }
 export default function QueryFetcher({ queryKey, queryFn, queryOpt, renderFn }: QueryFetcherProps) {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: queryKey,
     queryFn: queryFn,
     suspense: true,
     ...queryOpt,
   });
+  if (isLoading) return null;
 
   return renderFn(data);
 }

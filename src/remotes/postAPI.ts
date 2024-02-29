@@ -8,7 +8,7 @@ export const fetchPostsByUid = async (uid: string): Promise<PostType[]> => {
   const postsRef = collection(db, 'posts');
   const postsQuery = query(postsRef, where('uid', '==', uid), orderBy('createdAt', 'desc'));
   const response = await getDocs(postsQuery);
-  
+  console.log(uid)
   return response?.docs?.map(doc => (PostSchema.parse({ ...doc?.data(), id: doc?.id })));
 };
 
