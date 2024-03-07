@@ -1,4 +1,5 @@
 import { Suspense, useContext, useEffect, useState } from "react";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import AuthContext from "context/AuthContext";
 import { Link } from "react-router-dom";
 // 컴포넌트
@@ -11,7 +12,6 @@ import useTranslation from "hooks/useTranslation";
 import { PostType } from "interface";
 // remotes
 import { fetchFollowerByUid, fetchFollowingByUid, fetchLikePostsByUid, fetchPostsByUid } from "remotes/postAPI";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProfileById } from "remotes/profileAPI";
 
 
@@ -29,20 +29,21 @@ export default function Profile({ id }: ProfileProps) {
     setActiveTab('myPosts')
   }, []);
 
-  const { data: profile } = useQuery({
+  const { data: profile } = useSuspenseQuery({
     queryKey: ['profile', id],
     queryFn: () => fetchProfileById(id),
     refetchOnWindowFocus: false,
-    enabled: !!id,
     staleTime: Infinity,
   });
 
-  const profileUid = profile?.uid ?? "";
-
-  const queryOptions = {
-    refetchOnWindowFocus: false,
-    enabled: !!profileUid,
-    staleTime: Infinity,
+  // 쿼리옵션 생성
+  // useSuspenseQuery 덕분에 profile.uid의 타입을 확정할 수잇음
+  const groupOptions = (key: string) => {
+    return queryOptions({
+      queryKey: [key, profile.uid],
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    });
   };
   
   return (
@@ -56,9 +57,8 @@ export default function Profile({ id }: ProfileProps) {
               <div className="lg-text">
                 <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
-                    queryKey={['postList', profileUid]}
-                    queryFn={() => fetchPostsByUid(profileUid)}
-                    queryOpt={queryOptions}
+                    queryFn={() => fetchPostsByUid(profile.uid)}
+                    queryOpt={groupOptions('postList')}
                     renderFn={(data) => data?.length}
                   />
                 </Suspense>
@@ -69,9 +69,8 @@ export default function Profile({ id }: ProfileProps) {
               <div className="lg-text">
                 <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
-                    queryKey={['follower', profileUid]}
-                    queryFn={() => fetchFollowerByUid(profileUid)}
-                    queryOpt={queryOptions}
+                    queryFn={() => fetchFollowerByUid(profile.uid)}
+                    queryOpt={groupOptions('follower')}
                     renderFn={(data) => data?.length || 0}
                   />
                 </Suspense>
@@ -82,9 +81,8 @@ export default function Profile({ id }: ProfileProps) {
               <div className="lg-text">
                 <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
-                    queryKey={['following', profileUid]}
-                    queryFn={() => fetchFollowingByUid(profileUid)}
-                    queryOpt={queryOptions}
+                    queryFn={() => fetchFollowingByUid(profile.uid)}
+                    queryOpt={groupOptions('following')}
                     renderFn={(data) => data?.length || 0}
                   />
                 </Suspense>
@@ -103,7 +101,7 @@ export default function Profile({ id }: ProfileProps) {
           </div>
           
           {profile?.uid && profile?.uid !== user?.uid ? (
-            <FollowBtn targetUid={profileUid} /> 
+            <FollowBtn targetUid={profile.uid} /> 
           ) : (
             <Link to="/profile/edit" className="text-btn underline underline-offset-2">
             { translation('EDIT') }
@@ -131,9 +129,8 @@ export default function Profile({ id }: ProfileProps) {
         {activeTab === 'myPosts' && (
         <Suspense fallback={<h1>로딩중이라고!!</h1>}>
           <QueryFetcher
-            queryKey={['postList', profileUid]}
-            queryFn={() => fetchPostsByUid(profileUid)}
-            queryOpt={queryOptions}
+            queryFn={() => fetchPostsByUid(profile.uid)}
+            queryOpt={groupOptions('postList')}
             renderFn={(data) => (
               <div>
                 {data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
@@ -145,9 +142,8 @@ export default function Profile({ id }: ProfileProps) {
       {activeTab === 'likePosts' && profile?.uid === user?.uid && (
         <Suspense fallback={<h1>로딩중이라고!!</h1>}>
           <QueryFetcher
-            queryKey={['likePosts', profileUid]}
-            queryFn={() => fetchLikePostsByUid(profileUid)}
-            queryOpt={queryOptions}
+            queryFn={() => fetchLikePostsByUid(profile.uid)}
+            queryOpt={groupOptions('likePosts')}
             renderFn={(data) => (
               <div>
                 {data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}

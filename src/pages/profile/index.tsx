@@ -5,11 +5,11 @@ import Loader from "components/UI/Loader";
 import Profile from "components/profile/Profile";
 
 export default function ProfilePage() {
-  const { id = '' } = useParams<{ id: string }>();
+  const { id } = useParams();
 
   return (
     <Suspense fallback={<Loader />}>
-      <Profile id={id} />
+      {id && <Profile id={id} />}
     </Suspense>
   );
 }

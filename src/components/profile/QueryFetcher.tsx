@@ -1,19 +1,15 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { UseQueryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
 interface QueryFetcherProps {
-  queryKey: any[];
   queryFn: () => Promise<any>;
-  queryOpt: UseQueryOptions;
+  queryOpt: UseQueryOptions<unknown, Error, unknown, string[]>;
   renderFn: (data: any) => JSX.Element | null;
 }
-export default function QueryFetcher({ queryKey, queryFn, queryOpt, renderFn }: QueryFetcherProps) {
-  const { data, isLoading } = useQuery({
-    queryKey: queryKey,
+export default function QueryFetcher({ queryFn, queryOpt, renderFn }: QueryFetcherProps) {
+  const { data } = useSuspenseQuery({
     queryFn: queryFn,
-    suspense: true,
-    ...queryOpt,
+    ...queryOpt
   });
-  if (isLoading) return null;
 
   return renderFn(data);
 }
