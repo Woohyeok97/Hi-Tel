@@ -28,4 +28,17 @@ export const colors = {
   borderBack: 'var(--border-black)',
 };
 
+export const getHoverColor = (color: ColorsType): string => {
+  switch (color) {
+    case 'white':
+      return colors.whiteHover;
+    case 'gray':
+      return colors.grayHover;
+    case 'orangered':
+      return colors.orangeredHover;
+    default:
+      return color;
+  }
+};
+
 export type ColorsType = keyof typeof colors;

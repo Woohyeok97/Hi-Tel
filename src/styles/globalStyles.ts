@@ -1,7 +1,10 @@
 import { css } from '@emotion/react';
 import './font/font.css';
+import { colorList } from './colors';
 
 export default css`
+  ${colorList}
+  
   body {
     font-family: 'DungGeunMo', sans-serif;
     color: #ffffff;

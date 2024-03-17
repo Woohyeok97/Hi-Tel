@@ -8,8 +8,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // components
 import { Global } from '@emotion/react';
 import Router from "Router";
-import Layout from "components/layout/Layout";
 import Loader from 'components/UI/Loader';
+import Layout from 'components/shared/Layout';
 
 
 const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ function App() {
     <>
     <Global styles={globalStyles} />
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot> 
+      <RecoilRoot>
         <Layout>
         {init && <Router isAuthentication={!!user} /> }
         </Layout>
