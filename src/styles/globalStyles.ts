@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
+import './font/font.css';
 
 export default css`
   body {
+    font-family: 'DungGeunMo', sans-serif;
     color: #ffffff;
     height: 100vh;
   }

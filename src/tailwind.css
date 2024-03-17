@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './font/font.css';
+@import './styles/font/font.css';
 
 
 /* @layer를 사용하여 purge 최적화에 포함시킴 */

@@ -33,5 +33,6 @@
     "interface/*" : ["interface/*"],
     "firebaseApp/*" : ["firebaseApp/*"],
     "font/*" : ["font/*"],
+    "styles/*": ["src/styles/*"],
   }
 }

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 // pages
-import HomePage from "pages/home";
+import HomePage from "pages/HomePage";
 import NotificationPage from "pages/notification";
 import PostPage from "pages/post";
 import EditPostPage from "pages/post/edit";
@@ -13,32 +13,34 @@ import SignupPage from "pages/users/signup";
 
 
 interface RouterProps {
-    isAuthentication : boolean,
+  isAuthentication: boolean;
 }
 
-export default function Router({ isAuthentication } : RouterProps) {
+export default function Router({ isAuthentication }: RouterProps) {
 
-    return (
-        <Routes>
-            <Route path="/" element={ <HomePage/> }/>
-            <Route path="/post/:id" element={ <PostPage/> }/>
-            <Route path="/search" element={ <SearchPage/> }/>
-            <Route path="/profile/:id" element={ <ProfilePage/> }/>
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/post/:id" element={<PostPage />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/profile/:id" element={<ProfilePage />} />
 
-            {/* 로그인 상태일때 */}
-            { isAuthentication ? <> 
-                <Route path="/post/new" element={ <NewPostPage/> }/>
-                <Route path="/post/edit/:id" element={ <EditPostPage/> }/>
-                <Route path="/profile/edit" element={ <EditProfilePage/> }/>
-                <Route path="/notification" element={ <NotificationPage/> }/>
-            </> : <>
-            {/* 미로그인 상태일때 */}
-                <Route path="/users/login" element={ <LoginPage/> }/>
-                <Route path="/users/signup" element={ <SignupPage/> }/>
-            </> }
-            
-            {/* 이상한경로 처리 */}
-            <Route path="*" element={ <Navigate replace to={'/'}/> }/>
-        </Routes>
-    )
+      {isAuthentication ? ( // 로그인 상태일때
+        <>
+          <Route path="/post/new" element={<NewPostPage />} />
+          <Route path="/post/edit/:id" element={<EditPostPage />} />
+          <Route path="/profile/edit" element={<EditProfilePage />} />
+          <Route path="/notification" element={<NotificationPage />} />
+        </>
+      ) : ( // 미로그인 상태일때
+        <>
+          <Route path="/users/login" element={<LoginPage />} />
+          <Route path="/users/signup" element={<SignupPage />} />
+        </>
+      )}
+      
+      {/* 이상한경로 처리 */}
+      <Route path="*" element={<Navigate replace to={'/'} />} />
+  </Routes>
+  );
 }
