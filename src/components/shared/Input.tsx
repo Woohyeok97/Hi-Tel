@@ -20,5 +20,5 @@ const inputStyles = css`
   color: ${colors.white};
   background-color: ${colors.blue100};
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: 5px;
 `

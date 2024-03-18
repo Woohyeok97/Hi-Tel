@@ -6,7 +6,7 @@ import { searchQueryState } from "atom";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
 // components
-import PostItem from "components/post/PostItem";
+import PostItem from "components/shared/PostItem";
 // hooks
 import useTranslation from "hooks/useTranslation";
 // 데이터 타입

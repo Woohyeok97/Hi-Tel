@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "firebaseApp";
 // components
-import PostItem from "components/post/PostItem";
+import PostItem from "components/shared/PostItem";
 import { Spacing } from "components/shared/Spacing";
 // 데이터 타입
 import { PostType } from "interface";

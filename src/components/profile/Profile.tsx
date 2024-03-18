@@ -4,8 +4,13 @@ import AuthContext from "context/AuthContext";
 import { Link } from "react-router-dom";
 // 컴포넌트
 import QueryFetcher from "../shared/QueryFetcher";
-import PostItem from "components/post/PostItem";
+import PostItem from "components/shared/PostItem";
 import FollowBtn from "components/followBtn/FollowBtn";
+import { Spacing } from "components/shared/Spacing";
+import { Divider } from "components/shared/Divider";
+import { Flex } from "components/shared/Flex";
+import { TextButton } from "components/shared/TextButton";
+import { Text } from "components/shared/Text";
 // hooks
 import useTranslation from "hooks/useTranslation";
 // 데이터 타입
@@ -13,12 +18,7 @@ import { PostType } from "interface";
 // remotes
 import { fetchFollowerByUid, fetchFollowingByUid, fetchLikePostsByUid, fetchPostsByUid } from "remotes/postAPI";
 import { fetchProfileById } from "remotes/profileAPI";
-import { Flex } from "components/shared/Flex";
-import { TextButton } from "components/shared/TextButton";
-import { Text } from "components/shared/Text";
-import styled from "@emotion/styled";
-import { Spacing } from "components/shared/Spacing";
-import { Divider } from "components/shared/Divider";
+import { UserImage } from "components/shared/UserImage";
 
 
 type TabType = 'myPosts' | 'likePosts';
@@ -54,7 +54,7 @@ export default function Profile({ id }: ProfileProps) {
     <Flex direction="column">
       <Flex direction="column">
         <Flex justify="space-between">
-          <img className="profile-img"/>
+          <UserImage size={80} />
           <Flex justify="space-between" align="center" gap={20}>
             <TextButton fontSize="md">
               <Flex direction="column" justify="center" align="center">
