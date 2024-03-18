@@ -7,7 +7,9 @@ export default css`
   
   body {
     font-family: 'DungGeunMo', sans-serif;
+    font-weight: 600;
     color: #ffffff;
+    line-height: 1.5;
     height: 100vh;
   }
   input {

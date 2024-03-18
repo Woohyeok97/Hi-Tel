@@ -121,23 +121,23 @@ export default function Navbar() {
     <div css={navbarStyles}>
       <Flex direction="column" gap={10}>
         <Flex justify="space-between">
-          <TextButton onClick={commandActions['h']} fontSize='sm'>
+          <TextButton onClick={commandActions['h']} fontSize='xs'>
             {`${translation('MENU_HOME')}(H)`}
           </TextButton>
-          <TextButton onClick={commandActions['n']} fontSize='sm'>
+          <TextButton onClick={commandActions['n']} fontSize='xs'>
             {`${translation('MENU_NOTI')}(N)`}
           </TextButton>
-          <TextButton onClick={commandActions['p']} fontSize='sm'>
+          <TextButton onClick={commandActions['p']} fontSize='xs'>
             {`${translation('MENU_PROFILE')}(P)`}
           </TextButton>
-          <TextButton onClick={commandActions['w']} fontSize='sm'>
+          <TextButton onClick={commandActions['w']} fontSize='xs'>
             {`${translation('MENU_WRITE')}(W)`}
           </TextButton>
-          <TextButton onClick={commandActions['s']} fontSize='sm'>
+          <TextButton onClick={commandActions['s']} fontSize='xs'>
             {`${translation('MENU_SEARCH')}(S)`}
           </TextButton>
-          <TextButton onClick={commandActions['l']} fontSize='sm'>
-            {`${ language === 'ko' ? '언어(L)' : 'Language(L)' }}`}
+          <TextButton onClick={commandActions['l']} fontSize='xs'>
+            {`${ language === 'ko' ? '언어(L)' : 'Language(L)' }`}
           </TextButton>
         </Flex>
 

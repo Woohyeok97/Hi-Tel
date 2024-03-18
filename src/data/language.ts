@@ -8,7 +8,7 @@ const TRANSLATIONS = {
         en : 'More',
     },
     MENU_PROFILE : {
-        ko : '마이페이지',
+        ko : '마이',
         en : 'Profile',
     },
     MENU_SEARCH : {
@@ -16,7 +16,7 @@ const TRANSLATIONS = {
         en : 'Search',
     },
     MENU_WRITE : {
-        ko : '글작성',
+        ko : '작성',
         en : 'Write',
     },
     MENU_LOGOUT : {
