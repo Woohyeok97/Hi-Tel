@@ -3,7 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import AuthContext from "context/AuthContext";
 import { Link } from "react-router-dom";
 // 컴포넌트
-import QueryFetcher from "./QueryFetcher";
+import QueryFetcher from "../shared/QueryFetcher";
 import PostItem from "components/post/PostItem";
 import FollowBtn from "components/followBtn/FollowBtn";
 // hooks
@@ -13,6 +13,12 @@ import { PostType } from "interface";
 // remotes
 import { fetchFollowerByUid, fetchFollowingByUid, fetchLikePostsByUid, fetchPostsByUid } from "remotes/postAPI";
 import { fetchProfileById } from "remotes/profileAPI";
+import { Flex } from "components/shared/Flex";
+import { TextButton } from "components/shared/TextButton";
+import { Text } from "components/shared/Text";
+import styled from "@emotion/styled";
+import { Spacing } from "components/shared/Spacing";
+import { Divider } from "components/shared/Divider";
 
 
 type TabType = 'myPosts' | 'likePosts';
@@ -22,22 +28,20 @@ interface ProfileProps {
 }
 export default function Profile({ id }: ProfileProps) {
   const { user } = useContext(AuthContext);
-  const [activeTab, setActiveTab] = useState<TabType>('myPosts');
   const { translation } = useTranslation();
+  const [activeTab, setActiveTab] = useState<TabType>('myPosts');
 
   useEffect(() => {
-    setActiveTab('myPosts')
+    setActiveTab('myPosts');
   }, []);
 
   const { data: profile } = useSuspenseQuery({
     queryKey: ['profile', id],
     queryFn: () => fetchProfileById(id),
-    refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
 
   // 쿼리옵션 생성
-  // useSuspenseQuery 덕분에 profile.uid의 타입을 확정할 수잇음
   const groupOptions = (key: string) => {
     return queryOptions({
       queryKey: [key, profile.uid],
@@ -47,14 +51,13 @@ export default function Profile({ id }: ProfileProps) {
   };
   
   return (
-    <div className="page-container">
-      <div className="flex flex-col pb-3 md:pb-6 border-gray border-b-2">
-        <div className="flex justify-between pb-5 md:pb-10">
+    <Flex direction="column">
+      <Flex direction="column">
+        <Flex justify="space-between">
           <img className="profile-img"/>
-
-          <div className="flex justify-between gap-5 lg:gap-10">
-            <div className={`flex flex-col text-btn justify-center items-center cursor-pointer lg-text`}>
-              <div className="lg-text">
+          <Flex justify="space-between" align="center" gap={20}>
+            <TextButton fontSize="md">
+              <Flex direction="column" justify="center" align="center">
                 <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
                     queryFn={() => fetchPostsByUid(profile.uid)}
@@ -62,97 +65,85 @@ export default function Profile({ id }: ProfileProps) {
                     renderFn={(data) => data?.length}
                   />
                 </Suspense>
-              </div>
-              <span>{ translation('POST') }</span>
-            </div>
-            <div className={`flex flex-col text-btn justify-center items-center cursor-pointer lg-text`}>
-              <div className="lg-text">
+                <Text>{translation('POST')}</Text>
+              </Flex>
+            </TextButton>
+            <TextButton fontSize="md">
+              <Flex direction="column" justify="center" align="center">
                 <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
-                    queryFn={() => fetchFollowerByUid(profile.uid)}
-                    queryOpt={groupOptions('follower')}
-                    renderFn={(data) => data?.length || 0}
-                  />
+                      queryFn={() => fetchFollowerByUid(profile.uid)}
+                      queryOpt={groupOptions('follower')}
+                      renderFn={(data) => data?.length || 0}
+                    />
                 </Suspense>
-              </div>
-              <span>{ translation('FOLLOWER') }</span>
-            </div>
-            <div className={`flex flex-col text-btn justify-center items-center cursor-pointer lg-text`}>
-              <div className="lg-text">
+                <Text>{translation('FOLLOWER')}</Text>
+              </Flex>
+            </TextButton>
+            <TextButton fontSize="md">
+              <Flex direction="column" justify="center" align="center">
                 <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
-                    queryFn={() => fetchFollowingByUid(profile.uid)}
-                    queryOpt={groupOptions('following')}
-                    renderFn={(data) => data?.length || 0}
-                  />
+                      queryFn={() => fetchFollowingByUid(profile.uid)}
+                      queryOpt={groupOptions('following')}
+                      renderFn={(data) => data?.length || 0}
+                    />
                 </Suspense>
-              </div>
-              <span>{ translation('FOLLOWING') }</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-between">
-          <div>
-            <div className="lg-text font-bold">
-              {profile?.displayName || "이름미지정"}
-            </div>
-            <div className="text-gray">{ profile?.email }</div>
-          </div>
-          
+                <Text>{translation('FOLLOWING')}</Text>
+              </Flex>
+            </TextButton>
+          </Flex>
+        </Flex>
+        <Spacing size={24} />
+        <Flex justify="space-between">
+          <Flex direction="column">
+            <Text>{profile?.displayName || "이름미지정"}</Text>
+            <Spacing size={6} />
+            <Text fontSize="sm" color="gray">{profile?.email}</Text>
+          </Flex>
           {profile?.uid && profile?.uid !== user?.uid ? (
             <FollowBtn targetUid={profile.uid} /> 
           ) : (
-            <Link to="/profile/edit" className="text-btn underline underline-offset-2">
-            { translation('EDIT') }
-          </Link>)}
-        </div>
-      </div>
-
-      <div className="flex gap-5 py-4 md:py-8">
-        <div className={`text-gray hover:text-grayHover font-bold cursor-pointer lg-text
-        ${ activeTab === 'myPosts' && 'text-white hover:text-whiteHover' }`}
-          onClick={() => setActiveTab('myPosts')}>
-          { translation('POST') }
-        </div>
-
-        {/* like탭은 나의 프로필 페이지에서 렌더링 */}
+            <TextButton>
+              <Link to="/profile/edit">{translation('EDIT')}</Link>
+            </TextButton>
+          )}
+        </Flex>
+      </Flex>
+      <Spacing size={16} />
+      <Divider color="gray" />
+      <Spacing size={16} />
+      <Flex gap={16}>
+        <TextButton color={activeTab === 'myPosts' ? 'white' : 'gray'} onClick={() => setActiveTab('myPosts')}>
+          {translation('POST')}
+        </TextButton>
         {profile?.uid === user?.uid && (
-        <div className={`text-gray hover:text-grayHover font-bold cursor-pointer lg-text
-          ${activeTab === 'likePosts' && 'text-white hover:text-whiteHover' }`}
-          onClick={() => setActiveTab('likePosts')}>
-          { translation('LIKE') }
-        </div>)}
-      </div>
-
-      <div>
+          <TextButton color={activeTab === 'likePosts' ? 'white' : 'gray'} onClick={() => setActiveTab('likePosts')}>
+            {translation('LIKE')}
+          </TextButton>
+        )}
+      </Flex>
+      <Spacing size={30} />
+      <Flex direction="column">
         {activeTab === 'myPosts' && (
-        <Suspense fallback={<h1>로딩중이라고!!</h1>}>
-          <QueryFetcher
-            queryFn={() => fetchPostsByUid(profile.uid)}
-            queryOpt={groupOptions('postList')}
-            renderFn={(data) => (
-              <div>
-                {data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
-              </div>
-            )}
-          />
-        </Suspense>)}
-
-      {activeTab === 'likePosts' && profile?.uid === user?.uid && (
-        <Suspense fallback={<h1>로딩중이라고!!</h1>}>
-          <QueryFetcher
-            queryFn={() => fetchLikePostsByUid(profile.uid)}
-            queryOpt={groupOptions('likePosts')}
-            renderFn={(data) => (
-              <div>
-                {data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
-              </div>
-            )}
-          />
-        </Suspense>
+          <Suspense fallback={<h1>로딩중이라고!!</h1>}>
+            <QueryFetcher
+              queryFn={() => fetchPostsByUid(profile.uid)}
+              queryOpt={groupOptions('postList')}
+              renderFn={(data) => data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
+            />
+          </Suspense>
+        )}
+        {activeTab === 'likePosts' && profile?.uid === user?.uid && (
+          <Suspense fallback={<h1>로딩중이라고!!</h1>}>
+            <QueryFetcher
+              queryFn={() => fetchLikePostsByUid(profile.uid)}
+              queryOpt={groupOptions('likePosts')}
+              renderFn={(data) => data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
+            />
+          </Suspense>
       )}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

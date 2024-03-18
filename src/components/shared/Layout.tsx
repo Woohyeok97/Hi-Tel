@@ -21,6 +21,7 @@ export function Layout({ children }: LayoutProps) {
 }
 
 const layoutStyles = css`
+  position: relative;
   max-width: 680px;
   width: 100%;
   height: 100vh;

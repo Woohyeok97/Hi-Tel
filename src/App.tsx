@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // components
 import { Global } from '@emotion/react';
 import Router from "Router";
-import Loader from 'components/UI/Loader';
+import Loader from 'components/shared/Loader';
 import { Layout } from 'components/shared/Layout';
 
 function App() {
