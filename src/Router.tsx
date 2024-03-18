@@ -10,6 +10,7 @@ import EditProfilePage from "pages/profile/edit";
 import SearchPage from "pages/search";
 import LoginPage from "pages/users/login";
 import SignupPage from "pages/users/signup";
+import MorePage from "pages/MorePage";
 
 interface RouterProps {
   isAuthentication: boolean;
@@ -22,6 +23,7 @@ export default function Router({ isAuthentication }: RouterProps) {
       <Route path="/post/:id" element={<PostPage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/profile/:id" element={<ProfilePage />} />
+      <Route path="/more" element={<MorePage />} />
       {isAuthentication ? ( // 로그인 상태일때
         <>
           <Route path="/post/new" element={<NewPostPage />} />

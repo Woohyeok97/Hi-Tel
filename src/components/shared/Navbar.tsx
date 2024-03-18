@@ -40,62 +40,36 @@ export default function Navbar() {
     }
   }
 
-  // 언어변경 핸들러
-  const handleLanguage = () => {
-    setLanguage((prev) => prev === 'ko' ? 'en' : 'ko');
-    // state변경이 비동기적이기 때문에 로컬스토리지에 저장할값을 수동으로 설정해줌
-    localStorage.setItem('language', language === 'ko' ? 'en' : 'ko');
-  };
-
   // 명령어 입력 핸들러
   const handleCommand = (e : React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e?.target;;
+    const { value } = e?.target;
     setCommand(value?.trim());
   };
 
     // 명령어 실행함수
-  const commandActions : CommandActionsType = {
-    // 초기화면
-    'h' : () => {
-        navigate('/')
-        setTerminalMessage(INITIAL_MESSAGE) 
-    },
+  const commandActions: CommandActionsType = {
     // 마이페이지
-    'p' : () => {
-        user?.uid
-        ? navigate(`/profile/${user?.uid}`)
-        : setTerminalMessage('접속이후 이용해주십시오.')
+    'p': () => {
+      user?.uid
+      ? navigate(`/profile/${user?.uid}`)
+      : setTerminalMessage('접속이후 이용해주십시오.')
     }, 
     // 검색
-    's' : () => {
-        navigate('/search')
-        setTerminalMessage(INITIAL_MESSAGE) 
+    's': () => {
+      navigate('/search');
+      setTerminalMessage(INITIAL_MESSAGE);
     },
     // 글작성
-    'w' : () => {
-        user?.uid
-        ? navigate('/post/new') 
-        : setTerminalMessage('접속이후 이용해주십시오.')
+    'w': () => {
+      user?.uid
+      ? navigate('/post/new')
+      : setTerminalMessage('접속이후 이용해주십시오.')
     },
-    // 로그인/로그아웃
-    'q' : () => {
-        user?.uid
-        ? handleLogout()
-        : navigate('/users/login')
-
-        setTerminalMessage(INITIAL_MESSAGE)
+    // 더보기
+    'm': () => {
+      navigate('/more');
+      setTerminalMessage(INITIAL_MESSAGE);
     },
-    // 언어설정
-    'l' : () => {
-        handleLanguage()
-        setTerminalMessage(INITIAL_MESSAGE) 
-    },
-    // 알림
-    'n' : () => {
-        user?.uid
-        ? navigate('/notification') 
-        : setTerminalMessage('접속이후 이용해주십시오.')
-    }
   };
 
   // 명령어 실행 핸들러
@@ -121,23 +95,17 @@ export default function Navbar() {
     <div css={navbarStyles}>
       <Flex direction="column" gap={10}>
         <Flex justify="space-between">
-          <TextButton onClick={commandActions['h']} fontSize='xs'>
-            {`${translation('MENU_HOME')}(H)`}
-          </TextButton>
-          <TextButton onClick={commandActions['n']} fontSize='xs'>
-            {`${translation('MENU_NOTI')}(N)`}
-          </TextButton>
-          <TextButton onClick={commandActions['p']} fontSize='xs'>
-            {`${translation('MENU_PROFILE')}(P)`}
-          </TextButton>
-          <TextButton onClick={commandActions['w']} fontSize='xs'>
+          <TextButton onClick={commandActions['w']}>
             {`${translation('MENU_WRITE')}(W)`}
           </TextButton>
-          <TextButton onClick={commandActions['s']} fontSize='xs'>
+          <TextButton onClick={commandActions['p']}>
+            {`${translation('MENU_PROFILE')}(P)`}
+          </TextButton>
+          <TextButton onClick={commandActions['s']}>
             {`${translation('MENU_SEARCH')}(S)`}
           </TextButton>
-          <TextButton onClick={commandActions['l']} fontSize='xs'>
-            {`${ language === 'ko' ? '언어(L)' : 'Language(L)' }`}
+          <TextButton onClick={commandActions['m']}>
+            {`${translation('MENU_MORE')}(M)`}
           </TextButton>
         </Flex>
 
@@ -161,9 +129,6 @@ const navbarStyles = css`
   border-top: 1px solid ${colors.white};
 `;
 
-{/* <div className='text-btn' onClick={ commandActions['q'] }>
-                { user?.uid ? `${translation('MENU_LOGOUT')}(Q)` : `${translation('MENU_LOGIN')}(Q)` }
-            </div> */}
 // import { useContext, useState } from 'react';
 // import AuthContext from 'context/AuthContext';
 // import { useRecoilState } from 'recoil';
