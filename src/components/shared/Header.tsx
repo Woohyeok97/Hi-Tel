@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { colors } from "styles/colors";
-import Text from './Text';
+import { Text } from './Text';
 import { Link } from 'react-router-dom';
 
-export default function Header() {
+export function Header() {
   return (
     <div css={headerStyles}>
       <Link to="/">

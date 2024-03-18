@@ -10,11 +10,11 @@ import { app } from 'firebaseApp';
 import useTranslation from 'hooks/useTranslation';
 // 데이터 타입 
 import { CommandActionsType } from 'interface';
-import Input from './Input';
+import { Input } from './Input';
 import { css } from '@emotion/react';
 import { colors } from 'styles/colors';
-import Flex from './Flex';
-import TextButton from './TextButton';
+import { Flex } from './Flex';
+import { TextButton } from './TextButton';
 
 
 // 터미널메시지 기본값

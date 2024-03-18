@@ -4,6 +4,7 @@ export const colorList = css`
   :root {
     --blue: #00007f;
     --blue100: #040461;
+    --blue-light: #3d83f7;
     --white: #ccc;
     --white-hover: #eaeaea;
     --gray: gray;
@@ -18,6 +19,7 @@ export const colorList = css`
 export const colors = {
   blue: 'var(--blue)',
   blue100: 'var(--blue100)',
+  blueLigth: 'var(--blue-light)',
   white: 'var(--white)',
   whiteHover: 'var(--white-hover)',
   gray: 'var(--gray)',

@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import Header from "./Header";
-import PageLayout from "./PageLayout";
+import { Header } from "./Header";
+import { PageLayout } from "./PageLayout";
 import Navbar from "./Navbar";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps) {
+export function Layout({ children }: LayoutProps) {
   return (
     <div css={layoutStyles}>
       <Header />
@@ -23,6 +23,6 @@ export default function Layout({ children }: LayoutProps) {
 const layoutStyles = css`
   max-width: 680px;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   margin: 0 auto;
 `;

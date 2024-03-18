@@ -8,12 +8,10 @@ interface FlexProps {
   align?: CSSProperties['alignItems'];
   gap?: CSSProperties['gap'];
 }
-const Flex = styled.div<FlexProps>(({ direction, justify, align, gap }) => ({
+export const Flex = styled.div<FlexProps>(({ direction, justify, align, gap }) => ({
   display: 'flex',
   flexDirection: direction,
   justifyContent: justify,
   alignItems: align,
   gap: gap,
 }));
-
-export default Flex;

@@ -3,18 +3,11 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "firebaseApp";
 // components
 import PostItem from "components/post/PostItem";
+import { Spacing } from "components/shared/Spacing";
 // 데이터 타입
 import { PostType } from "interface";
-// hooks
-import useTranslation from "hooks/useTranslation";
-import Text from "components/shared/Text";
-import Header from "components/shared/Header";
-
 
 export default function HomePage() {
-  const { translation } = useTranslation();
-
-    // 게시물리스트 요청 함수
   const fetchPostList = async () => {
     const postsRef = collection(db, 'posts');
     const postsQuery = query(postsRef, orderBy('createdAt', 'desc'));
@@ -23,10 +16,9 @@ export default function HomePage() {
     return result?.docs?.map((item) => ({ ...item?.data(), id : item?.id })) as PostType[];
   };
 
-  const { data: postList, isError, error, isLoading } = useQuery({
+  const { data: postList, isError, isLoading } = useQuery({
     queryKey: [`postList`],
     queryFn: fetchPostList,
-    refetchOnWindowFocus: false,
     staleTime: 30000,
   });
 
@@ -36,9 +28,8 @@ export default function HomePage() {
     
   return (
     <>
-      <div>
-      {postList?.map((item) => <PostItem key={item?.id} post={ item }/>)}
-      </div>
+      <Spacing size={6} />
+      {postList?.map((item) => <PostItem key={item?.id} post={item} />)}
     </>
   );
 }

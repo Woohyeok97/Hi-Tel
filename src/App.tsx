@@ -9,13 +9,17 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Global } from '@emotion/react';
 import Router from "Router";
 import Loader from 'components/UI/Loader';
-import Layout from 'components/shared/Layout';
-
-
-const queryClient = new QueryClient();
+import { Layout } from 'components/shared/Layout';
 
 function App() {
   const { user, init } = useContext(AuthContext);
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   return (
     <>

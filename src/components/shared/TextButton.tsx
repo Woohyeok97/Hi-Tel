@@ -25,7 +25,7 @@ const StyledTextButton = styled.span<TextButtonProps>(({ color = 'white', displa
 );
 
 // 로직, 옵션을 받을 컴포넌트 생성
-export default function TextButton({ children, onClick, ...styledProps }: TextButtonProps) {
+export function TextButton({ children, onClick, ...styledProps }: TextButtonProps) {
   return (
     <StyledTextButton onClick={onClick} {...styledProps}>
       {children}

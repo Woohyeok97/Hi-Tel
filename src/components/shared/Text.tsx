@@ -4,17 +4,14 @@ import { ColorsType, colors } from "styles/colors";
 import { fontSizeMap, FontSizeType } from "styles/fontSize";
 
 interface TextProps {
-  fontSize: FontSizeType;
+  fontSize?: FontSizeType;
   color?: ColorsType;
   display?: CSSProperties['display'];
 }
 
-const Text = styled.span<TextProps>(({ color = 'white', display, fontSize = 'base' }) => ({
-    cursor: 'pointer',
+export const Text = styled.span<TextProps>(({ color = 'white', display, fontSize = 'base' }) => ({
     color: colors[color],
     display,
     fontSize: fontSizeMap[fontSize],
   }),
 );
-
-export default Text;
