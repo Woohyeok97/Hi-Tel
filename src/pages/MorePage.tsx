@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useRecoilState } from "recoil";
 import AuthContext from "context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import { Text } from "components/shared/Text";
 import { Spacing } from "components/shared/Spacing";
 import { Divider } from "components/shared/Divider";
 import { Link } from "react-router-dom";
+import { PageTop } from "components/shared/PageTop";
 // hooks
 import useTranslation from "hooks/useTranslation";
 
@@ -21,15 +22,6 @@ export default function MorePage() {
   const [language, setLanguage] = useRecoilState(languageSate);
   const navigate = useNavigate();
   
-  // useEffect(() => {
-  //   const worker = new Worker(new URL('../worker/testWorker.ts', import.meta.url), { type: 'module' });
-  //   worker.onmessage = event => {
-  //     console.log(event.data);
-  //   }
-  //   worker.postMessage('hi im main');
-
-  //   return () => worker.terminate();
-  // }, [])
   // 로그아웃 핸들러
   const handleLogout = async () => {
     const confirm = window.confirm('접속을 종료하시겠습니까?');
@@ -51,10 +43,9 @@ export default function MorePage() {
 
   return (
     <Flex direction="column">
-      <Text fontSize="xl">{translation("MENU_MORE")}</Text>
-      <Spacing size={20} />
-      <Divider size={2} />
-      <Spacing size={20} />
+      <PageTop isDivider={true}>
+        {translation("MENU_MORE")}
+      </PageTop>
       <Flex direction="column">
         <Text fontSize="lg">{translation("MY")}</Text>
         <Spacing size={10} />

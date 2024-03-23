@@ -2,11 +2,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 // pages
 import HomePage from "pages/HomePage";
 import NotificationPage from "pages/notification";
-import PostPage from "pages/post";
+import PostPage from "pages/PostPage";
 import EditPostPage from "pages/post/edit";
 import NewPostPage from "pages/post/new";
-import ProfilePage from "pages/profile";
-import EditProfilePage from "pages/profile/edit";
+import ProfilePage from "pages/ProfilePage";
+import ProfileEditPage from "pages/ProfileEditPage";
 import SearchPage from "pages/search";
 import LoginPage from "pages/users/login";
 import SignupPage from "pages/users/signup";
@@ -28,7 +28,7 @@ export default function Router({ isAuthentication }: RouterProps) {
         <>
           <Route path="/post/new" element={<NewPostPage />} />
           <Route path="/post/edit/:id" element={<EditPostPage />} />
-          <Route path="/profile/edit" element={<EditProfilePage />} />
+          <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/notification" element={<NotificationPage />} />
         </>
       ) : ( // 미로그인 상태일때

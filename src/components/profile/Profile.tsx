@@ -98,7 +98,6 @@ export default function Profile({ id }: ProfileProps) {
         <Flex justify="space-between">
           <Flex direction="column">
             <Text>{profile?.displayName || "이름미지정"}</Text>
-            <Spacing size={6} />
             <Text fontSize="sm" color="gray">{profile?.email}</Text>
           </Flex>
           {profile?.uid && profile?.uid !== user?.uid ? (
