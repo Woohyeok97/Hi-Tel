@@ -36,3 +36,11 @@ export const fetchFollowerByUid = async (uid: string): Promise<string> => {
 
   return response?.data()?.users.map((user: FollowType) => FollowSchema.parse(user).uid);
 };
+
+export const fetchPostsBySearch = async (search: string): Promise<PostType[]> => {
+  const postsRef = collection(db, 'posts');
+  const postsQuery = query(postsRef, where('hashTag', 'array-contains', search), orderBy('createdAt', "desc"))
+  const response = await getDocs(postsQuery);
+
+  return response?.docs?.map(doc => (PostSchema.parse({ ...doc?.data(), id: doc?.id })));
+};

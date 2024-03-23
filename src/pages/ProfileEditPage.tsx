@@ -6,12 +6,11 @@ import { collection, doc, getDocs, query, updateDoc, where, writeBatch } from "f
 import { db } from "firebaseApp";
 // components
 import { PageTop } from "components/shared/PageTop";
-// hooks
-import useTranslation from "hooks/useTranslation";
 import { Flex } from "components/shared/Flex";
 import { Input } from "components/shared/Input";
 import { Spacing } from "components/shared/Spacing";
-import { TextButton } from "components/shared/TextButton";
+// hooks
+import useTranslation from "hooks/useTranslation";
 
 
 export default function ProfileEditPage() {
@@ -21,7 +20,9 @@ export default function ProfileEditPage() {
   const { translation } = useTranslation();
 
   // submit 핸들러
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
     if (!user?.uid) {
       alert('너 누구야');
       return;
@@ -78,22 +79,23 @@ export default function ProfileEditPage() {
       <PageTop isDivider={true}>
         {translation('PROFILE_EDIT')}
       </PageTop>
-      <Flex direction="column">
-        <Spacing size={16} />
-        <Input
-          label={translation('PROFILE_EDIT_NAME')}
-          name="name"
-          onChange={handleNameChange}
-          value={displayName}
-          placeholder={!user?.displayName ? '이름을 설정하십시오.' : ''}
-        />
-        <Spacing size={26} />
-        <Flex direction="row-reverse">
-          <TextButton onClick={handleSubmit} fontSize="md">
-            {translation('EDIT')}
-          </TextButton>
+
+      <form onSubmit={handleSubmit}>
+        <Flex direction="column">
+          <Spacing size={16} />
+          <Input
+            label={translation('PROFILE_EDIT_NAME')}
+            name="name"
+            onChange={handleNameChange}
+            value={displayName}
+            placeholder={!user?.displayName ? '이름을 설정하십시오.' : ''}
+          />
+          <Spacing size={26} />
+          <Flex direction="row-reverse">
+            <Input type="submit" value={translation('PROFILE_EDIT')} disabled={!user?.uid} />
+          </Flex>
         </Flex>
-      </Flex>
+      </form>
     </>
   )
 }

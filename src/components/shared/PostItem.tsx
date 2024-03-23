@@ -79,7 +79,7 @@ export default function PostItem({ post }: PostItemProps) {
           </Link>
           <Spacing size={6} />
           <Flex gap={10}>
-            {post?.hashTag?.length > 0 && post?.hashTag?.map(item => <HashTag>#{item}</HashTag>)}
+            {post?.hashTag?.length > 0 && post?.hashTag?.map(item => <HashTag key={item}>#{item}</HashTag>)}
           </Flex>
           <Spacing size={20} />  
           <Flex gap={10}>

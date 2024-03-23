@@ -18,7 +18,7 @@ import useTranslation from "hooks/useTranslation";
 import { PostType } from "interface";
 
 
-export default function EditPostPage() {
+export default function PostEditPage() {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const { translation } = useTranslation();
@@ -132,7 +132,7 @@ export default function EditPostPage() {
   if(isLoading) return <div>로딩중..</div>
 
   return (
-    <>
+    <Flex>
       <Text fontSize="lg">
         {`${translation('POST')} ${translation('EDIT')}`}
       </Text>
@@ -169,6 +169,6 @@ export default function EditPostPage() {
           />
         </Flex>
       </form>
-    </>
+    </Flex>
   );
 }
