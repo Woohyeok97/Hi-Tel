@@ -9,42 +9,29 @@ import useTranslation from 'hooks/useTranslation';
 // components
 import CommentForm from "components/comment/CommentForm";
 import CommentItem from "components/comment/CommentItem";
-// 데이터 타입
-import { PostType } from "interface";
 import { TextButton } from "components/shared/TextButton";
 import { Text } from "components/shared/Text";
 import { Flex } from "components/shared/Flex";
 import { HashTag } from "components/post/HashTag";
 import { Spacing } from "components/shared/Spacing";
 import { Divider } from "components/shared/Divider";
+import { UserImage } from "components/shared/UserImage";
+// remotes
+import { fetchPostsById } from "remotes/postAPI";
+
 
 export default function PostPage() {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { translation } = useTranslation();
 
-
-  const fetchPost = async () => {
-    if (id) {
-      const postRef = doc(db, 'posts', id);
-      const result = await getDoc(postRef);
-      
-      if(!result.exists()) {
-        return null;
-      }
-      return { ...result?.data(), id: result?.id } as PostType;
-    }
-  };
-
   const { data: post, isError, isLoading } = useQuery({
     queryKey: [`post-${id}`],
-    queryFn: fetchPost,
+    queryFn: () => fetchPostsById(id!),
     enabled: !!id,
     staleTime: 100000,
   });
-
 
   const deleteMutation = useMutation({
     mutationFn: async (postId : string) => {
@@ -108,7 +95,7 @@ export default function PostPage() {
       {post?.id && (
         <Flex direction="column">
           <Flex align="center" gap={16}>
-            <div className="user-img"></div>
+            <UserImage />
             <Flex direction="column" gap={4}>
               <TextButton>
                 <Link to={`/profile/${post?.uid}`}>
@@ -122,7 +109,11 @@ export default function PostPage() {
           <Text>{post?.content}</Text>
           <Spacing size={40} />
           <Flex gap={10}>
-            {post?.hashTag?.length > 0 && post.hashTag.map(item => <HashTag key={item}>#{item}</HashTag>)}
+            {post?.hashTag?.length > 0 && post.hashTag.map(item => (
+              <HashTag key={item}>
+                #{item}
+              </HashTag>
+            ))}
           </Flex>
           <Spacing size={16} />
 
@@ -130,7 +121,7 @@ export default function PostPage() {
             <Flex gap={20}>
               <TextButton
                 color={user?.uid && post?.likes?.includes(user?.uid) ? 'orangered' : 'white'}
-                onClick={() => likeMutation.mutate() }
+                onClick={() => likeMutation.mutate()}
               >
                 {translation('LIKE')}: {post?.likeCount || 0}
               </TextButton>
@@ -139,7 +130,9 @@ export default function PostPage() {
             {post?.uid === user?.uid && (
               <Flex gap={12}>
                 <TextButton>
-                  <Link to={`/post/edit/${post?.id}`}>{translation('EDIT')}</Link>
+                  <Link to={`/post/edit/${post?.id}`}>
+                    {translation('EDIT')}
+                  </Link>
                 </TextButton>
                 <TextButton onClick={() => deleteMutation.mutate(post?.id)} color="orangered">
                   {translation('DELETE')}

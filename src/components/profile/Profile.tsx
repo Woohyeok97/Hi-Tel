@@ -5,20 +5,21 @@ import { Link } from "react-router-dom";
 // 컴포넌트
 import QueryFetcher from "../shared/QueryFetcher";
 import PostItem from "components/post/PostItem";
-import FollowBtn from "components/followBtn/FollowBtn";
+import FollowBtn from "components/shared/FollowBtn";
 import { Spacing } from "components/shared/Spacing";
 import { Divider } from "components/shared/Divider";
 import { Flex } from "components/shared/Flex";
 import { TextButton } from "components/shared/TextButton";
 import { Text } from "components/shared/Text";
+import { UserImage } from "components/shared/UserImage";
 // hooks
 import useTranslation from "hooks/useTranslation";
 // 데이터 타입
 import { PostType } from "interface";
 // remotes
-import { fetchFollowerByUid, fetchFollowingByUid, fetchLikePostsByUid, fetchPostsByUid } from "remotes/postAPI";
 import { fetchProfileById } from "remotes/profileAPI";
-import { UserImage } from "components/shared/UserImage";
+import { fetchLikePostsByUid, fetchPostsByUid } from "remotes/postAPI";
+import { fetchFollowerByUid, fetchFollowingByUid } from "remotes/followAPI";
 
 
 type TabType = 'myPosts' | 'likePosts';
