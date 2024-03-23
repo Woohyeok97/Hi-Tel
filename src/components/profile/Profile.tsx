@@ -49,15 +49,6 @@ export default function Profile({ id }: ProfileProps) {
       staleTime: Infinity,
     });
   };
-
-  useEffect(() => {
-    const worker = new Worker(new URL('../../worker/testWorker', import.meta.url));
-    worker.postMessage({ uid: profile.uid });
-    worker.onmessage = (event) => {
-      console.log(event.data);
-    }
-    return () => worker.terminate();
-  }, [])
   
   return (
     <Flex direction="column">
@@ -67,37 +58,37 @@ export default function Profile({ id }: ProfileProps) {
           <Flex justify="space-between" align="center" gap={20}>
             <TextButton fontSize="md">
               <Flex direction="column" justify="center" align="center">
-                {/* <Suspense fallback={<h1>로딩!!!</h1>}>
+                <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
                     queryFn={() => fetchPostsByUid(profile.uid)}
                     queryOpt={groupOptions('postList')}
                     renderFn={(data) => data?.length}
                   />
-                </Suspense> */}
+                </Suspense>
                 <Text>{translation('POST')}</Text>
               </Flex>
             </TextButton>
             <TextButton fontSize="md">
               <Flex direction="column" justify="center" align="center">
-                {/* <Suspense fallback={<h1>로딩!!!</h1>}>
+                <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
                       queryFn={() => fetchFollowerByUid(profile.uid)}
                       queryOpt={groupOptions('follower')}
                       renderFn={(data) => data?.length || 0}
                     />
-                </Suspense> */}
+                </Suspense>
                 <Text>{translation('FOLLOWER')}</Text>
               </Flex>
             </TextButton>
             <TextButton fontSize="md">
               <Flex direction="column" justify="center" align="center">
-                {/* <Suspense fallback={<h1>로딩!!!</h1>}>
+                <Suspense fallback={<h1>로딩!!!</h1>}>
                   <QueryFetcher
                       queryFn={() => fetchFollowingByUid(profile.uid)}
                       queryOpt={groupOptions('following')}
                       renderFn={(data) => data?.length || 0}
                     />
-                </Suspense> */}
+                </Suspense>
                 <Text>{translation('FOLLOWING')}</Text>
               </Flex>
             </TextButton>
@@ -110,13 +101,13 @@ export default function Profile({ id }: ProfileProps) {
             <Spacing size={6} />
             <Text fontSize="sm" color="gray">{profile?.email}</Text>
           </Flex>
-          {/* {profile?.uid && profile?.uid !== user?.uid ? (
+          {profile?.uid && profile?.uid !== user?.uid ? (
             <FollowBtn targetUid={profile.uid} /> 
           ) : (
             <TextButton>
               <Link to="/profile/edit">{translation('EDIT')}</Link>
             </TextButton>
-          )} */}
+          )}
         </Flex>
       </Flex>
       <Spacing size={16} />
@@ -134,7 +125,7 @@ export default function Profile({ id }: ProfileProps) {
       </Flex>
       <Spacing size={30} />
       <Flex direction="column">
-        {/* {activeTab === 'myPosts' && (
+        {activeTab === 'myPosts' && (
           <Suspense fallback={<h1>로딩중이라고!!</h1>}>
             <QueryFetcher
               queryFn={() => fetchPostsByUid(profile.uid)}
@@ -142,8 +133,8 @@ export default function Profile({ id }: ProfileProps) {
               renderFn={(data) => data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
             />
           </Suspense>
-        )} */}
-        {/* {activeTab === 'likePosts' && profile?.uid === user?.uid && (
+        )}
+        {activeTab === 'likePosts' && profile?.uid === user?.uid && (
           <Suspense fallback={<h1>로딩중이라고!!</h1>}>
             <QueryFetcher
               queryFn={() => fetchLikePostsByUid(profile.uid)}
@@ -151,7 +142,7 @@ export default function Profile({ id }: ProfileProps) {
               renderFn={(data) => data?.map((post: PostType) => <PostItem key={post?.id} post={post} />)}
             />
           </Suspense>
-        )} */}
+        )}
       </Flex>
     </Flex>
   );
