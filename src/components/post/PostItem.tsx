@@ -6,12 +6,12 @@ import { db } from 'firebaseApp';
 import { Link } from "react-router-dom";
 import styled from '@emotion/styled';
 // components
-import { Flex } from './Flex';
-import { TextButton } from './TextButton';
-import { Text } from './Text';
-import { Spacing } from './Spacing';
+import { Flex } from '../shared/Flex';
+import { TextButton } from '../shared/TextButton';
+import { Text } from '../shared/Text';
+import { Spacing } from '../shared/Spacing';
 import { HashTag } from './HashTag';
-import { UserImage } from './UserImage';
+import { UserImage } from '../shared/UserImage';
 // hooks
 import useTranslation from 'hooks/useTranslation';
 // 데이터 타입
@@ -21,7 +21,6 @@ import { PostType } from "interface";
 interface PostItemProps {
   post: PostType;
 }
-
 export default function PostItem({ post }: PostItemProps) {
   const queryClient = useQueryClient();
   const { user } = useContext(AuthContext);
@@ -79,7 +78,11 @@ export default function PostItem({ post }: PostItemProps) {
           </Link>
           <Spacing size={6} />
           <Flex gap={10}>
-            {post?.hashTag?.length > 0 && post?.hashTag?.map(item => <HashTag key={item}>#{item}</HashTag>)}
+            {post?.hashTag?.length > 0 && post?.hashTag?.map(item => (
+              <HashTag key={item}>
+                #{item}
+              </HashTag>
+            ))}
           </Flex>
           <Spacing size={20} />  
           <Flex gap={10}>

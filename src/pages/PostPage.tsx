@@ -14,7 +14,7 @@ import { PostType } from "interface";
 import { TextButton } from "components/shared/TextButton";
 import { Text } from "components/shared/Text";
 import { Flex } from "components/shared/Flex";
-import { HashTag } from "components/shared/HashTag";
+import { HashTag } from "components/post/HashTag";
 import { Spacing } from "components/shared/Spacing";
 import { Divider } from "components/shared/Divider";
 

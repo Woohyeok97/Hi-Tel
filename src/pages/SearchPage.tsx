@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { searchQueryState } from "atom";
 // components
-import PostItem from "components/shared/PostItem";
+import PostItem from "components/post/PostItem";
 import { PageTop } from "components/shared/PageTop";
 import { Input } from "components/shared/Input";
 import { Spacing } from "components/shared/Spacing";

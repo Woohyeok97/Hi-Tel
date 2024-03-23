@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 // pages
 import HomePage from "pages/HomePage";
-import NotificationPage from "pages/notification";
+import NotificationPage from "pages/NotificationPage";
 import PostPage from "pages/PostPage";
 import PostEditPage from "pages/PostEditPage";
 import NewPostPage from "pages/NewPostPage";

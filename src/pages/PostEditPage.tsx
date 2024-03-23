@@ -10,7 +10,7 @@ import { Spacing } from "components/shared/Spacing";
 import { Text } from "components/shared/Text";
 import { TextField } from "components/shared/TextField";
 import { TextButton } from "components/shared/TextButton";
-import { HashTag } from "components/shared/HashTag";
+import { HashTag } from "components/post/HashTag";
 import { Input } from "components/shared/Input";
 // hooks
 import useTranslation from "hooks/useTranslation";

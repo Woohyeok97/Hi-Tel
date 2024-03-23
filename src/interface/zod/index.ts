@@ -48,3 +48,13 @@ export const ProfileSchema = z.object({
 export const FollowSchema = z.object({
   uid: z.string(),
 });
+
+// 알림 스키마
+export const NotificationSchema = z.object({
+  id: z.string(),
+  uid: z.string(),
+  content: z.string(),
+  url: z.string().optional(),
+  createdAt: z.string(),
+  isRead: z.boolean(),
+});

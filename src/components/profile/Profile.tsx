@@ -4,7 +4,7 @@ import AuthContext from "context/AuthContext";
 import { Link } from "react-router-dom";
 // 컴포넌트
 import QueryFetcher from "../shared/QueryFetcher";
-import PostItem from "components/shared/PostItem";
+import PostItem from "components/post/PostItem";
 import FollowBtn from "components/followBtn/FollowBtn";
 import { Spacing } from "components/shared/Spacing";
 import { Divider } from "components/shared/Divider";
