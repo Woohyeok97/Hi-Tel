@@ -6,15 +6,14 @@ import { colors } from "styles/colors";
 
 interface TextFieldProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{
   label?: string;
-  minHeigth?: string,
 }
 
-export function TextField({ label, minHeigth, ...props }: TextFieldProps) {
+export function TextField({ label, ...props }: TextFieldProps) {
   return (
-    <div>
+    <>
       {label && <label htmlFor={label}>{label}</label>}
-      <textarea {...props} css={textFieldStyles} id={label} spellCheck={false} />
-    </div>
+      <textarea css={textFieldStyles} id={label} spellCheck={false} {...props} />
+    </>
   );
 };
 
