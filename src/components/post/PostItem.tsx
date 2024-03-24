@@ -54,7 +54,7 @@ export default function PostItem({ post }: PostItemProps) {
         {/* <div className="user-img"></div> */}
         <UserImage />
         <PostItemStyled>
-          <Flex direction="column">
+          <Flex direction="column" gap={6}>
             <Flex justify="space-between">
               <TextButton>
                 <Link to={`/profile/${post?.uid}`}>{post?.displayName || post?.email}</Link>
@@ -72,11 +72,11 @@ export default function PostItem({ post }: PostItemProps) {
             </Flex>
             <Text fontSize="xs" color="gray">{post?.createdAt}</Text>
           </Flex>
-          <Spacing size={12} />
+          <Spacing size={20} />
           <Link to={`/post/${post?.id}`}>
             <Text>{post?.content}</Text>
           </Link>
-          <Spacing size={6} />
+          <Spacing size={12} />
           <Flex gap={10}>
             {post?.hashTag?.length > 0 && post?.hashTag?.map(item => (
               <HashTag key={item}>
@@ -91,7 +91,7 @@ export default function PostItem({ post }: PostItemProps) {
           </Flex>
         </PostItemStyled>
       </Flex>
-      <Spacing size={40} />
+      <Spacing size={46} />
     </>
   );
 }

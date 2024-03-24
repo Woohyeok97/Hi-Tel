@@ -9,8 +9,9 @@ export default css`
     font-family: 'DungGeunMo', sans-serif;
     font-weight: 600;
     color: #ffffff;
-    line-height: 1.5;
     height: 100vh;
+    background-color: #00007f;
+    margin: 0;
   }
   input {
     outline: none;
