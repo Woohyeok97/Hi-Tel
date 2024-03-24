@@ -8,8 +8,8 @@ import NewPostPage from "pages/NewPostPage";
 import ProfilePage from "pages/ProfilePage";
 import ProfileEditPage from "pages/ProfileEditPage";
 import SearchPage from "pages/SearchPage";
-import LoginPage from "pages/users/login";
-import SignupPage from "pages/users/signup";
+import LoginPage from "pages/LoginPage";
+import SignupPage from "pages/SignupPage";
 import MorePage from "pages/MorePage";
 
 interface RouterProps {

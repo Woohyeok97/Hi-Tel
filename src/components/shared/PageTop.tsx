@@ -13,7 +13,7 @@ export function PageTop({ children, isDivider }: PageTopProps) {
       <Spacing size={20} />
       {isDivider && (
         <>
-          <Divider size={2} />
+          <Divider size={2} color="white" />
           <Spacing size={20} />
         </>
       )}
